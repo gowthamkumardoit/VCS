@@ -1,0 +1,24 @@
+<div mdbModal #delete="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+      <!--Content-->
+      <div class="modal-content text-center">
+        <!--Header-->
+        <div class="modal-header d-flex justify-content-center">
+          <p class="heading">Are you sure?</p>
+        </div>
+
+        <!--Body-->
+        <div class="modal-body">
+          <i class="fa fa-times fa-4x animated rotateIn"></i>
+        </div>
+
+        <!--Footer-->
+        <div class="modal-footer flex-center">
+          <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect (click)="deleteConfirm();">Yes</a>
+          <a type="button" mdbBtn color="danger" class="waves-effect" mdbWavesEffect data-dismiss="modal" (click)="delete.hide()">No</a>
+        </div>
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>

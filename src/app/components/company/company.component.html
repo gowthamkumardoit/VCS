@@ -1,0 +1,737 @@
+<div style="height: 100px">
+</div>
+<div class="container-fluid px-5">
+  <div class="row">
+    <div class="col-sm-8"></div>
+    <div class='col-sm-4'>
+      <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" (click)="openModal()"
+        mdbWavesEffect>
+        <i class="fa fa-plus-circle mr-2"></i> Add Company</button>
+    </div>
+  </div>
+
+  <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">Company</h4>
+        </div>
+        <div class="modal-body">
+          <!-- Nav tabs -->
+          <mdb-tabset #staticTabs [buttonClass]="'nav-tabs tabs-4 pills-teal white margin'" [contentClass]="''">
+            <!--Panel 1-->
+            <mdb-tab heading="Company">
+              <form [formGroup]="companyForm">
+                <p class="h5 text-bold">Company Details</p>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="error" *ngIf="isCompanyExists" style="color: red; font-size: 12px; margin-bottom: 20px; ">*
+                      {{errorMessage}}</div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="140" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form1" class="form-control" formControlName="companyname1">
+                      <label for="form1">Company Name</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="15" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form2" class="form-control" formControlName="CustomerUEN">
+                      <label for="form2">Company UEN</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="40" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form3" class="form-control" formControlName="CustomerGSTNo">
+                      <label for="form3">Customer GST No</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="90" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form4" class="form-control" formControlName="CustomerName">
+                      <label for="form4">Customer Name</label>
+                    </div>
+                  </div>
+                </div>
+                <p class="h5 text-bold">Contact Details</p>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="8" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form5" class="form-control" formControlName="BlockNo">
+                      <label for="form5">Block No</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="180" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form6" class="form-control" formControlName="StreetName">
+                      <label for="form6">Street Name</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="3" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form7" class="form-control" formControlName="FloorNo">
+                      <label for="form7">Floor No</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="10" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form8" class="form-control" formControlName="UnitNo">
+                      <label for="form8">Unit No</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="90" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form9" class="form-control" formControlName="BuildingName">
+                      <label for="form9">Building Name</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="25" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form10" class="form-control" formControlName="Country">
+                      <label for="form10">Country</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="10" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form11" class="form-control" formControlName="PostalCode">
+                      <label for="form11">Postal Code</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="15" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form12" class="form-control" formControlName="Telephone">
+                      <label for="form12">Telephone</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="20" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form13" class="form-control" formControlName="Fax">
+                      <label for="form13">Fax</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="140" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form14" class="form-control" formControlName="Website">
+                      <label for="form14">Website</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="140" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form15" class="form-control" formControlName="ContactPerson">
+                      <label for="form15">Contact Person</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="15" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form16" class="form-control" formControlName="ContactNo">
+                      <label for="form16">Contact No</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" mdbInputDirective maxlength="40"
+                        autocomplete="off" data-success=" " data-error=" " type="email" id="form17" class="form-control"
+                        formControlName="Email">
+                      <label for="form1">Email</label>
+                    </div>
+                  </div>
+                </div>
+                <p class="h5 text-bold">Account Details</p>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective min="000000000000" max="999999999999" onKeyPress="if(this.value.length==12) return false;"
+                        onkeydown="javascript: return event.keyCode == 69 ? false : true" autocomplete="off"
+                        data-success=" " data-error=" " type="number" id="form18" class="form-control" formControlName="closecredit">
+                      <label for="form18">Opening Debit</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective min="000000000000" max="999999999999" onKeyPress="if(this.value.length==12) return false;"
+                        onkeydown="javascript: return event.keyCode == 69 ? false : true" autocomplete="off"
+                        data-success=" " data-error=" " type="number" id="form19" class="form-control" formControlName="opcredit">
+                      <label for="form19">Opening Credit</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form20"
+                        class="form-control" [value]="OpeningBalanceDate" formControlName="OpeningBalanceDate" useValueAsDate>
+                      <label for="form20">Op Bal Date</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 ">
+                    <div class="md-form mt-3">
+                      <mdb-select [(ngModel)]="selectedValue1" [options]="customTypeOptions" class="colorful-select dropdown-default select-wrapper"
+                        formControlName="custmmertype" id="select1" placeholder="Customer Type"></mdb-select>
+                      <label for="select1">Customer Type</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form mt-3">
+                      <mdb-select [(ngModel)]="selectedValue2" [options]="bankCodeOptions" placeholder="Bank Code"
+                        class="colorful-select dropdown-default select-wrapper" formControlName="BankCode"></mdb-select>
+                      <label for="select1">Bank Code</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form20"
+                        class="form-control" [value]="DateGSTStatusVerified" formControlName="DateGSTStatusVerified" useValueAsDate>
+                      <label for="form23">GST verified Date</label>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <div class="md-form mt-3">
+                      <mdb-select [(ngModel)]="selectedValue3" [options]="creditTermsOptions" placeholder="Credit Terms"
+                        class="colorful-select dropdown-default select-wrapper" formControlName="creditterms"></mdb-select>
+                      <label for="select1">Credit Terms</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form mt-3">
+                      <mdb-select [(ngModel)]="selectedValue4" [options]="accountSubGroupOptions" placeholder="Account Subgroup"
+                        class="colorful-select dropdown-default select-wrapper" formControlName="Accountsubgr"></mdb-select>
+                      <label for="select1">Account Subgroup</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective min="000000000000" max="999999999999" onKeyPress="if(this.value.length==12) return false;"
+                        onkeydown="javascript: return event.keyCode == 69 ? false : true" autocomplete="off"
+                        data-success=" " data-error=" " type="number" id="form22" class="form-control" formControlName="CreditLimit">
+                      <label for="form22">Credit Limit</label>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <div class="md-form mt-3">
+                      <mdb-select [(ngModel)]="selectedValue5" [options]="statusOptions" placeholder="Status" class="colorful-select dropdown-default select-wrapper"
+                        formControlName="Status"></mdb-select>
+                      <label for="select1">Status</label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" mdbWavesEffect
+                [disabled]="companyForm.invalid" (click)="save()">{{isCompanyExists ? 'Update' : 'Save' }}</button>
+
+            </mdb-tab>
+            <!--Panel 2-->
+            <mdb-tab heading="Profile" [disabled]='companyForm.invalid'>
+              <form [formGroup]="profileForm">
+                <p class="h5 text-bold">Profile Details</p>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="error" *ngIf="isProfileExists" style="color: red; font-size: 12px; margin-bottom: 20px; ">*
+                      {{errorMessage}}</div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="40" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form36" class="form-control" formControlName="Registrationno">
+                      <label for="form36">Registration No</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="180" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form37" class="form-control" formControlName="Companyname">
+                      <label for="form37">Company Name</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="40" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form38" class="form-control" formControlName="Formernameifany">
+                      <label for="form38">Former Name if Any</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form39"
+                        class="form-control" formControlName="IncorporationDate" [value]="today" useValueAsDate>
+                      <label for="form39">Incorporation Date</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="30" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form61" class="form-control" formControlName="CompanyType">
+                      <label for="form61">Company Type</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form mt-3">
+                      <mdb-select [options]="statusOptions" placeholder="Status" class="colorful-select dropdown-default select-wrapper"
+                        formControlName="Status" [(ngModel)] ="profileStatus"></mdb-select>
+                        <label>Status</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form62"
+                        class="form-control" formControlName="Statusdate" [value]="today" useValueAsDate>
+                      <label for="form62">Status Date</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="40" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form61" class="form-control" formControlName="CustomerUEN" disabled>
+                      <label for="form61">Customer UEN</label>
+                    </div>
+                  </div>
+                </div>
+                <p class="h5 text-bold">Pricipal Activities</p>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="90" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form40" class="form-control" formControlName="Activities1">
+                      <label for="form40">Activity (I)</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="md-form">
+                      <textarea mdbInputDirective maxlength="1000" autocomplete="off" data-success=" " data-error=" "
+                        placeholder="Description" id="form41" class="form-control" formControlName="Description1"></textarea>
+                      <label for="form41"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="90" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form42" class="form-control" formControlName="Activities2">
+                      <label for="form42">Activity (II)</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="md-form">
+                      <textarea mdbInputDirective maxlength="1000" autocomplete="off" data-success=" " data-error=" "
+                        placeholder="Description" id="form43" class="form-control" formControlName="Description2"></textarea>
+                      <label for="form43"></label>
+                    </div>
+                  </div>
+                </div>
+                <p class="h5 text-bold">Captial</p>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="90" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form45" class="form-control" formControlName="Iscapital">
+                      <label for="form45">Issued Share Capital</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="md-form">
+                      <input mdbInputDirective min="0000000" max="9999999" autocomplete="off" data-success=" "
+                        data-error=" " type="number" id="form46" class="form-control" formControlName="Noofshares"
+                        onKeyPress="if(this.value.length==10) return false;" onkeydown="javascript: return event.keyCode == 69 ? false : true">
+                      <label for="form46">No of Shares</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="md-form mt-3">
+                      <mdb-select [options]="currencyOptions" placeholder="Currency" [(ngModel)]="currency1" class="colorful-select dropdown-default select-wrapper"
+                        formControlName="Currency"></mdb-select>
+                      <label>Currency</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form mt-3">
+                      <mdb-select [options]="shareTypeOptions" placeholder="Status" [(ngModel)]="status1" class="colorful-select dropdown-default select-wrapper"
+                        formControlName="Sharetype"></mdb-select>
+                      <label>Status</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="md-form">
+                      <input min="000000000000" max="999999999999" onKeyPress="if(this.value.length==10) return false;"
+                        onkeydown="javascript: return event.keyCode == 69 ? false : true" mdbInputDirective maxlength="40"
+                        autocomplete="off" data-success=" " data-error=" " type="number" id="form49" class="form-control"
+                        formControlName="Amount">
+                      <label for="form49">Amount</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective maxlength="15" autocomplete="off" data-success=" " data-error=" " type="text"
+                        id="form50" class="form-control" formControlName="Pucapital">
+                      <label for="form50">Paid Up Capital</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="md-form">
+                      <input mdbInputDirective min="0000000" max="9999999" autocomplete="off" data-success=" "
+                        data-error=" " type="number" id="form51" class="form-control" formControlName="Noofshares1"
+                        onKeyPress="if(this.value.length==10) return false;" onkeydown="javascript: return event.keyCode == 69 ? false : true">
+                      <label for="form51">No of Shares</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="md-form mt-3">
+                      <mdb-select [options]="currencyOptions" placeholder="Currency" [(ngModel)]="currency2" class="colorful-select dropdown-default select-wrapper"
+                        formControlName="Currency1"></mdb-select>
+                      <label>Currency</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form mt-3">
+                      <mdb-select [options]="shareTypeOptions" placeholder="Status" [(ngModel)]="status2" class="colorful-select dropdown-default select-wrapper"
+                        formControlName="Sharetype1"></mdb-select>
+                      <label>Status</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="md-form">
+                      <input min="000000000000" max="999999999999" onKeyPress="if(this.value.length==10) return false;"
+                        onkeydown="javascript: return event.keyCode == 69 ? false : true" mdbInputDirective maxlength="40"
+                        autocomplete="off" data-success=" " data-error=" " type="number" id="form54" class="form-control"
+                        formControlName="Amount1">
+                      <label for="form54">Amount</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="md-form">
+                      <textarea mdbInputDirective maxlength="130" autocomplete="off" data-success=" " data-error=" "
+                        placeholder="Registered Office Address" id="form55" class="form-control" formControlName="ROaddress"></textarea>
+                      <label for="form55"></label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form56"
+                        class="form-control" formControlName="Dateofaddress" [value]="today" useValueAsDate>
+                      <label for="form56">Date of Address</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form57"
+                        class="form-control" formControlName="DateoflastAGM" [value]="today" useValueAsDate>
+                      <label for="form57">Date of Last AGM</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form58"
+                        class="form-control" formControlName="DateoflastAR" [value]="today" useValueAsDate>
+                      <label for="form58">Date of Last AR</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form59"
+                        class="form-control" formControlName="DateoflodgementofARAC" [value]="today" useValueAsDate>
+                      <label for="form59">Date of Lodgment of ARAC</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form59"
+                        class="form-control" formControlName="DateofAClaidatlastAGM" [value]="today" useValueAsDate>
+                      <label for="form59">Date of A/C Laid at Last AGM</label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" mdbWavesEffect
+                [disabled]='profileForm.invalid' (click)="saveProfile()">{{isProfileExists ? 'Update' : 'Save' }}</button>
+            </mdb-tab>
+            <!--Panel 3-->
+            <mdb-tab heading="Director" [disabled]='companyForm.invalid && profileForm.invalid'>
+              <form [formGroup]="directorForm">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input maxlength="40" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
+                        data-error=" " type="text" id="form25" class="form-control" formControlName="directorname">
+                      <label for="form25">Director Name</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input maxlength="15" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
+                        data-error=" " type="text" id="form26" class="form-control" formControlName="directorid">
+                      <label for="form26">Director Id</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input maxlength="40" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
+                        data-error=" " type="text" id="form27" class="form-control" formControlName="designation">
+                      <label for="form27">Designation</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form">
+                      <input maxlength="40" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
+                        data-error=" " type="text" id="form28" class="form-control" formControlName="nationality">
+                      <label for="form28">Nationality</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="md-form">
+                      <textarea maxlength="450" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
+                        data-error=" " id="form29" class="form-control" placeholder="Source of Address" formControlName="soadd"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mb-3">
+                    <div class="md-form">
+                      <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form30"
+                        class="form-control" [value]="today" formControlName="doa" useValueAsDate>
+                      <label for="form30">Date of Appointment</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="md-form mb-5">
+                      <input min="0000000" max="9999999" onKeyPress="if(this.value.length==10) return false;" onkeydown="javascript: return event.keyCode == 69 ? false : true"
+                        data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
+                        data-error=" " type="number" id="form31" class="form-control" formControlName="noofsharedir">
+                      <label for="form31">No of Shares</label>
+                    </div>
+                  </div>
+
+                </div>
+              </form>
+
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead class="teal white-text">
+                    <tr>
+                      <ng-container *ngFor="let item of directorHeadings; let i= index;">
+                        <th scope="col">{{item}}</th>
+                      </ng-container>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngIf="directorDataArray?.length > 0">
+                      <tr *ngFor="let item of directorDataArray; let i=index;">
+                        <td scope="row">{{ (i + 1)}}</td>
+                        <td>{{ item.directorname }}</td>
+                        <td>{{item.designation }}</td>
+                        <td>{{ item.nationality }}</td>
+                        <td>{{item.noofsharedir}}</td>
+                        <td>
+                          <div class="d-inline ml-3 cursor" (click)="deleteDirector(item, i)" mdbTooltip="Delete"
+                            placment="top">
+                            <i class="fa fa-trash" style="color:red;"></i>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+                <ng-container *ngIf="directorDataArray?.length === 0">
+                  <div class="col-sm-12 mt-5">
+                    <p class="h3 text-center teal-text">No Director's Found</p>
+                  </div>
+                </ng-container>
+              </div>
+              <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" mdbWavesEffect
+                [disabled]="directorForm.invalid" (click)="saveDirector()">{{isDirectorExists ? 'Update' : 'Save' }}</button>
+              <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" mdbWavesEffect
+                (click)="basicModal.hide()">cancel</button>
+            </mdb-tab>
+          </mdb-tabset>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-md-2 col-lg-1 mt-4">
+          <div mdbBtn color="teal" size="sm" class="waves-light" mdbWavesEffect>
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+        <div class="col-md-5 space">
+          <div class="md-form">
+            <input type="search" [(ngModel)]="searchText" id="search" class="form-control" autocomplete="off"
+              data-error=" " data-success=" " mdbInputDirective [mdbValidate]="false">
+            <label for="search">Search Company</label>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="teal white-text">
+            <tr>
+              <ng-container *ngFor="let item of tableHeadings; let i= index;">
+                <th scope="col">{{item}}</th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="companyDataList.length > 0">
+              <tr *ngFor="let item of search(); let i=index;">
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex" scope="row">{{ (i + 1)}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{ item.CustomerName }}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.companyname1 }}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{ item.CustomerUEN }}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{ item.CustomerGSTNo }}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">
+                  <div class="d-inline cursor" (click)="editCompany(item, i)" mdbTooltip="Edit" placment="top">
+                    <i class="fa fa-edit" style="color:rgb(24, 119, 111);"></i>
+                  </div>
+                  <div class="d-inline ml-3 cursor" (click)="deleteCompany(item, i)" mdbTooltip="Delete" placment="top">
+                    <i class="fa fa-trash" style="color:red;"></i>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+
+        <hr class="my-0" *ngIf="companyDataList.length > 0">
+
+        <!--Bottom Table UI-->
+        <div class="d-flex justify-content-center" *ngIf="companyDataList.length > 0">
+
+          <!--Pagination -->
+          <nav class="my-4 pt-2">
+            <ul class="pagination pagination-circle pg-teal mb-0">
+
+              <!--First-->
+              <li class="page-item clearfix d-none d-md-block" (click)="firstPage()" [ngClass]="{disabled: activePage == 1}">
+                <a class="page-link">First</a>
+              </li>
+
+              <!--Arrow left-->
+              <!-- <li class="page-item" (click)="previousPage($event)" [ngClass]="{disabled: activePage == 1}">
+                <a class="page-link" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li> -->
+
+              <!--Numbers-->
+              <li #pages *ngFor="let page of paginators | slice:firstVisiblePaginator:lastVisiblePaginator; let i = index"
+                class="page-item" [ngClass]="{active: i + firstVisiblePaginator + 1 == activePage}">
+                <a class="page-link waves-light" (click)="changePage($event)" mdbWavesEffect>{{page}}</a>
+              </li>
+
+
+
+              <!--Arrow right-->
+              <!-- <li class="page-item" (click)="nextPage($event)" [ngClass]="{disabled: activePage == numberOfPaginators}">
+                <a class="page-link" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li> -->
+
+              <!--First-->
+              <li class="page-item clearfix d-none d-md-block" (click)="lastPage()" [ngClass]="{disabled: activePage == numberOfPaginators}">
+                <a class="page-link">Last</a>
+              </li>
+
+            </ul>
+          </nav>
+
+        </div>
+        <!--/Pagination -->
+        <ng-container *ngIf="companyDataList.length === 0">
+          <div class="col-sm-12 mt-5">
+            <p class="h3 text-center teal-text">No Company's Found</p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div mdbModal #delete="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+          <!--Header-->
+          <div class="modal-header d-flex justify-content-center">
+            <p class="heading">Are you sure want to delete all details of customer?</p>
+          </div>
+
+          <!--Body-->
+          <div class="modal-body">
+            <i class="fa fa-times fa-4x animated rotateIn"></i>
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer flex-center">
+            <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect (click)="deleteCompanyConfirm();">Yes</a>
+            <a type="button" mdbBtn color="danger" class="waves-effect" mdbWavesEffect data-dismiss="modal" (click)="deleteDirectorModal.hide()">No</a>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
+    <div mdbModal #deleteDirectorModal="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+          <!--Header-->
+          <div class="modal-header d-flex justify-content-center">
+            <p class="heading">Are you sure want to delete all details of customer?</p>
+          </div>
+
+          <!--Body-->
+          <div class="modal-body">
+            <i class="fa fa-times fa-4x animated rotateIn"></i>
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer flex-center">
+            <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect (click)="deleteDirectorConfirm();">Yes</a>
+            <a type="button" mdbBtn color="danger" class="waves-effect" mdbWavesEffect data-dismiss="modal" (click)="deleteDirectorModal.hide()">No</a>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>

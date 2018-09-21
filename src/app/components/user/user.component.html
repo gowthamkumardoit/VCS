@@ -1,0 +1,264 @@
+<div style="height: 100px"></div>
+<div class="container-fluid px-5">
+  <div class="row">
+    <div class="col-sm-8"></div>
+    <div class='col-sm-4'>
+      <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" (click)="openModal()"
+        mdbWavesEffect>
+        <i class="fa fa-plus-circle mr-2"></i> Add User</button>
+    </div>
+  </div>
+
+  <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">User</h4>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="userForm">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="error" *ngIf="isUserExists" style="color: red; font-size: 12px; margin-bottom: 20px; padding-left: 66px;">*
+                  {{errorMessage}}</div>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-5">
+                <div class="md-form" style="margin-top:0px">
+                  <input data-error=" " data-success=" " maxlength="20" mdbInputDirective autocomplete="off" type="text"
+                    id="form1" class="form-control" formControlName="userId">
+                  <label for="form1">User Id</label>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="md-form" style="margin-top:0px">
+                  <input data-error=" " data-success=" " maxlength="40" mdbInputDirective autocomplete="off" type="text"
+                    id="form6" class="form-control" formControlName="userName">
+                  <label for="form6">User Name</label>
+                </div>
+              </div>
+              <div class="col-1"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-5">
+                <div class="md-form" style="margin-top:0px">
+                  <input data-error=" " data-success=" " maxlength="12" mdbInputDirective autocomplete="off" type="password"
+                    id="form2" class="form-control" formControlName="password">
+                  <label for="form3">Password</label>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="md-form" style="margin-top:0px">
+                  <mdb-select style="margin-top:-8px" data-error=" " data-success=" " [(ngModel)]="selectedValue"
+                    [options]="userTypeOptions"  class="colorful-select dropdown-default select-wrapper"
+                    formControlName="userType"></mdb-select>
+                  <label>User Type</label>
+
+                </div>
+              </div>
+              <div class="col-1"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-5">
+                <div class="md-form" style="margin-top:0px">
+                  <input data-error=" " data-success=" " maxlength="15" mdbInputDirective autocomplete="off" type="text"
+                    id="form3" class="form-control" formControlName="nricno">
+                  <label for="form3">NRIC No</label>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="md-form" style="margin-top:0px">
+                  <mdb-select style="margin-top:-8px" data-error=" " data-success=" " [(ngModel)]="selectedValue1"
+                    [options]="userRoles" placeholder="User Role" class="colorful-select dropdown-default select-wrapper"
+                    formControlName="userRole"></mdb-select>
+                  <label>User Role</label>
+                </div>
+              </div>
+              <div class="col-1"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-5">
+                <div class="md-form" style="margin-top:0px">
+                  <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-error=" " data-success=" " maxlength="40"
+                    mdbInputDirective autocomplete="off" type="email" id="form4" class="form-control" formControlName="email">
+                  <label for="form4">Email</label>
+                </div>
+
+              </div>
+              <div class="col-5">
+                <div class="md-form" style="margin-top:0px">
+                  <mdb-select style="margin-top:-8px" data-error=" " data-success=" " [(ngModel)]="selectedValue2"
+                    [options]="options" placeholder="Status" class="colorful-select dropdown-default select-wrapper"
+                    formControlName="status"></mdb-select>
+                  <label>Status</label>
+                </div>
+              </div>
+              <div class="col-1"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-5">
+                <div class="md-form" style="margin-top:0px">
+                  <input min="0000000000" max="9999999999" onKeyPress="if(this.value.length==10) return false;"
+                    onkeydown="javascript: return event.keyCode == 69 ? false : true" data-error=" " data-success=" "
+                    mdbInputDirective autocomplete="off" type="number" id="form5" class="form-control" formControlName="mobile">
+                  <label for="form5">Mobile</label>
+                </div>
+              </div>
+              <div class="col-5">
+              </div>
+              <div class="col-1"></div>
+            </div>
+          </form>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="teal" class="relative waves-light" mdbWavesEffect [disabled]="userForm.invalid"
+            (click)="save()">{{isEditUser ? 'Update': 'Save'}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-md-2 col-lg-1 mt-4">
+          <div mdbBtn color="teal" size="sm" class="waves-light" mdbWavesEffect>
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+        <div class="col-md-5 space">
+          <div class="md-form">
+            <input type="search" [(ngModel)]="searchText" id="search" class="form-control" autocomplete="off"
+              data-error=" " data-success=" " mdbInputDirective [mdbValidate]="false">
+            <label for="search">Search User</label>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="teal white-text">
+            <tr>
+              <ng-container *ngFor="let item of tableHeadings; let i= index;">
+                <th scope="col">{{item}}</th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="userList.length > 0">
+              <tr *ngFor="let user of search(); let i = index">
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{i+1}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{user.username}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{user.nricno}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{user.usertype}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{user.userrole}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{defaultStatus[user.status12-1]}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{user.email}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{user.crtmobile}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{user.psw}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">
+                  <div class="d-inline cursor" (click)="editUser(user)" mdbTooltip="Edit" placment="top">
+                    <i class="fa fa-edit" style="color:rgb(24, 119, 111);"></i>
+                  </div>
+                  <div class="d-inline ml-3 cursor" (click)="deleteUser(user)" mdbTooltip="Delete" placment="top">
+                    <i class="fa fa-trash" style="color:red;"></i>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <ng-container *ngIf="userList.length === 0">
+          <div class="col-sm-12 mt-5">
+            <p class="h3 text-center teal-text">No Results Found</p>
+          </div>
+        </ng-container>
+      </div>
+
+    </div>
+  </div>
+  <hr class="my-0" *ngIf="userList.length > 0">
+
+  <!--Bottom Table UI-->
+  <div class="d-flex justify-content-center" *ngIf="userList.length > 0">
+
+    <!--Pagination -->
+    <nav class="my-4 pt-2">
+      <ul class="pagination pagination-circle pg-teal mb-0">
+
+        <!--First-->
+        <li class="page-item clearfix d-none d-md-block" (click)="firstPage()" [ngClass]="{disabled: activePage == 1}">
+          <a class="page-link">First</a>
+        </li>
+
+        <!--Arrow left-->
+        <!-- <li class="page-item" (click)="previousPage($event)" [ngClass]="{disabled: activePage == 1}">
+          <a class="page-link" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li> -->
+
+        <!--Numbers-->
+        <li #pages *ngFor="let page of paginators | slice:firstVisiblePaginator:lastVisiblePaginator; let i = index"
+          class="page-item" [ngClass]="{active: i + firstVisiblePaginator + 1 == activePage}">
+          <a class="page-link waves-light" (click)="changePage($event)" mdbWavesEffect>{{page}}</a>
+        </li>
+
+
+
+        <!--Arrow right-->
+        <!-- <li class="page-item" (click)="nextPage($event)" [ngClass]="{disabled: activePage == numberOfPaginators}">
+          <a class="page-link" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li> -->
+
+        <!--First-->
+        <li class="page-item clearfix d-none d-md-block" (click)="lastPage()" [ngClass]="{disabled: activePage == numberOfPaginators}">
+          <a class="page-link">Last</a>
+        </li>
+
+      </ul>
+    </nav>
+    <!--/Pagination -->
+
+  </div>
+
+  <div mdbModal #deleteModal="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+      <!--Content-->
+      <div class="modal-content text-center">
+        <!--Header-->
+        <div class="modal-header d-flex justify-content-center">
+          <p class="heading">Are you sure?</p>
+        </div>
+
+        <!--Body-->
+        <div class="modal-body">
+          <i class="fa fa-times fa-4x animated rotateIn"></i>
+        </div>
+
+        <!--Footer-->
+        <div class="modal-footer flex-center">
+          <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect (click)="deleteConfirm();">Yes</a>
+          <a type="button" mdbBtn color="danger" class="waves-effect" mdbWavesEffect data-dismiss="modal" (click)="deleteModal.hide()">No</a>
+        </div>
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>

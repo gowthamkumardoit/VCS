@@ -1,0 +1,285 @@
+<div style="height: 100px"></div>
+<div class="container-fluid px-5">
+  <div class="row">
+    <div class="col-sm-8"></div>
+    <div class='col-sm-4'>
+      <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" (click)="openModal()"
+        mdbWavesEffect>
+        <i class="fa fa-plus-circle mr-2"></i> Add Service</button>
+    </div>
+  </div>
+
+  <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">Service</h4>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="serviceForm">
+            <div class="row px-3">
+              <div class="col-md-12">
+                <div class="error" *ngIf="isServiceExists" style="color: red; font-size: 12px; margin-bottom: 20px; ">*
+                  {{errorMessage}}</div>
+              </div>
+              <div class="col-6">
+                <div class="md-form">
+                  <input mdbInputDirective autocomplete="off" data-error=" " data-success=" " type="text" id="form1"
+                    class="form-control" maxlength="90" formControlName="servicename">
+                  <label for="form1">Service Name</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="md-form mt-3">
+                  <mdb-select data-error=" " data-success=" " [(ngModel)]="selectedValue" [options]="options"
+                    placeholder="Status" class="colorful-select dropdown-default select-wrapper" formControlName="statusser"></mdb-select>
+                    <label >Status</label>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form [formGroup]="taskForm">
+            <div class="row px-3">
+              <div class="col-3">
+                <div class="md-form">
+                  <input data-error=" " data-success=" " mdbInputDirective autocomplete="off" type="text" id="form2"
+                    class="form-control" maxlength="40" formControlName="taskname">
+                  <label for="form2">Task Name</label>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="md-form">
+                  <input data-error=" " data-success=" " mdbInputDirective autocomplete="off" type="text" id="form3"
+                    class="form-control" maxlength="8" formControlName="duration">
+                  <label for="form3">Duration</label>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="md-form mt-3">
+                  <mdb-select data-error=" " data-success=" " [(ngModel)]="selectedDuration" [options]="requiringArray"
+                    placeholder="Requiring" class="colorful-select dropdown-default select-wrapper" formControlName="requiring"></mdb-select>
+                    <label>Requiring</label>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="md-form mt-3">
+                  <mdb-select data-error=" " data-success=" " [(ngModel)]="selectedValue1" [options]="options"
+                    placeholder="Status" class="colorful-select dropdown-default select-wrapper" formControlName="statustas"></mdb-select>
+                    <label >Status</label>
+                </div>
+              </div>
+            </div>
+          </form>
+          <button type="button" mdbBtn color="warning" size="sm" class="relative waves-light pull-right" mdbWavesEffect
+            [disabled]="taskForm.invalid" (click)="saveTask()">Create Task</button>
+        </div>
+        <div class="row mt-3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="teal white-text">
+                  <tr>
+                    <ng-container *ngFor="let item of taksHeadings; let i= index;">
+                      <th scope="col">{{item}}</th>
+                    </ng-container>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="taskArray.length > 0">
+                    <tr *ngFor="let task of taskArray; let i = index">
+                      <ng-container *ngIf="task">
+                        <td>{{task.taskname}}</td>
+                        <td>{{task.duration}}</td>
+                        <td>{{requiringArray[task.requiring -1].label}}</td>
+                        <td>{{defaultStatus[task.statustas-1]}}</td>
+                        <td>
+                          <div class="d-inline ml-3 cursor" (click)="deleteTask(i)" mdbTooltip="Delete" placment="top">
+                            <i class="fa fa-trash" style="color:red;"></i>
+                          </div>
+                        </td>
+                      </ng-container>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <ng-container *ngIf="taskArray.length === 0">
+                <div class="col-sm-12 mt-5">
+                  <p class="h5 text-center teal-text">No Tasks Found</p>
+                </div>
+              </ng-container>
+            </div>
+
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="teal" class="relative waves-light" mdbWavesEffect [disabled]="serviceForm.invalid"
+            (click)="saveService()">{{isEditService ? 'Update': 'Save'}}</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+      <div class="row">
+        <div class="col-md-2 col-lg-1 mt-4">
+          <div mdbBtn color="teal" size="sm" class="waves-light" mdbWavesEffect>
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+        <div class="col-md-5 space">
+          <div class="md-form">
+            <input type="search" [(ngModel)]="searchText" id="search" class="form-control" autocomplete="off"
+              data-error=" " data-success=" " mdbInputDirective [mdbValidate]="false">
+            <label for="search">Search Service</label>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="teal white-text">
+            <tr>
+              <ng-container *ngFor="let item of tableHeadings; let i= index;">
+                <th scope="col">{{item}}</th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="serviceList.length > 0">
+              <tr *ngFor="let service of search(); let i = index">
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{(i + 1)}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{service.servicename}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{defaultStatus[service.statusser-1]}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{service.createon | date:
+                  'medium'}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{service.modifyon | date:
+                  'medium'}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">
+                  <div class="d-inline cursor" (click)="editService(service)" mdbTooltip="Edit" placment="top">
+                    <i class="fa fa-edit" style="color:rgb(24, 119, 111);"></i>
+                  </div>
+                  <div class="d-inline ml-3 cursor" (click)="deleteServiceItem(service)" mdbTooltip="Delete" placment="top">
+                    <i class="fa fa-trash" style="color:red;"></i>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <ng-container *ngIf="serviceList.length === 0">
+          <div class="col-sm-12 mt-5">
+            <p class="h3 text-center teal-text">No Services Found</p>
+          </div>
+        </ng-container>
+      </div>
+
+    </div>
+    <div class="col-sm-1"></div>
+  </div>
+  <div mdbModal #deleteService="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+      <!--Content-->
+      <div class="modal-content text-center">
+        <!--Header-->
+        <div class="modal-header d-flex justify-content-center">
+          <p class="heading">Are you sure?</p>
+        </div>
+
+        <!--Body-->
+        <div class="modal-body">
+          <i class="fa fa-times fa-4x animated rotateIn"></i>
+        </div>
+
+        <!--Footer-->
+        <div class="modal-footer flex-center">
+          <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect (click)="deleteConfirmService();">Yes</a>
+          <a type="button" mdbBtn color="danger" class="waves-effect" mdbWavesEffect data-dismiss="modal" (click)="deleteService.hide()">No</a>
+        </div>
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>
+
+  <div mdbModal #deleteTasks="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+      <!--Content-->
+      <div class="modal-content text-center">
+        <!--Header-->
+        <div class="modal-header d-flex justify-content-center">
+          <p class="heading">Are you sure?</p>
+        </div>
+
+        <!--Body-->
+        <div class="modal-body">
+          <i class="fa fa-times fa-4x animated rotateIn"></i>
+        </div>
+
+        <!--Footer-->
+        <div class="modal-footer flex-center">
+          <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect (click)="deleteConfirmTasks();">Yes</a>
+          <a type="button" mdbBtn color="danger" class="waves-effect" mdbWavesEffect data-dismiss="modal" (click)="deleteTasks.hide()">No</a>
+        </div>
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>
+
+
+  <hr class="my-0" *ngIf="serviceList.length > 0">
+
+  <!--Bottom Table UI-->
+  <div class="d-flex justify-content-center" *ngIf="serviceList.length > 0">
+
+    <!--Pagination -->
+    <nav class="my-4 pt-2">
+      <ul class="pagination pagination-circle pg-teal mb-0">
+
+        <!--First-->
+        <li class="page-item clearfix d-none d-md-block" (click)="firstPage()" [ngClass]="{disabled: activePage == 1}">
+          <a class="page-link">First</a>
+        </li>
+
+        <!--Arrow left-->
+        <!-- <li class="page-item" (click)="previousPage($event)" [ngClass]="{disabled: activePage == 1}">
+          <a class="page-link" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li> -->
+
+        <!--Numbers-->
+        <li #pages *ngFor="let page of paginators | slice:firstVisiblePaginator:lastVisiblePaginator; let i = index"
+          class="page-item" [ngClass]="{active: i + firstVisiblePaginator + 1 == activePage}">
+          <a class="page-link waves-light" (click)="changePage($event)" mdbWavesEffect>{{page}}</a>
+        </li>
+
+
+
+        <!--Arrow right-->
+        <!-- <li class="page-item" (click)="nextPage($event)" [ngClass]="{disabled: activePage == numberOfPaginators}">
+          <a class="page-link" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li> -->
+
+        <!--First-->
+        <li class="page-item clearfix d-none d-md-block" (click)="lastPage()" [ngClass]="{disabled: activePage == numberOfPaginators}">
+          <a class="page-link">Last</a>
+        </li>
+
+      </ul>
+    </nav>
+    <!--/Pagination -->
+
+  </div>

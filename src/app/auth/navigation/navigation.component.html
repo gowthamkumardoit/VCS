@@ -1,0 +1,155 @@
+<!--Double navigation-->
+<header *ngIf="navBarToggle">
+
+  <!-- Sidebar navigation -->
+  <mdb-side-nav #sidenav class="elegant-color white-text" [fixed]="false">
+
+    <mdb-navbar-brand>
+      <li>
+        <div class="logo-wrapper waves-light ">
+          <p class="text-center p-3 h3">EXCELFORTE</p>
+        </div>
+      </li>
+      <!--/. Logo -->
+    </mdb-navbar-brand>
+
+    <links>
+
+      <!-- Side navigation links -->
+      <li>
+        <ul class="collapsible collapsible-accordion">
+          <mdb-accordion [multiple]="false" aria-multiselectable="false">
+
+            <!-- Simple link -->
+            <mdb-accordion-item class="no-collase" routerLink="/reports" (click)="sidenav.hide()">
+              <mdb-accordion-item-head mdbWavesEffect>
+                <i class="fa fa-file-text-o fa-3x"></i>
+                <span class="h6">Reports</span>
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body></mdb-accordion-item-body>
+            </mdb-accordion-item>
+
+            <!-- Simple link -->
+            <mdb-accordion-item class="no-collase" routerLink="/users"  (click)="sidenav.hide()">
+              <mdb-accordion-item-head mdbWavesEffect>
+                <i class="fa fa-user-circle-o"></i>
+                <span class="h6">Users</span>
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body></mdb-accordion-item-body>
+            </mdb-accordion-item>
+
+            <!-- Simple link -->
+            <mdb-accordion-item class="no-collase" routerLink="/company"  (click)="sidenav.hide()">
+              <mdb-accordion-item-head mdbWavesEffect>
+                <i class="fa fa-cubes"></i>
+                <span class="h6">Company</span>
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body></mdb-accordion-item-body>
+            </mdb-accordion-item>
+            <!-- Simple link -->
+            <mdb-accordion-item class="no-collase" routerLink="/service"  (click)="sidenav.hide()">
+              <mdb-accordion-item-head mdbWavesEffect>
+                <i class="fa fa-cogs"></i>
+                <span class="h6">Service</span>
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body></mdb-accordion-item-body>
+            </mdb-accordion-item>
+            <!-- Simple link -->
+            <mdb-accordion-item class="no-collase" routerLink="/role"  (click)="sidenav.hide()">
+              <mdb-accordion-item-head mdbWavesEffect>
+                <i class="fa fa-user-secret"></i>
+                <span class="h6">Role</span>
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body></mdb-accordion-item-body>
+            </mdb-accordion-item>
+            <!-- Simple link -->
+            <mdb-accordion-item class="no-collase" routerLink="/template"  (click)="sidenav.hide()">
+              <mdb-accordion-item-head mdbWavesEffect>
+                <i class="fa fa-file-text"></i>
+                <span class="h6">Template</span>
+              </mdb-accordion-item-head>
+              <mdb-accordion-item-body></mdb-accordion-item-body>
+            </mdb-accordion-item>
+          </mdb-accordion>
+        </ul>
+      </li>
+      <!--/. Side navigation links -->
+    </links>
+    <div class="sidenav-bg mask-strong"></div>
+  </mdb-side-nav>
+  <!--/. Sidebar navigation -->
+
+  <!-- Navbar -->
+  <mdb-navbar SideClass="navbar fixed-top navbar-toggleable-md navbar-expand-lg scrolling-navbar double-nav default-color white-text"
+    [containerInside]="false">
+
+    <navlinks class="navbar-container">
+      <!-- SideNav slide-out button -->
+      <div class="float-left">
+        <a (click)="sidenav.show()" class="button-collapse hidden-nav-button-collapse">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
+      <!--/. SideNav slide-out button -->
+    </navlinks>
+
+    <mdb-navbar-brand class="mr-5">
+      <!-- Breadcrumb-->
+      <div class="breadcrumbs breadcrumbs-hidden-nav breadcrumb-dn mr-auto " style="width:150px;">
+        <p>EXCELFORTE</p>
+      </div>
+      <!--/. Breadcrumb-->
+    </mdb-navbar-brand>
+
+    <navlinks class="ml-5">
+      <ul class="nav navbar-nav nav-flex-icons mr-auto ie-double-nav ie-hidden-double-nav">
+        <li class="nav-item">
+          <a class="nav-link waves-light" mdbWavesEffect routerLink="/myTasks">
+            <i class="fa fa-tasks"></i>
+            <span class="clearfix d-none d-sm-inline-block ml-2">My Task</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-light" mdbWavesEffect routerLink="/inbox">
+            <i class="fa fa-envelope"></i>
+            <span class="clearfix d-none d-sm-inline-block ml-2">Inbox</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-light" mdbWavesEffect routerLink="/home">
+            <i class="fa fa-desktop"></i>
+            <span class="clearfix d-none d-sm-inline-block ml-2">Dashboard</span>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav nav-flex-icons ml-auto ie-double-nav ie-hidden-double-nav">
+        <!-- <li class="nav-item">
+          <a class="nav-link waves-light" mdbWavesEffect routerLink="/home">
+            <i class="fa fa-question-circle"></i>
+            <span class="clearfix d-none d-sm-inline-block ml-2">Help</span>
+          </a>
+        </li> -->
+        <li class="nav-item dropdown btn-group" dropdown>
+          <a dropdownToggle type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+            <i class="fa fa-user"></i>
+            <span class="clearfix d-none d-sm-inline-block ml-2">Account</span>
+          </a>
+          <div class="dropdown-menu dropdown-teal dropdown-menu-right" role="menu">
+            <a class="dropdown-item" (click)="logout()">Logout</a>
+          </div>
+        </li>
+      </ul>
+    </navlinks>
+  </mdb-navbar>
+  <!--/. Navbar -->
+
+</header>
+<!--/.Double navigation-->
+
+<!--Main Layout-->
+<!-- <main>
+  <div class="container-fluid mt-2">
+  </div>
+</main> -->
+<!--/Main layout-->

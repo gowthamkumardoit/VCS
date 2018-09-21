@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <div class="row ">
+    <div class="col-8 left-panel"></div>
+    <div class="col-4 right-panel p-5 animated fadeIn">
+      <h1 class="p-5 text-center">EXCEL FORTE</h1>
+      <!-- Login form -->
+      <form [formGroup]="loginForm">
+        <p class="h5 text-center mb-5">Login</p>
+
+        <div class="md-form">
+          <i class="fa fa-envelope prefix grey-text"></i>
+          <input data-success=" " data-error=" " type="text" formControlName="uname" autocomplete="off" id="defaultForm-email" class="form-control" mdbInputDirective>
+          <label for="defaultForm-email">Your email</label>
+        </div>
+
+        <div class="md-form mt-3">
+          <i class="fa fa-lock prefix grey-text"></i>
+          <input data-success=" " data-error=" " type="password" formControlName="pwd" autocomplete="off" id="defaultForm-pass" class="form-control" mdbInputDirective>
+          <label for="defaultForm-pass">Your password</label>
+        </div>
+
+        <div class="text-center my-5">
+          <button type="submit" mdbBtn color="default" sclass="waves-light" mdbWavesEffect (click)="login()" >Login</button>
+        </div>
+        <div class="text-center">
+          <a class="pull-left" routerLink="/register">Don't have Account?</a>
+          <a class="pull-right" routerLink="/forgetPassword">Forget Password?</a>
+        </div>
+      </form>
+      <!-- Login form -->
+    </div>
+  </div>
+</div>

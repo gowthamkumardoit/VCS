@@ -1,0 +1,18 @@
+.cursor{
+  cursor: pointer;
+}
+.live{
+  color:rgb(24, 119, 111);
+  font-size: 1rem;
+  font-weight: bold;
+}
+.dormant {
+  color: red;
+  font-size: 1rem;
+  font-weight: bold;
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .space {
+    margin-left: 20px;
+  }
+}

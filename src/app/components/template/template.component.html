@@ -1,0 +1,56 @@
+<div style="height:100px;"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <mdb-card>
+        <mdb-card-header class="teal lighten-1 white-text">
+          Editor
+        </mdb-card-header>
+        <mdb-card-body>
+          <div>
+            <div class="editor" style="min-height: 500px;">
+              <div class="ckeditor" cols="10" id="editor1" name="editor1" rows="100" contenteditable="true" #myTemplate>
+                <h1>The Annual Meeting of Fictional Characters</h1>
+                <h3>Technical Announcement</h3>
+                <p>We hereby have the pleasure to announce that the theme of this year's meeting is "
+                  <strong>E–ink Technology and Classical Fairy Tales</strong>". As every year, the event will be hosted in
+                  <em>The Wonderland</em> by
+                  <span class="h-card">
+                    <a class="p-name u-email" href="mailto:alice@example.com">Alice</a>
+                    <span class="p-tel">+20 4345 234 235</span>
+                  </span>and starts tomorrow at 8:00 GMT.</p>
+                <h3>Speakers and Agenda</h3>
+                <p>TBA.</p>
+                <h3>Venue</h3>
+                <p>For detailed information, please contact
+                  <span class="h-card">
+                    <a class="p-name u-email" href="mailto:h.finn@example.com">Huckleberry Finn</a>
+                    <span class="p-tel">+48 1345 234 235</span>
+                  </span>.</p>
+                <h3>Accommodation</h3>
+                <p>Many thanks to
+                  <span class="h-card">
+                    <a class="p-name u-email" href="mailto:r.crusoe@example.com">Robinson Crusoe</a>
+                    <span class="p-tel">+45 2345 234 235</span>
+                  </span>who kindly offered his island to the guests of the annual meeting.</p>
+                <hr>
+                <p style="text-align: right;">
+                  <span class="h-card">
+                    <a class="p-name u-email" href="mailto:lrrh@example.com">Little Red Riding Hood</a>
+                    <span class="p-tel">+45 2345 234 235</span>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </mdb-card-body>
+      </mdb-card>
+    </div>
+    <div class="col-md-3 p-3" id="draggableList">
+      <button mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true" class="waves-light my-3" mdbWavesEffect>Gowtham Kumar</button>
+      <button mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true" class="waves-light my-3" mdbWavesEffect>Excel Forte</button>
+      <button mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true" class="waves-light my-3" mdbWavesEffect>Chennai - 600100</button>
+      <button mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true" class="waves-light my-3" mdbWavesEffect>9876543210</button>
+      <button mdbBtn type="button" color="warning" class="waves-light my-5" mdbWavesEffect (click)="getData()">Get Data</button>
+    </div>
+  </div>

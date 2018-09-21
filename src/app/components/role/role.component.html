@@ -1,0 +1,184 @@
+<div style="height: 100px"></div>
+<div class="container-fluid px-5">
+  <div class="row">
+    <div class="col-sm-8"></div>
+    <div class='col-sm-4'>
+      <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" (click)="openModal()"
+        mdbWavesEffect>
+        <i class="fa fa-plus-circle mr-2"></i> Add Role</button>
+    </div>
+  </div>
+
+  <div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">Role</h4>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="roleForm" novalidate>
+            <div class="row px-3">
+              <div class="col-md-12">
+                <div class="error" *ngIf="isRoleExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
+                  {{errorMessage}}</div>
+              </div>
+              <div class="col-6">
+                <div class="md-form ">
+                  <input mdbInputDirective autocomplete="off" data-error=" " data-success=" " maxlength="40" type="text"
+                    id="form1" class="form-control" formControlName="roleName">
+                  <label for="form1">Role Name</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="md-form  mt-3">
+                  <mdb-select id="form2" [options]="options" [(ngModel)]="selectedValue" data-error=" " data-success=" "
+                    class="colorful-select dropdown-default select-wrapper" formControlName="status">
+                  </mdb-select>
+                  <label for="form2">Status</label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="teal" class="relative waves-light" mdbWavesEffect [disabled]="roleForm.invalid"
+            (click)="save()">{{isEditRole ? 'Update': 'Save'}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+      <div class="row">
+        <div class="col-md-2 col-lg-1 mt-4">
+          <div mdbBtn color="teal" size="sm" class="waves-light" mdbWavesEffect>
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+        <div class="col-md-5 space">
+          <div class="md-form">
+            <input type="search" [(ngModel)]="searchText" id="search" class="form-control" autocomplete="off"
+              data-error=" " data-success=" " mdbInputDirective [mdbValidate]="false">
+            <label for="search">Search Role</label>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="teal white-text">
+            <tr>
+              <ng-container *ngFor="let item of tableHeadings; let i= index;">
+                <th scope="col">{{item}}</th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="isTableDataPresent">
+              <tr *ngFor="let item of search(); let i=index;">
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex" scope="row">{{(i+1)}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.roliname}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{defaultStatus[item.status-1].label}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.createon | date:
+                  'medium'}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.modifyon | date:
+                  'medium'}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">
+                  <div class="d-inline cursor" (click)="editRole(item)" mdbTooltip="Edit" placment="top">
+                    <i class="fa fa-edit" style="color:rgb(24, 119, 111);"></i>
+                  </div>
+                  <div class="d-inline ml-3 cursor" (click)="deleteRole(item)" mdbTooltip="Delete" placment="top">
+                    <i class="fa fa-trash" style="color:red;"></i>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <hr class="my-0" *ngIf="userRoles.length > 0">
+
+        <!--Bottom Table UI-->
+        <div class="d-flex justify-content-center" *ngIf="userRoles.length > 0">
+
+          <!--Pagination -->
+          <nav class="my-4 pt-2">
+            <ul class="pagination pagination-circle pg-teal mb-0">
+
+              <!--First-->
+              <li class="page-item clearfix d-none d-md-block" (click)="firstPage()" [ngClass]="{disabled: activePage == 1}">
+                <a class="page-link">First</a>
+              </li>
+
+              <!--Arrow left-->
+              <!-- <li class="page-item" (click)="previousPage($event)" [ngClass]="{disabled: activePage == 1}">
+                <a class="page-link" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li> -->
+
+              <!--Numbers-->
+              <li #pages *ngFor="let page of paginators | slice:firstVisiblePaginator:lastVisiblePaginator; let i = index"
+                class="page-item" [ngClass]="{active: i + firstVisiblePaginator + 1 == activePage}">
+                <a class="page-link waves-light" (click)="changePage($event)" mdbWavesEffect>{{page}}</a>
+              </li>
+
+
+
+              <!--Arrow right-->
+              <!-- <li class="page-item" (click)="nextPage($event)" [ngClass]="{disabled: activePage == numberOfPaginators}">
+                <a class="page-link" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li> -->
+
+              <!--First-->
+              <li class="page-item clearfix d-none d-md-block" (click)="lastPage()" [ngClass]="{disabled: activePage == numberOfPaginators}">
+                <a class="page-link">Last</a>
+              </li>
+
+            </ul>
+          </nav>
+          <!--/Pagination -->
+          <ng-container *ngIf="userRoles.length == 0">
+            <div class="col-sm-12 mt-5">
+              <p class="h3 text-center teal-text">No Roles Found</p>
+            </div>
+          </ng-container>
+        </div>
+
+      </div>
+      <div class="col-sm-1"></div>
+    </div>
+
+    <div mdbModal #delete="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+          <!--Header-->
+          <div class="modal-header d-flex justify-content-center">
+            <p class="heading">Are you sure?</p>
+          </div>
+
+          <!--Body-->
+          <div class="modal-body">
+            <i class="fa fa-times fa-4x animated rotateIn"></i>
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer flex-center">
+            <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect (click)="deleteConfirm();">Yes</a>
+            <a type="button" mdbBtn color="danger" class="waves-effect" mdbWavesEffect data-dismiss="modal" (click)="delete.hide()">No</a>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
