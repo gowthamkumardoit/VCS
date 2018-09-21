@@ -118,6 +118,7 @@
           <div class="col-sm-1"></div>
         </div>
         <div class="modal-footer">
+            <button type="button" mdbBtn color="warning" class="relative waves-light" mdbWavesEffect (click)="basicModal.hide()">Cancel</button>
           <button type="button" mdbBtn color="teal" class="relative waves-light" mdbWavesEffect [disabled]="serviceForm.invalid"
             (click)="saveService()">{{isEditService ? 'Update': 'Save'}}</button>
         </div>

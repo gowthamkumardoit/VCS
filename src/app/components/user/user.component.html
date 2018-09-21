@@ -56,8 +56,7 @@
               <div class="col-5">
                 <div class="md-form" style="margin-top:0px">
                   <mdb-select style="margin-top:-8px" data-error=" " data-success=" " [(ngModel)]="selectedValue"
-                    [options]="userTypeOptions"  class="colorful-select dropdown-default select-wrapper"
-                    formControlName="userType"></mdb-select>
+                    [options]="userTypeOptions" class="colorful-select dropdown-default select-wrapper" formControlName="userType"></mdb-select>
                   <label>User Type</label>
 
                 </div>
@@ -125,6 +124,7 @@
 
         </div>
         <div class="modal-footer">
+          <button type="button" mdbBtn color="warning" class="relative waves-light" mdbWavesEffect (click)="basicModal.hide()">Cancel</button>
           <button type="button" mdbBtn color="teal" class="relative waves-light" mdbWavesEffect [disabled]="userForm.invalid"
             (click)="save()">{{isEditUser ? 'Update': 'Save'}}</button>
         </div>
