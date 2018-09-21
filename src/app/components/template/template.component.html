@@ -1,5 +1,15 @@
 <div style="height:100px;"></div>
-<div class="container">
+<div class="container-fluid px-5">
+  <div class="row">
+    <div class="col-sm-8"></div>
+    <div class='col-sm-4'>
+      <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" (click)="openModal()"
+        mdbWavesEffect>
+        <i class="fa fa-plus-circle mr-2"></i> Add Tasks</button>
+    </div>
+  </div>
+</div>
+<!-- <div class="container">
   <div class="row">
     <div class="col-md-9">
       <mdb-card>
@@ -13,7 +23,8 @@
                 <h1>The Annual Meeting of Fictional Characters</h1>
                 <h3>Technical Announcement</h3>
                 <p>We hereby have the pleasure to announce that the theme of this year's meeting is "
-                  <strong>E–ink Technology and Classical Fairy Tales</strong>". As every year, the event will be hosted in
+                  <strong>E–ink Technology and Classical Fairy Tales</strong>". As every year, the event will be hosted
+                  in
                   <em>The Wonderland</em> by
                   <span class="h-card">
                     <a class="p-name u-email" href="mailto:alice@example.com">Alice</a>
@@ -47,10 +58,14 @@
       </mdb-card>
     </div>
     <div class="col-md-3 p-3" id="draggableList">
-      <button mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true" class="waves-light my-3" mdbWavesEffect>Gowtham Kumar</button>
-      <button mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true" class="waves-light my-3" mdbWavesEffect>Excel Forte</button>
-      <button mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true" class="waves-light my-3" mdbWavesEffect>Chennai - 600100</button>
-      <button mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true" class="waves-light my-3" mdbWavesEffect>9876543210</button>
+      <button mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true" class="waves-light my-3"
+        mdbWavesEffect>Gowtham Kumar</button>
+      <button mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true" class="waves-light my-3"
+        mdbWavesEffect>Excel Forte</button>
+      <button mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true" class="waves-light my-3"
+        mdbWavesEffect>Chennai - 600100</button>
+      <button mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true" class="waves-light my-3"
+        mdbWavesEffect>9876543210</button>
       <button mdbBtn type="button" color="warning" class="waves-light my-5" mdbWavesEffect (click)="getData()">Get Data</button>
     </div>
-  </div>
+  </div> -->

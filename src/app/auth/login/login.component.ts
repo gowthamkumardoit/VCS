@@ -1,15 +1,16 @@
 import { RoleService } from './../../services/role.service';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastService } from 'ng-uikit-pro-standard';
+// import { ToastService } from 'ng-uikit-pro-standard';
+// import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { LoginService } from '../../services/login.service';
 import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [ToastService]
+  // providers: [ToastService]
 })
 export class LoginComponent implements OnInit {
 
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: Router,
-    private toastService: ToastService,
+   // public toastr: ToastsManager, 
+    //vcr: ViewContainerRef,
     private nav: RoleService,
     private loginService: LoginService
   ) {
@@ -28,6 +30,7 @@ export class LoginComponent implements OnInit {
       pwd: ['', [Validators.required, Validators.minLength(5)]]
     });
 
+    //this.toastr.setRootViewContainerRef(vcr);
     this.nav.navigationBarShow.next(false);
   }
 
@@ -41,10 +44,11 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('userid', data.userid);
         this.route.navigate(['/home']);
         const options = { timeOut: 500, toastClass: 'black'};
-        this.toastService.success('Successfully Logged In', '', options);
+       // this.toastr.success('Successfully Logged In!', 'Success!');
+       // this.toastService.success('Successfully Logged In', '', options);
       } else {
         const options = { timeOut: 500 };
-        this.toastService.error('Username / Password is Invalid', '', options);
+       // this.toastService.error('Username / Password is Invalid', '', options);
       }
     });
   }

@@ -1,4 +1,4 @@
-import { ToastService } from 'ng-uikit-pro-standard';
+// import { ToastService } from 'ng-uikit-pro-standard';
 import { User } from './../../modals/user.modal';
 import { UserService } from './../../services/user.service';
 import {
@@ -56,7 +56,7 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     private fb: FormBuilder,
     private roleService: RoleService,
-    private toastService: ToastService,
+   /// private toastService: ToastService,
     private nav: RoleService
   ) {
     this.userForm = fb.group({
@@ -303,7 +303,7 @@ export class UserComponent implements OnInit {
           timeOut: 500,
           toastClass: 'black',
         };
-        this.toastService.success('User Updated Successfully', '', options);
+        // this.toastService.success('User Updated Successfully', '', options);
         this.basicModal.hide();
         this.getUserList();
         this.getPagination();
@@ -324,7 +324,7 @@ export class UserComponent implements OnInit {
           timeOut: 500,
           toastClass: 'black',
         };
-        this.toastService.success('User Deleted Successfully', '', options);
+        // this.toastService.success('User Deleted Successfully', '', options);
         this.basicModal.hide();
         this.deleteModal.hide();
         this.getUserList();

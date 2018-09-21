@@ -1,4 +1,4 @@
-import { ToastService } from 'ng-uikit-pro-standard';
+// import { ToastService } from 'ng-uikit-pro-standard';
 import { DatePipe } from '@angular/common'
 import {
   NEW_STATUS, CUSTOMER_TYPE, BANK_CODE, CREDIT_TERMS, ACCOUNT_SUBGROUP, CURRENCY,
@@ -87,7 +87,7 @@ export class CompanyComponent implements OnInit {
 
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
   constructor(private companyService: CompanyService, private fb: FormBuilder,
-    private toastService: ToastService, private nav: RoleService, public datepipe: DatePipe) { }
+   private nav: RoleService, public datepipe: DatePipe) { }
 
   ngOnInit() {
     this.today = new Date();
@@ -120,8 +120,27 @@ export class CompanyComponent implements OnInit {
     this.getCompanyList();
     this.getCompanyProfileList();
     this.getDirectorList();
+    this.getPagination();
   }
+  
+  getPagination() {
+    setTimeout(() => {
+      this.paginators = [];
+      if (this.companyDataList.length % this.itemsPerPage === 0) {
+        this.numberOfPaginators = Math.floor(
+          this.companyDataList.length / this.itemsPerPage
+        );
+      } else {
+        this.numberOfPaginators = Math.floor(
+          this.companyDataList.length / this.itemsPerPage + 1
+        );
+      }
 
+      for (let i = 1; i <= this.numberOfPaginators; i++) {
+        this.paginators.push(i);
+      }
+    }, 200);
+  }
   openModal() {
     this.companyData = {
       ...this.companyData,
@@ -273,6 +292,7 @@ export class CompanyComponent implements OnInit {
         this.errorMessage = response.message;
       } else {
         this.getCompanyList();
+        this.getPagination();
         this.profileForm.patchValue({
           'cmid': response.message,
           'CustomerUEN': this.companyForm.value.CustomerUEN,
@@ -283,7 +303,7 @@ export class CompanyComponent implements OnInit {
           'CustomerUEN': this.companyForm.value.CustomerUEN,
           'id': 0
         });
-        this.toastService.success('Company Added Successfully', '', this.toastOptions);
+       // this.toastService.success('Company Added Successfully', '', this.toastOptions);
         this.staticTabs.setActiveTab(2);
       }
     });
@@ -394,7 +414,8 @@ export class CompanyComponent implements OnInit {
     };
     this.companyService.updateCompany(postData).subscribe(data => {
       this.getCompanyList();
-      this.toastService.success('Company Updated Successfully', '', this.toastOptions);
+      this.getPagination();
+      //this.toastService.success('Company Updated Successfully', '', this.toastOptions);
     });
   }
 
@@ -409,7 +430,7 @@ export class CompanyComponent implements OnInit {
         this.errorMessage = data.message;
       } else {
         this.getCompanyList();
-        this.toastService.success('Profile Added Successfully', '', this.toastOptions);
+        // this.toastService.success('Profile Added Successfully', '', this.toastOptions);
         this.staticTabs.setActiveTab(3);
 
       }
@@ -424,7 +445,7 @@ export class CompanyComponent implements OnInit {
     this.companyService.updateProfile(postData).subscribe(data => {
       this.getCompanyList();
       this.getCompanyProfileList();
-      this.toastService.success('Profile Updated Successfully', '', this.toastOptions);
+      //this.toastService.success('Profile Updated Successfully', '', this.toastOptions);
     });
   }
 
@@ -447,7 +468,7 @@ export class CompanyComponent implements OnInit {
           doa: new Date(),
         });
         this.isDirectorExists = false;
-        this.toastService.success('Director Added Successfully', '', this.toastOptions);
+        // this.toastService.success('Director Added Successfully', '', this.toastOptions);
       }
     });
   }
@@ -470,7 +491,8 @@ export class CompanyComponent implements OnInit {
       if (data) {
         this.deleteModal.hide();
         this.getCompanyList();
-        this.toastService.success('Company Deleted Successfully', '', this.toastOptions);
+        this.getPagination();
+        // this.toastService.success('Company Deleted Successfully', '', this.toastOptions);
       }
     });
   }
@@ -485,7 +507,7 @@ export class CompanyComponent implements OnInit {
       if (data) {
         this.deleteDirectorModal.hide();
         this.getDirectorList();
-        this.toastService.success('Director Deleted Successfully', '', this.toastOptions);
+        // this.toastService.success('Director Deleted Successfully', '', this.toastOptions);
       }
     });
   }
@@ -597,24 +619,8 @@ export class CompanyComponent implements OnInit {
       return this.filterIt(this.companyDataList, this.searchText);
     }
   }
-  getPagination() {
-    setTimeout(() => {
-      this.paginators = [];
-      if (this.companyDataList.length % this.itemsPerPage === 0) {
-        this.numberOfPaginators = Math.floor(
-          this.companyDataList.length / this.itemsPerPage
-        );
-      } else {
-        this.numberOfPaginators = Math.floor(
-          this.companyDataList.length / this.itemsPerPage + 1
-        );
-      }
-      for (let i = 1; i <= this.numberOfPaginators; i++) {
-        this.paginators.push(i);
-      }
-    }, 200);
-  }
-  changePage(event: any) {
+   // Pagination code
+   changePage(event: any) {
     if (
       event.target.text >= 1 &&
       event.target.text <= this.numberOfPaginators
@@ -627,17 +633,17 @@ export class CompanyComponent implements OnInit {
   }
 
   nextPage(event: any) {
-    // if (this.pages.last.nativeElement.classList.contains('active')) {
-    if (
-      this.numberOfPaginators - this.numberOfVisiblePaginators >=
-      this.lastVisiblePaginator
-    ) {
-      this.firstVisiblePaginator += this.numberOfVisiblePaginators;
-      this.lastVisiblePaginator += this.numberOfVisiblePaginators;
-    } else {
-      this.firstVisiblePaginator += this.numberOfVisiblePaginators;
-      this.lastVisiblePaginator = this.numberOfPaginators;
-    }
+   // if (this.pages.last.nativeElement.classList.contains('active')) {
+      if (
+        this.numberOfPaginators - this.numberOfVisiblePaginators >=
+        this.lastVisiblePaginator
+      ) {
+        this.firstVisiblePaginator += this.numberOfVisiblePaginators;
+        this.lastVisiblePaginator += this.numberOfVisiblePaginators;
+      } else {
+        this.firstVisiblePaginator += this.numberOfVisiblePaginators;
+        this.lastVisiblePaginator = this.numberOfPaginators;
+      }
     // }
 
     this.activePage += 1;
@@ -647,7 +653,7 @@ export class CompanyComponent implements OnInit {
   }
 
   previousPage(event: any) {
-    //  if (this.pages.first.nativeElement.classList.contains('active')) {
+  //  if (this.pages.first.nativeElement.classList.contains('active')) {
     if (
       this.lastVisiblePaginator - this.firstVisiblePaginator ===
       this.numberOfVisiblePaginators
@@ -659,7 +665,7 @@ export class CompanyComponent implements OnInit {
       this.lastVisiblePaginator -=
         this.numberOfPaginators % this.numberOfVisiblePaginators;
     }
-    //  }
+//  }
 
     this.activePage -= 1;
     this.firstVisibleIndex =
@@ -693,4 +699,5 @@ export class CompanyComponent implements OnInit {
         (this.numberOfPaginators % this.numberOfVisiblePaginators);
     }
   }
+
 }

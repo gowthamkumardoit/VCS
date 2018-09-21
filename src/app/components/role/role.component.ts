@@ -1,5 +1,5 @@
 import { NEW_STATUS } from './../../constants/common.constant';
-import { ToastService } from 'ng-uikit-pro-standard';
+// import { ToastService } from 'ng-uikit-pro-standard';
 import {
   Component,
   OnInit,
@@ -54,7 +54,7 @@ export class RoleComponent implements OnInit {
   constructor(
     private roleService: RoleService,
     private fb: FormBuilder,
-    private toastService: ToastService,
+   // private toastService: ToastService,
     private el: ElementRef,
     private loginService: LoginService
   ) {
@@ -188,7 +188,7 @@ export class RoleComponent implements OnInit {
             timeOut: 500,
             toastClass: 'black',
           };
-          this.toastService.success('Role Added Successfully', '', options);
+         // this.toastService.success('Role Added Successfully', '', options);
           this.getRolesList();
         }
 
@@ -230,7 +230,7 @@ export class RoleComponent implements OnInit {
           timeOut: 500,
           toastClass: 'black',
         };
-        this.toastService.success('Role Updated Successfully', '', options);
+       // this.toastService.success('Role Updated Successfully', '', options);
         this.basicModal.hide();
         this.getRolesList();
         this.isRoleExists = false;
@@ -251,7 +251,7 @@ export class RoleComponent implements OnInit {
           timeOut: 500,
           toastClass: 'black',
         };
-        this.toastService.success('Role Deleted Successfully', '', options);
+        // this.toastService.success('Role Deleted Successfully', '', options);
         this.basicModal.hide();
         this.deleteModal.hide();
         this.getRolesList();

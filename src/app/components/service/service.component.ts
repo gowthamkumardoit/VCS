@@ -1,5 +1,5 @@
 import { RoleService } from './../../services/role.service';
-import { ToastService } from 'ng-uikit-pro-standard';
+
 import { STATUS } from './../../constants/common.constant';
 import { Service } from './../../modals/service.modal';
 import { ServiceTaskService } from './../../services/service-task.service';
@@ -54,7 +54,7 @@ export class ServiceComponent implements OnInit {
   errorMessage: string;
   userid: number;
 
-  constructor(private service: ServiceTaskService, private toastService: ToastService,
+  constructor(private service: ServiceTaskService, 
      private fb: FormBuilder, private nav: RoleService) {
       this.serviceForm = fb.group({
         servicename: ['', [Validators.required, Validators.maxLength(90)]],
@@ -239,7 +239,7 @@ export class ServiceComponent implements OnInit {
           timeOut: 500,
           toastClass: 'black',
         };
-        this.toastService.success('Service Added Successfully', '', options);
+       // this.toastService.success('Service Added Successfully', '', options);
         this.basicModal.hide();
         this.getServiceList();
         this.getPagination();
@@ -276,7 +276,7 @@ export class ServiceComponent implements OnInit {
           timeOut: 500,
           toastClass: 'black',
         };
-        this.toastService.success('Service Updated Successfully', '', options);
+        //this.toastService.success('Service Updated Successfully', '', options);
         this.basicModal.hide();
         this.getServiceList();
         this.getPagination();
@@ -324,7 +324,7 @@ export class ServiceComponent implements OnInit {
           timeOut: 500,
           toastClass: 'black',
         };
-        this.toastService.success('Service Deleted Successfully', '', options);
+        //this.toastService.success('Service Deleted Successfully', '', options);
         this.deleteService.hide();
         this.getServiceList();
         this.getPagination();

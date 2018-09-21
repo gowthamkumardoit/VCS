@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
-import { MDBBootstrapModulesPro, ToastModule, DatepickerModule } from 'ng-uikit-pro-standard';
+import { MDBBootstrapModulesPro,  DatepickerModule } from 'ng-uikit-pro-standard';
 import { MDBSpinningPreloader } from 'ng-uikit-pro-standard';
 import { RegisterComponent } from './auth/register/register.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
@@ -22,10 +22,10 @@ import { ServiceComponent } from './components/service/service.component';
 import { RoleComponent } from './components/role/role.component';
 import { DeleteComponent } from './shared/delete/delete.component';
 import { TemplateComponent } from './components/template/template.component';
-import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { DateValueAccessorModule } from 'angular-date-value-accessor';
 import { DatePipe } from '@angular/common';
+// import { ToastModule } from 'ng2-toastr/ng2-toastr';
 
 @NgModule({
   declarations: [
@@ -54,9 +54,8 @@ import { DatePipe } from '@angular/common';
     HttpClientModule,
     DatepickerModule,
     DateValueAccessorModule,
-    AngularFireModule.initializeApp(environment.firebase),
     MDBBootstrapModulesPro.forRoot(),
-    ToastModule.forRoot()
+   // ToastModule.forRoot()
   ],
   providers: [MDBSpinningPreloader, UserService, DatePipe],
   bootstrap: [AppComponent],

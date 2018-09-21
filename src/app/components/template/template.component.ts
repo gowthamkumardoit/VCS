@@ -11,26 +11,29 @@ export class TemplateComponent implements OnInit {
   constructor(private nav: RoleService) { }
 
   ngOnInit() {
-    CKEDITOR.replace('editor1');
+    //CKEDITOR.replace('editor1');
     this.nav.navigationBarShow.next(true);
     this.nav.navigationBarShow.subscribe(data => {
-      CKEDITOR.on('instanceReady', function() {
-        CKEDITOR.document.getById('draggableList' ).on( 'dragstart', function( evt ) {
-          // const target = evt.data.getTarget().getAscendant( 'div', true );
-          const target = evt.data.getTarget();
-          CKEDITOR.plugins.clipboard.initDragDataTransfer( evt );
-          const dataTransfer = evt.data.dataTransfer;
-        // dataTransfer.setData( 'contact', CONTACTS[ target.data( 'contact' ) ] );
-          dataTransfer.setData( 'text/html', target.getText() );
-        });
-      });
+      // CKEDITOR.on('instanceReady', function() {
+      //   CKEDITOR.document.getById('draggableList' ).on( 'dragstart', function( evt ) {
+      //     // const target = evt.data.getTarget().getAscendant( 'div', true );
+      //     const target = evt.data.getTarget();
+      //     CKEDITOR.plugins.clipboard.initDragDataTransfer( evt );
+      //     const dataTransfer = evt.data.dataTransfer;
+      //   // dataTransfer.setData( 'contact', CONTACTS[ target.data( 'contact' ) ] );
+      //     dataTransfer.setData( 'text/html', target.getText() );
+      //   });
+      // });
     });
 
   }
 
   getData() {
-    const editor = CKEDITOR.instances.editor1;
-    alert(editor.getData());
+    // const editor = CKEDITOR.instances.editor1;
+    // alert(editor.getData());
   }
 
+  openModal() {
+    
+  }
 }
