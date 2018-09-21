@@ -93,7 +93,7 @@ export class CompanyComponent implements OnInit {
     this.today = new Date();
     this.nav.navigationBarShow.next(true);
     this.userid = parseInt(localStorage.getItem('userid'));
-    this.tableHeadings = ['No', 'Customer Name', 'Company Name', 'Company UEN', 'Customer GST No', 'Actions'];
+    this.tableHeadings = ['No', 'Customer Name', 'Company Name', 'Company UEN', 'Customer GST No', 'Email', 'Actions'];
     this.directorHeadings = ['No', 'Director Name', 'Designation', 'Nationality', 'Shares', 'Action'];
     this.isTableDataPresent = false;
     this.statusOptions = [
