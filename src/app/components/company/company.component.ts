@@ -238,7 +238,6 @@ export class CompanyComponent implements OnInit {
   getCompanyList() {
     this.companyService.getCompanyList().subscribe(data => {
       if (data) {
-        console.log(data);
         this.companyDataList = data;
       } else {
         this.companyDataList = [];
@@ -249,7 +248,6 @@ export class CompanyComponent implements OnInit {
   getCompanyProfileList() {
     this.companyService.getCompanyProfilesList().subscribe(data => {
       if (data) {
-        console.log('profile', data);
         this.companyProfileList = data;
       } else {
         this.companyProfileList = [];
@@ -297,11 +295,7 @@ export class CompanyComponent implements OnInit {
   }
 
   saveDirector() {
-    // if (this.directorData['length'] === 0 || this.directorData.id === 0 || this.directorData.id === null) {
     this.createDirector();
-    // } else if (this.directorData.id > 0) {
-    // this.updateDirector();
-    // }
   }
 
   createCompany() {
@@ -373,8 +367,12 @@ export class CompanyComponent implements OnInit {
             DateoflodgementofARAC: new Date((tempProfiledata[0].DateoflodgementofARAC).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
             cmid: this.defaultId,
             CustomerUEN: item.CustomerUEN,
+            Currency: (tempProfiledata[0].Currency).toString(),
+            Currency1: (tempProfiledata[0].Currency1).toString(),
+            Sharetype: (tempProfiledata[0].Sharetype).toString(),
+            Sharetype1: (tempProfiledata[0].Sharetype1).toString(),
+            Status: (tempProfiledata[0].Status).toString(),
           });
-          console.log('temp', tempProfiledata[0]);
           this.currency1 = (tempProfiledata[0].Currency).toString();
           this.currency2 = (tempProfiledata[0].Currency1).toString();
           this.status1 = (tempProfiledata[0].Sharetype).toString();
@@ -387,15 +385,12 @@ export class CompanyComponent implements OnInit {
           });
           this.profileData = tempProfiledata[0];
           this.getDirectorList();
-          console.log('update');
         }, 200);
       } else {
-        console.log('update 1');
         this.noProfile(item);
         this.getDirectorList();
       }
     } else {
-      console.log('update 2');
       this.noProfile(item);
       this.getDirectorList();
     }
@@ -493,7 +488,6 @@ export class CompanyComponent implements OnInit {
       Sharetype1: parseInt(this.profileForm.value.Sharetype1),
       Status: parseInt(this.profileForm.value.Status),
     };
-    console.log(postData);
     this.companyService.updateProfile(postData).subscribe((data: any) => {
       if (data && data.isSaved == "false") {
         this.isProfileExists = true;
