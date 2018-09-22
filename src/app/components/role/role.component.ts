@@ -1,5 +1,5 @@
 import { NEW_STATUS } from './../../constants/common.constant';
-// import { ToastService } from 'ng-uikit-pro-standard';
+import { ToastrService } from 'ngx-toastr';
 import {
   Component,
   OnInit,
@@ -50,11 +50,11 @@ export class RoleComponent implements OnInit {
   isRoleExists: boolean;
   errorMessage: string;
   userid: any;
-
+  toastOptions: any;
   constructor(
     private roleService: RoleService,
     private fb: FormBuilder,
-   // private toastService: ToastService,
+    private toastService: ToastrService,
     private el: ElementRef,
     private loginService: LoginService
   ) {
@@ -84,6 +84,12 @@ export class RoleComponent implements OnInit {
     };
     this.defaultStatus = NEW_STATUS;
     this.userid = parseInt(localStorage.getItem('userid'));
+    this.toastOptions = {
+      progressBar: true,
+      timeOut: 1000,
+      toastClass: 'black',
+      closeButton: true
+    };
   }
 
 
@@ -183,12 +189,7 @@ export class RoleComponent implements OnInit {
           this.errorMessage = '';
           this.basicModal.hide();
           this.getPagination();
-          const options = {
-            progressBar: true,
-            timeOut: 500,
-            toastClass: 'black',
-          };
-         // this.toastService.success('Role Added Successfully', '', options);
+          this.toastService.success('Role Added Successfully', '', this.toastOptions);
           this.getRolesList();
         }
 
@@ -225,12 +226,7 @@ export class RoleComponent implements OnInit {
         this.errorMessage = data.message;
       } else {
         this.getPagination();
-        const options = {
-          progressBar: true,
-          timeOut: 500,
-          toastClass: 'black',
-        };
-       // this.toastService.success('Role Updated Successfully', '', options);
+        this.toastService.success('Role Updated Successfully', '', this.toastOptions);
         this.basicModal.hide();
         this.getRolesList();
         this.isRoleExists = false;
@@ -246,12 +242,7 @@ export class RoleComponent implements OnInit {
   deleteConfirm() {
     if (this.deletedItem) {
       this.roleService.deleteRole(this.deletedItem).subscribe(data => {
-        const options = {
-          progressBar: true,
-          timeOut: 500,
-          toastClass: 'black',
-        };
-        // this.toastService.success('Role Deleted Successfully', '', options);
+        this.toastService.success('Role Deleted Successfully', '', this.toastOptions);
         this.basicModal.hide();
         this.deleteModal.hide();
         this.getRolesList();

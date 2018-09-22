@@ -26,7 +26,7 @@ import { environment } from '../environments/environment';
 import { DateValueAccessorModule } from 'angular-date-value-accessor';
 import { DatePipe } from '@angular/common';
 // import { ToastModule } from 'ng2-toastr/ng2-toastr';
-
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +55,7 @@ import { DatePipe } from '@angular/common';
     DatepickerModule,
     DateValueAccessorModule,
     MDBBootstrapModulesPro.forRoot(),
-   // ToastModule.forRoot()
+    ToastrModule.forRoot()
   ],
   providers: [MDBSpinningPreloader, UserService, DatePipe],
   bootstrap: [AppComponent],

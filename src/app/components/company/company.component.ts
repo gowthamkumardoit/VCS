@@ -1,4 +1,4 @@
-// import { ToastService } from 'ng-uikit-pro-standard';
+import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common'
 import {
   NEW_STATUS, CUSTOMER_TYPE, BANK_CODE, CREDIT_TERMS, ACCOUNT_SUBGROUP, CURRENCY,
@@ -89,7 +89,9 @@ export class CompanyComponent implements OnInit {
 
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
   constructor(private companyService: CompanyService, private fb: FormBuilder,
-    private nav: RoleService, public datepipe: DatePipe) { }
+    private nav: RoleService, public datepipe: DatePipe,
+    private toastService: ToastrService
+    ) { }
 
   ngOnInit() {
     this.today = new Date();
@@ -108,13 +110,14 @@ export class CompanyComponent implements OnInit {
     this.accountSubGroupOptions = ACCOUNT_SUBGROUP;
     this.currencyOptions = CURRENCY;
     this.shareTypeOptions = SHARE_TYPE;
-
-
     this.toastOptions = {
       progressBar: true,
-      timeOut: 500,
+      timeOut: 1000,
       toastClass: 'black',
+      closeButton: true
     };
+
+    
 
     this.initializeCompanyForm();
     this.initializeProfileForm();
@@ -320,7 +323,7 @@ export class CompanyComponent implements OnInit {
           CustomerUEN: this.companyForm.value.CustomerUEN,
           id: 0
         });
-        // this.toastService.success('Company Added Successfully', '', this.toastOptions);
+        this.toastService.success('Company Added Successfully', '', this.toastOptions);
         this.staticTabs.setActiveTab(2);
       }
     });
@@ -445,9 +448,9 @@ export class CompanyComponent implements OnInit {
         this.getCompanyList();
         this.getPagination();
         this.isCompanyExists = false;
+        this.toastService.success('Company Updated Successfully', '', this.toastOptions);
       }
 
-      //this.toastService.success('Company Updated Successfully', '', this.toastOptions);
     });
   }
 
@@ -462,7 +465,7 @@ export class CompanyComponent implements OnInit {
         this.errorMessage = data.message;
       } else {
         this.getCompanyList();
-        // this.toastService.success('Profile Added Successfully', '', this.toastOptions);
+        this.toastService.success('Profile Added Successfully', '', this.toastOptions);
         this.staticTabs.setActiveTab(3);
 
       }
@@ -482,9 +485,9 @@ export class CompanyComponent implements OnInit {
         this.isProfileExists = false;
         this.getCompanyList();
         this.getCompanyProfileList();
+        this.toastService.success('Profile Updated Successfully', '', this.toastOptions);
       }
 
-      //this.toastService.success('Profile Updated Successfully', '', this.toastOptions);
     });
   }
 
@@ -507,7 +510,7 @@ export class CompanyComponent implements OnInit {
           doa: new Date(),
         });
         this.isDirectorExists = false;
-        // this.toastService.success('Director Added Successfully', '', this.toastOptions);
+        this.toastService.success('Director Added Successfully', '', this.toastOptions);
       }
     });
   }
@@ -531,7 +534,7 @@ export class CompanyComponent implements OnInit {
         this.deleteModal.hide();
         this.getCompanyList();
         this.getPagination();
-        // this.toastService.success('Company Deleted Successfully', '', this.toastOptions);
+        this.toastService.success('Company Deleted Successfully', '', this.toastOptions);
       }
     });
   }
@@ -546,7 +549,7 @@ export class CompanyComponent implements OnInit {
       if (data) {
         this.deleteDirectorModal.hide();
         this.getDirectorList();
-        // this.toastService.success('Director Deleted Successfully', '', this.toastOptions);
+        this.toastService.success('Director Deleted Successfully', '', this.toastOptions);
       }
     });
   }

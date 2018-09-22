@@ -1,4 +1,4 @@
-// import { ToastService } from 'ng-uikit-pro-standard';
+import { ToastrService } from 'ngx-toastr';
 import { User } from './../../modals/user.modal';
 import { UserService } from './../../services/user.service';
 import {
@@ -52,11 +52,12 @@ export class UserComponent implements OnInit {
   isUserExists: boolean;
   errorMessage: string;
   userid: any;
+  toastOptions: any;
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
     private roleService: RoleService,
-   /// private toastService: ToastService,
+    private toastService: ToastrService,
     private nav: RoleService
   ) {
     this.userForm = fb.group({
@@ -130,6 +131,12 @@ export class UserComponent implements OnInit {
     this.selectedValue = '1';
     this.getPagination();
     this.userid = parseInt(localStorage.getItem('userid'));
+    this.toastOptions = {
+      progressBar: true,
+      timeOut: 1000,
+      toastClass: 'black',
+      closeButton: true
+    };
   }
   getUserRoles() {
     this.userService.loadLiveRoles().subscribe((data: any) => {
@@ -244,6 +251,7 @@ export class UserComponent implements OnInit {
         this.isUserExists = false;
         this.errorMessage = '';
         this.getUserList();
+        this.toastService.success('User Added Successfully', '', this.toastOptions);
         this.basicModal.hide();
         this.getPagination();
       }
@@ -287,8 +295,6 @@ export class UserComponent implements OnInit {
           this.selectedValue1 = this.userRoles[i].value;
         }
       });
-    console.log('asdas', this.userRoles);
-
     }, 200)
 
   }
@@ -298,12 +304,7 @@ export class UserComponent implements OnInit {
         this.isUserExists = true;
         this.errorMessage = data.message;
       } else {
-        const options = {
-          progressBar: true,
-          timeOut: 500,
-          toastClass: 'black',
-        };
-        // this.toastService.success('User Updated Successfully', '', options);
+        this.toastService.success('User Updated Successfully', '', this.toastOptions);
         this.basicModal.hide();
         this.getUserList();
         this.getPagination();
@@ -319,12 +320,7 @@ export class UserComponent implements OnInit {
   deleteConfirm() {
     if (this.deletedItem) {
       this.userService.deleteUser(this.deletedItem).subscribe(data => {
-        const options = {
-          progressBar: true,
-          timeOut: 500,
-          toastClass: 'black',
-        };
-        // this.toastService.success('User Deleted Successfully', '', options);
+        this.toastService.success('User Deleted Successfully', '', this.toastOptions);
         this.basicModal.hide();
         this.deleteModal.hide();
         this.getUserList();

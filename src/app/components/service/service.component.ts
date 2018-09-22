@@ -1,5 +1,5 @@
 import { RoleService } from './../../services/role.service';
-
+import { ToastrService } from 'ngx-toastr';
 import { STATUS } from './../../constants/common.constant';
 import { Service } from './../../modals/service.modal';
 import { ServiceTaskService } from './../../services/service-task.service';
@@ -53,38 +53,45 @@ export class ServiceComponent implements OnInit {
   isServiceExists: boolean;
   errorMessage: string;
   userid: number;
+  toastOptions: any;
 
-  constructor(private service: ServiceTaskService, 
-     private fb: FormBuilder, private nav: RoleService) {
-      this.serviceForm = fb.group({
-        servicename: ['', [Validators.required, Validators.maxLength(90)]],
-        statusser: ['', [Validators.required]],
-      });
+  constructor(private service: ServiceTaskService,
+    private fb: FormBuilder, private nav: RoleService,
+    private toastService: ToastrService) {
+    this.serviceForm = fb.group({
+      servicename: ['', [Validators.required, Validators.maxLength(90)]],
+      statusser: ['', [Validators.required]],
+    });
 
-      this.taskForm = fb.group({
-        taskname: ['', [Validators.required, Validators.maxLength(40)]],
-        duration: ['', [Validators.required, Validators.maxLength(8)]],
-        requiring: ['', Validators.required],
-        statustas: ['', Validators.required],
-      });
-      this.getServiceList();
-     }
+    this.taskForm = fb.group({
+      taskname: ['', [Validators.required, Validators.maxLength(40)]],
+      duration: ['', [Validators.required, Validators.maxLength(8)]],
+      requiring: ['', Validators.required],
+      statustas: ['', Validators.required],
+    });
+    this.getServiceList();
+  }
 
   ngOnInit() {
     this.nav.navigationBarShow.next(true);
     this.taskArray = [];
     this.getPagination();
 
-  this.tableHeadings = ['No', 'Service Name', 'Status', 'Created On', 'Modified On', 'Action'];
-  this.taksHeadings = ['Task Name', 'Duration', 'Requiring',  'Task Status', 'Action'];
-  this.defaultStatus = STATUS;
-  this.serviceData = {
-    ...this.serviceData,
-    sid: 0
-  };
+    this.tableHeadings = ['No', 'Service Name', 'Status', 'Created On', 'Modified On', 'Action'];
+    this.taksHeadings = ['Task Name', 'Duration', 'Requiring', 'Task Status', 'Action'];
+    this.defaultStatus = STATUS;
+    this.serviceData = {
+      ...this.serviceData,
+      sid: 0
+    };
 
-  this.userid = parseInt(localStorage.getItem('userid'));
-
+    this.userid = parseInt(localStorage.getItem('userid'));
+    this.toastOptions = {
+      progressBar: true,
+      timeOut: 1000,
+      toastClass: 'black',
+      closeButton: true
+    };
   }
   getPagination() {
     setTimeout(() => {
@@ -123,7 +130,7 @@ export class ServiceComponent implements OnInit {
   }
   openModal() {
     this.serviceForm.setValue({
-      'servicename' : '',
+      'servicename': '',
       'statusser': null
     });
     this.taskForm.setValue({
@@ -136,7 +143,7 @@ export class ServiceComponent implements OnInit {
       ...this.serviceData,
       sid: 0
     };
-  
+
     this.serviceForm.reset();
     this.taskForm.reset();
     this.basicModal.show();
@@ -159,7 +166,7 @@ export class ServiceComponent implements OnInit {
       this.selectedValue = '1';
       this.selectedDuration = '1';
       this.selectedValue1 = '1';
-     }, 200);
+    }, 200);
 
   }
   getServiceList() {
@@ -176,6 +183,7 @@ export class ServiceComponent implements OnInit {
 
   saveTask() {
     this.taskArray.push(this.taskForm.value);
+    this.toastService.success('Task Added Successfully', '', this.toastOptions);
     this.taskForm.setValue({
       taskname: '',
       duration: '',
@@ -198,13 +206,14 @@ export class ServiceComponent implements OnInit {
       this.selectedValue = '1';
       this.selectedValue1 = '1';
       this.selectedDuration = '1';
-     }, 200);
+    }, 200);
   }
 
   deleteConfirmTasks() {
     if (this.deletedTaskIndex > -1) {
       this.taskArray.splice(this.deletedTaskIndex, 1);
       this.deleteTasks.hide();
+      this.toastService.success('Task Deleted Successfully', '', this.toastOptions);
     }
   }
 
@@ -234,18 +243,13 @@ export class ServiceComponent implements OnInit {
         this.isServiceExists = true;
         this.errorMessage = data.Message;
       } else {
-        const options = {
-          progressBar: true,
-          timeOut: 500,
-          toastClass: 'black',
-        };
-       // this.toastService.success('Service Added Successfully', '', options);
+        this.toastService.success('Service Added Successfully', '', this.toastOptions);
         this.basicModal.hide();
         this.getServiceList();
         this.getPagination();
         this.isServiceExists = false;
       }
-     
+
     });
   }
 
@@ -258,7 +262,7 @@ export class ServiceComponent implements OnInit {
       statusser: this.serviceForm.value.statusser
     };
     this.taskArray.push(this.taskArray.forEach(item => {
-      postTaskArray.push({...item, 'id': this.serviceData.sid });
+      postTaskArray.push({ ...item, 'id': this.serviceData.sid });
     }));
     postData = {
       ...postData,
@@ -271,12 +275,7 @@ export class ServiceComponent implements OnInit {
         this.isServiceExists = true;
         this.errorMessage = data.Message;
       } else {
-        const options = {
-          progressBar: true,
-          timeOut: 500,
-          toastClass: 'black',
-        };
-        //this.toastService.success('Service Updated Successfully', '', options);
+        this.toastService.success('Service Updated Successfully', '', this.toastOptions);
         this.basicModal.hide();
         this.getServiceList();
         this.getPagination();
@@ -289,7 +288,7 @@ export class ServiceComponent implements OnInit {
     this.isEditService = true;
     this.isServiceExists = false;
     data = {
-      ... data,
+      ...data,
       statusser: (data.statusser).toString()
     };
     this.options = [
@@ -304,7 +303,7 @@ export class ServiceComponent implements OnInit {
     ];
     this.basicModal.show();
     this.serviceForm.setValue({
-      'servicename' : data.servicename,
+      'servicename': data.servicename,
       'statusser': data.statusser
     });
     this.taskArray = data.task;
@@ -319,12 +318,7 @@ export class ServiceComponent implements OnInit {
   deleteConfirmService() {
     if (this.deletedServiceItem) {
       this.service.deleteService(this.deletedServiceItem).subscribe(data => {
-        const options = {
-          progressBar: true,
-          timeOut: 500,
-          toastClass: 'black',
-        };
-        //this.toastService.success('Service Deleted Successfully', '', options);
+        this.toastService.success('Service Deleted Successfully', '', this.toastOptions);
         this.deleteService.hide();
         this.getServiceList();
         this.getPagination();
@@ -332,8 +326,8 @@ export class ServiceComponent implements OnInit {
     }
   }
 
-   // Pagination code
-   changePage(event: any) {
+  // Pagination code
+  changePage(event: any) {
     if (
       event.target.text >= 1 &&
       event.target.text <= this.numberOfPaginators
@@ -346,17 +340,17 @@ export class ServiceComponent implements OnInit {
   }
 
   nextPage(event: any) {
-   // if (this.pages.last.nativeElement.classList.contains('active')) {
-      if (
-        this.numberOfPaginators - this.numberOfVisiblePaginators >=
-        this.lastVisiblePaginator
-      ) {
-        this.firstVisiblePaginator += this.numberOfVisiblePaginators;
-        this.lastVisiblePaginator += this.numberOfVisiblePaginators;
-      } else {
-        this.firstVisiblePaginator += this.numberOfVisiblePaginators;
-        this.lastVisiblePaginator = this.numberOfPaginators;
-      }
+    // if (this.pages.last.nativeElement.classList.contains('active')) {
+    if (
+      this.numberOfPaginators - this.numberOfVisiblePaginators >=
+      this.lastVisiblePaginator
+    ) {
+      this.firstVisiblePaginator += this.numberOfVisiblePaginators;
+      this.lastVisiblePaginator += this.numberOfVisiblePaginators;
+    } else {
+      this.firstVisiblePaginator += this.numberOfVisiblePaginators;
+      this.lastVisiblePaginator = this.numberOfPaginators;
+    }
     // }
 
     this.activePage += 1;
@@ -366,7 +360,7 @@ export class ServiceComponent implements OnInit {
   }
 
   previousPage(event: any) {
-  //  if (this.pages.first.nativeElement.classList.contains('active')) {
+    //  if (this.pages.first.nativeElement.classList.contains('active')) {
     if (
       this.lastVisiblePaginator - this.firstVisiblePaginator ===
       this.numberOfVisiblePaginators
@@ -378,7 +372,7 @@ export class ServiceComponent implements OnInit {
       this.lastVisiblePaginator -=
         this.numberOfPaginators % this.numberOfVisiblePaginators;
     }
-//  }
+    //  }
 
     this.activePage -= 1;
     this.firstVisibleIndex =

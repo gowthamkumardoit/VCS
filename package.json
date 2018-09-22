@@ -34,6 +34,7 @@
     "ng2-toastr": "^4.1.2",
     "ngx-editor": "^3.3.0",
     "ngx-quill": "^3.4.0",
+    "ngx-toastr": "^9.1.0",
     "rxjs": "^6.0.0",
     "screenfull": "^3.3.0",
     "zone.js": "~0.8.26"

@@ -1,4 +1,4 @@
-// import { ToastService } from 'ng-uikit-pro-standard';
+import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { RoleService } from '../../services/role.service';
 import { Router } from '@angular/router';
@@ -12,14 +12,15 @@ export class NavigationComponent implements OnInit {
   navBarToggle: boolean;
   toastOptions: any = {};
   constructor(private nav: RoleService, private router: Router,
-    // private toastService: ToastService
+      private toastService: ToastrService
      ) { }
 
   ngOnInit() {
     this.toastOptions = {
       progressBar: true,
-      timeOut: 500,
+      timeOut: 1000,
       toastClass: 'black',
+      closeButton: true
     };
 
     this.nav.navigationBarShow.subscribe(data => {
@@ -34,8 +35,7 @@ export class NavigationComponent implements OnInit {
   logout() {
     this.router.navigate(['login']);
     localStorage.clear();
-    // this.toastService.success('Logout Successfully',  '', this.toastOptions);
-
+    this.toastService.success('Logout Successfully',  '', this.toastOptions);
   }
 
 }
