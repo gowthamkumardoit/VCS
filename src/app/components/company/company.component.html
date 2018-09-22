@@ -183,7 +183,8 @@
                   <div class="col-sm-3">
                     <div class="md-form">
                       <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form20"
-                        class="form-control" [value]="OpeningBalanceDate" formControlName="OpeningBalanceDate" useValueAsDate>
+                        class="form-control" [value]="OpeningBalanceDate" formControlName="OpeningBalanceDate"
+                        useValueAsDate>
                       <label for="form20">Op Bal Date</label>
                     </div>
                   </div>
@@ -206,7 +207,8 @@
                   <div class="col-sm-3">
                     <div class="md-form">
                       <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form20"
-                        class="form-control" [value]="DateGSTStatusVerified" formControlName="DateGSTStatusVerified" useValueAsDate>
+                        class="form-control" [value]="DateGSTStatusVerified" formControlName="DateGSTStatusVerified"
+                        useValueAsDate>
                       <label for="form23">GST verified Date</label>
                     </div>
                   </div>
@@ -246,8 +248,9 @@
                 </div>
               </form>
               <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" mdbWavesEffect
-                [disabled]="companyForm.invalid" (click)="save()">{{isCompanyExists ? 'Update' : 'Save' }}</button>
-
+                [disabled]="companyForm.invalid" (click)="save()">{{isEditCompany ? 'Update' : 'Save' }}</button>
+              <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" mdbWavesEffect
+                (click)="basicModal.hide()">cancel</button>
             </mdb-tab>
             <!--Panel 2-->
             <mdb-tab heading="Profile" [disabled]='companyForm.invalid'>
@@ -298,8 +301,8 @@
                   <div class="col-sm-3">
                     <div class="md-form mt-3">
                       <mdb-select [options]="statusOptions" placeholder="Status" class="colorful-select dropdown-default select-wrapper"
-                        formControlName="Status" [(ngModel)] ="profileStatus"></mdb-select>
-                        <label>Status</label>
+                        formControlName="Status" [(ngModel)]="profileStatus"></mdb-select>
+                      <label>Status</label>
                     </div>
                   </div>
                   <div class="col-sm-3">
@@ -363,7 +366,7 @@
                     <div class="md-form">
                       <input mdbInputDirective min="0000000" max="9999999" autocomplete="off" data-success=" "
                         data-error=" " type="number" id="form46" class="form-control" formControlName="Noofshares"
-                        onKeyPress="if(this.value.length==10) return false;" onkeydown="javascript: return event.keyCode == 69 ? false : true">
+                        onKeyPress="if(this.value.length==7) return false;" onkeydown="javascript: return event.keyCode == 69 ? false : true">
                       <label for="form46">No of Shares</label>
                     </div>
                   </div>
@@ -403,7 +406,7 @@
                     <div class="md-form">
                       <input mdbInputDirective min="0000000" max="9999999" autocomplete="off" data-success=" "
                         data-error=" " type="number" id="form51" class="form-control" formControlName="Noofshares1"
-                        onKeyPress="if(this.value.length==10) return false;" onkeydown="javascript: return event.keyCode == 69 ? false : true">
+                        onKeyPress="if(this.value.length==7) return false;" onkeydown="javascript: return event.keyCode == 69 ? false : true">
                       <label for="form51">No of Shares</label>
                     </div>
                   </div>
@@ -479,37 +482,43 @@
                 </div>
               </form>
               <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" mdbWavesEffect
-                [disabled]='profileForm.invalid' (click)="saveProfile()">{{isProfileExists ? 'Update' : 'Save' }}</button>
+                [disabled]='profileForm.invalid' (click)="saveProfile()">{{isEditProfile ? 'Update' : 'Save' }}</button>
+              <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" mdbWavesEffect
+                (click)="basicModal.hide()">cancel</button>
             </mdb-tab>
             <!--Panel 3-->
             <mdb-tab heading="Director" [disabled]='companyForm.invalid && profileForm.invalid'>
               <form [formGroup]="directorForm">
                 <div class="row">
+                  <div class="col-md-12">
+                    <div class="error" *ngIf="isDirectorExists" style="color: red; font-size: 12px; margin-bottom: 20px; ">*
+                      {{errorMessage}}</div>
+                  </div>
                   <div class="col-sm-3">
                     <div class="md-form">
-                      <input maxlength="40" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
-                        data-error=" " type="text" id="form25" class="form-control" formControlName="directorname">
+                      <input maxlength="40" data-success=" " data-error=" " mdbInputDirective autocomplete="off"
+                        data-success=" " data-error=" " type="text" id="form25" class="form-control" formControlName="directorname">
                       <label for="form25">Director Name</label>
                     </div>
                   </div>
                   <div class="col-sm-3">
                     <div class="md-form">
-                      <input maxlength="15" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
-                        data-error=" " type="text" id="form26" class="form-control" formControlName="directorid">
+                      <input maxlength="15" data-success=" " data-error=" " mdbInputDirective autocomplete="off"
+                        data-success=" " data-error=" " type="text" id="form26" class="form-control" formControlName="directorid">
                       <label for="form26">Director Id</label>
                     </div>
                   </div>
                   <div class="col-sm-3">
                     <div class="md-form">
-                      <input maxlength="40" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
-                        data-error=" " type="text" id="form27" class="form-control" formControlName="designation">
+                      <input maxlength="40" data-success=" " data-error=" " mdbInputDirective autocomplete="off"
+                        data-success=" " data-error=" " type="text" id="form27" class="form-control" formControlName="designation">
                       <label for="form27">Designation</label>
                     </div>
                   </div>
                   <div class="col-sm-3">
                     <div class="md-form">
-                      <input maxlength="40" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
-                        data-error=" " type="text" id="form28" class="form-control" formControlName="nationality">
+                      <input maxlength="40" data-success=" " data-error=" " mdbInputDirective autocomplete="off"
+                        data-success=" " data-error=" " type="text" id="form28" class="form-control" formControlName="nationality">
                       <label for="form28">Nationality</label>
                     </div>
                   </div>
@@ -517,8 +526,9 @@
                 <div class="row">
                   <div class="col-sm-6">
                     <div class="md-form">
-                      <textarea maxlength="450" data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
-                        data-error=" " id="form29" class="form-control" placeholder="Source of Address" formControlName="soadd"></textarea>
+                      <textarea maxlength="450" data-success=" " data-error=" " mdbInputDirective autocomplete="off"
+                        data-success=" " data-error=" " id="form29" class="form-control" placeholder="Source of Address"
+                        formControlName="soadd"></textarea>
                     </div>
                   </div>
                   <div class="col-sm-3 mb-3">
@@ -530,7 +540,7 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="md-form mb-5">
-                      <input min="0000000" max="9999999" onKeyPress="if(this.value.length==10) return false;" onkeydown="javascript: return event.keyCode == 69 ? false : true"
+                      <input min="0000000" max="9999999" onKeyPress="if(this.value.length==7) return false;" onkeydown="javascript: return event.keyCode == 69 ? false : true"
                         data-success=" " data-error=" " mdbInputDirective autocomplete="off" data-success=" "
                         data-error=" " type="number" id="form31" class="form-control" formControlName="noofsharedir">
                       <label for="form31">No of Shares</label>
@@ -574,7 +584,7 @@
                 </ng-container>
               </div>
               <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" mdbWavesEffect
-                [disabled]="directorForm.invalid" (click)="saveDirector()">{{isDirectorExists ? 'Update' : 'Save' }}</button>
+                [disabled]="directorForm.invalid" (click)="saveDirector()">{{isEditDirector ? 'Update' : 'Save' }}</button>
               <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" mdbWavesEffect
                 (click)="basicModal.hide()">cancel</button>
             </mdb-tab>

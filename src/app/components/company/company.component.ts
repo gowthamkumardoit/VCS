@@ -51,16 +51,16 @@ export class CompanyComponent implements OnInit {
   toastOptions: any = {};
   DateGSTStatusVerified: any;
   OpeningBalanceDate: any;
-  selectedValue1 = '1';
-  selectedValue2 = '1';
-  selectedValue3 = '1';
-  selectedValue4 = '1';
-  selectedValue5 = '1';
-  currency1 = '1';
-  status1 = '1';
-  currency2 = '1';
-  status2 = '1';
-  profileStatus = '1';
+  selectedValue1: string;
+  selectedValue2: string;
+  selectedValue3: string;
+  selectedValue4: string;
+  selectedValue5: string;
+  currency1: string;
+  status1: string;
+  currency2: string;
+  status2: string;
+  profileStatus: string;
   @ViewChildren('pages')
   pages: QueryList<any>;
   itemsPerPage = 5;
@@ -78,6 +78,8 @@ export class CompanyComponent implements OnInit {
 
 
   isEditCompany: boolean;
+  isEditProfile: boolean;
+  isEditDirector: boolean;
   isCompanyExists: boolean;
   isProfileExists: boolean;
   isDirectorExists: boolean;
@@ -87,7 +89,7 @@ export class CompanyComponent implements OnInit {
 
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
   constructor(private companyService: CompanyService, private fb: FormBuilder,
-   private nav: RoleService, public datepipe: DatePipe) { }
+    private nav: RoleService, public datepipe: DatePipe) { }
 
   ngOnInit() {
     this.today = new Date();
@@ -122,7 +124,7 @@ export class CompanyComponent implements OnInit {
     this.getDirectorList();
     this.getPagination();
   }
-  
+
   getPagination() {
     setTimeout(() => {
       this.paginators = [];
@@ -158,6 +160,9 @@ export class CompanyComponent implements OnInit {
     };
     this.basicModal.show();
     this.isCompanyExists = false;
+    this.isProfileExists = false;
+    this.isDirectorExists = false;
+
     // Initializing the default values
     this.statusOptions = [
       { value: '1', label: 'Live', selected: true },
@@ -172,18 +177,17 @@ export class CompanyComponent implements OnInit {
     setTimeout(() => {
       this.companyForm.reset();
       this.profileForm.reset();
-      // this.directorForm.reset();
+      this.directorForm.reset();
       this.initializeCompanyForm();
       this.initializeProfileForm();
-      //this.initializeDirectorForm();
-
-
+      this.initializeDirectorForm();
       this.staticTabs.setActiveTab(1);
 
       this.companyForm.patchValue({
         DateGSTStatusVerified: new Date(),
         OpeningBalanceDate: new Date()
       });
+
       this.profileForm.patchValue({
         IncorporationDate: new Date(),
         Statusdate: new Date(),
@@ -193,9 +197,11 @@ export class CompanyComponent implements OnInit {
         DateofAClaidatlastAGM: new Date(),
         DateoflodgementofARAC: new Date(),
       });
-      // this.directorForm.patchValue({
-      //   doa: new Date(),
-      // });
+
+      this.directorForm.patchValue({
+        doa: new Date(),
+      });
+
       this.selectedValue1 = '1';
       this.selectedValue2 = '1';
       this.selectedValue3 = '1';
@@ -205,6 +211,8 @@ export class CompanyComponent implements OnInit {
       this.currency2 = '1';
       this.status1 = '1';
       this.status2 = '1';
+      this.profileStatus = '1';
+
     }, 500);
 
     this.companyData = {
@@ -250,9 +258,16 @@ export class CompanyComponent implements OnInit {
       }
       this.directorDataArray = [];
       if (this.directorList.length > 0) {
-        this.directorDataArray = this.directorList.filter(val => {
-          return (parseInt(val.cmid) === this.defaultId);
+        this.directorList.filter(val => {
+          if (val.cmid === this.defaultId) {
+            this.directorDataArray.push(val);
+          }
         });
+        if(this.directorDataArray.length > 0) {
+          this.isEditDirector = true;
+        } else {
+          this.isEditDirector = false;
+        }
       }
     });
   }
@@ -291,28 +306,32 @@ export class CompanyComponent implements OnInit {
         this.isCompanyExists = true;
         this.errorMessage = response.message;
       } else {
+        this.isCompanyExists = false;
         this.getCompanyList();
         this.getPagination();
+        this.defaultId = (response.message).toString();
         this.profileForm.patchValue({
-          'cmid': response.message,
-          'CustomerUEN': this.companyForm.value.CustomerUEN,
-          'id': 0
+          cmid: response.message,
+          CustomerUEN: this.companyForm.value.CustomerUEN,
+          id: 0
         });
         this.directorForm.patchValue({
-          'cmid': response.message,
-          'CustomerUEN': this.companyForm.value.CustomerUEN,
-          'id': 0
+          cmid: response.message,
+          CustomerUEN: this.companyForm.value.CustomerUEN,
+          id: 0
         });
-       // this.toastService.success('Company Added Successfully', '', this.toastOptions);
+        // this.toastService.success('Company Added Successfully', '', this.toastOptions);
         this.staticTabs.setActiveTab(2);
       }
     });
   }
-  addMinutes(date, minutes) {
-    return new Date(date.getTime() + minutes*60000);
-  }
+
   editCompany(item, i) {
-    this.isCompanyExists = true;
+    this.companyForm.pristine;
+    this.profileForm.pristine;
+    this.directorForm.pristine;
+    this.isEditCompany = true;
+    this.staticTabs.setActiveTab(1);
     this.companyData = item;
     this.companyForm.setValue({
       ...this.companyData,
@@ -320,21 +339,21 @@ export class CompanyComponent implements OnInit {
       Accountsubgr: (item.Accountsubgr).toString(),
       Status: (item.Status).toString(),
       custmmertype: (item.custmmertype).toString(),
-      DateGSTStatusVerified: new Date (item.DateGSTStatusVerified),
-      OpeningBalanceDate: new Date(item.OpeningBalanceDate), 
+      DateGSTStatusVerified: new Date(item.DateGSTStatusVerified),
+      OpeningBalanceDate: new Date(item.OpeningBalanceDate),
     });
     this.today = new Date();
-    this.defaultId = item.id;
+    this.defaultId = (item.id).toString();
     let tempProfiledata = [];
-    
+
     if (this.companyProfileList.length > 0) {
       tempProfiledata = this.companyProfileList.filter(val => {
         return (parseInt(val.cmid) === item.id);
       });
-      console.log('tempProfiledata',tempProfiledata);
 
-      if (tempProfiledata !== undefined) {
+      if (tempProfiledata !== undefined && tempProfiledata.length > 0) {
         setTimeout(() => {
+          this.isEditProfile = true;
           this.profileForm.patchValue({
             ...tempProfiledata[0],
             IncorporationDate: new Date((tempProfiledata[0].IncorporationDate).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
@@ -347,53 +366,28 @@ export class CompanyComponent implements OnInit {
             cmid: this.defaultId,
             CustomerUEN: item.CustomerUEN,
           });
+          this.currency1 = (tempProfiledata[0].Currency).toString();
+          this.currency2 = (tempProfiledata[0].Currency1).toString();
           this.status1 = '1';
           this.status2 = '1';
+          this.profileStatus = (tempProfiledata[0].Status).toString();
           this.directorForm.patchValue({
             cmid: this.defaultId,
             CustomerUEN: item.CustomerUEN,
             doa: new Date((tempProfiledata[0].DateoflodgementofARAC).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
           });
           this.profileData = tempProfiledata[0];
+          this.getDirectorList();
         }, 200);
       } else {
-        this.profileData = {
-          ...this.profileData,
-          id : 0,
-        }
-        console.log('profile');
+        this.noProfile(item);
+        this.getDirectorList();
       }
-    } else{
-      this.profileData = {
-        ...this.profileData,
-        id : 0,
-      }
-      setTimeout(() => {
-        this.profileForm.patchValue({
-          IncorporationDate: new Date(),
-          Statusdate: new Date(),
-          Dateofaddress: new Date(),
-          DateoflastAGM:  new Date(),
-          DateoflastAR: new Date(),
-          DateofAClaidatlastAGM: new Date(),
-          DateoflodgementofARAC: new Date(),
-          cmid: this.defaultId,
-          CustomerUEN: item.CustomerUEN,
-        });
-
-        this.directorForm.patchValue({
-          cmid: this.defaultId,
-          CustomerUEN: item.CustomerUEN,
-          doa: new Date(),
-        });
-      }, 200);
+    } else {
+      this.noProfile(item);
+      this.getDirectorList();
     }
-    this.directorDataArray = [];
-    if (this.directorList.length > 0) {
-      this.directorDataArray = this.directorList.filter(val => {
-        return (parseInt(val.cmid) === item.id);
-      });
-    }
+    
 
     this.basicModal.show();
     this.statusOptions = NEW_STATUS;
@@ -405,6 +399,37 @@ export class CompanyComponent implements OnInit {
     this.shareTypeOptions = SHARE_TYPE;
   }
 
+  noProfile(item) {
+    this.profileData = {
+      ...this.profileData,
+      id: 0,
+    }
+    this.isEditProfile = false;
+    setTimeout(() => {
+      this.profileForm.patchValue({
+        IncorporationDate: new Date(),
+        Statusdate: new Date(),
+        Dateofaddress: new Date(),
+        DateoflastAGM: new Date(),
+        DateoflastAR: new Date(),
+        DateofAClaidatlastAGM: new Date(),
+        DateoflodgementofARAC: new Date(),
+        cmid: this.defaultId,
+        CustomerUEN: item.CustomerUEN,
+      });
+      this.currency1 = '1';
+      this.currency2 = '1';
+      this.status1 = '1';
+      this.status2 = '1';
+      this.profileStatus = '1';
+      this.directorForm.patchValue({
+        cmid: this.defaultId,
+        CustomerUEN: item.CustomerUEN,
+        doa: new Date(),
+      });
+    }, 200);
+  }
+
   updateCompany() {
     const postData = {
       ...this.companyForm.value,
@@ -412,9 +437,16 @@ export class CompanyComponent implements OnInit {
       OpeningBalanceDate: new Date((this.companyForm.value.OpeningBalanceDate)),
       modifyby: this.userid,
     };
-    this.companyService.updateCompany(postData).subscribe(data => {
-      this.getCompanyList();
-      this.getPagination();
+    this.companyService.updateCompany(postData).subscribe((response: any) => {
+      if (response && response.isSaved == "false") {
+        this.isCompanyExists = true;
+        this.errorMessage = response.message;
+      } else {
+        this.getCompanyList();
+        this.getPagination();
+        this.isCompanyExists = false;
+      }
+
       //this.toastService.success('Company Updated Successfully', '', this.toastOptions);
     });
   }
@@ -442,9 +474,16 @@ export class CompanyComponent implements OnInit {
       ...this.profileForm.value,
       modifyby: parseInt(this.userid),
     };
-    this.companyService.updateProfile(postData).subscribe(data => {
-      this.getCompanyList();
-      this.getCompanyProfileList();
+    this.companyService.updateProfile(postData).subscribe((data: any) => {
+      if (data && data.isSaved == "false") {
+        this.isProfileExists = true;
+        this.errorMessage = data.message;
+      } else {
+        this.isProfileExists = false;
+        this.getCompanyList();
+        this.getCompanyProfileList();
+      }
+
       //this.toastService.success('Profile Updated Successfully', '', this.toastOptions);
     });
   }
@@ -619,8 +658,8 @@ export class CompanyComponent implements OnInit {
       return this.filterIt(this.companyDataList, this.searchText);
     }
   }
-   // Pagination code
-   changePage(event: any) {
+  // Pagination code
+  changePage(event: any) {
     if (
       event.target.text >= 1 &&
       event.target.text <= this.numberOfPaginators
@@ -633,17 +672,17 @@ export class CompanyComponent implements OnInit {
   }
 
   nextPage(event: any) {
-   // if (this.pages.last.nativeElement.classList.contains('active')) {
-      if (
-        this.numberOfPaginators - this.numberOfVisiblePaginators >=
-        this.lastVisiblePaginator
-      ) {
-        this.firstVisiblePaginator += this.numberOfVisiblePaginators;
-        this.lastVisiblePaginator += this.numberOfVisiblePaginators;
-      } else {
-        this.firstVisiblePaginator += this.numberOfVisiblePaginators;
-        this.lastVisiblePaginator = this.numberOfPaginators;
-      }
+    // if (this.pages.last.nativeElement.classList.contains('active')) {
+    if (
+      this.numberOfPaginators - this.numberOfVisiblePaginators >=
+      this.lastVisiblePaginator
+    ) {
+      this.firstVisiblePaginator += this.numberOfVisiblePaginators;
+      this.lastVisiblePaginator += this.numberOfVisiblePaginators;
+    } else {
+      this.firstVisiblePaginator += this.numberOfVisiblePaginators;
+      this.lastVisiblePaginator = this.numberOfPaginators;
+    }
     // }
 
     this.activePage += 1;
@@ -653,7 +692,7 @@ export class CompanyComponent implements OnInit {
   }
 
   previousPage(event: any) {
-  //  if (this.pages.first.nativeElement.classList.contains('active')) {
+    //  if (this.pages.first.nativeElement.classList.contains('active')) {
     if (
       this.lastVisiblePaginator - this.firstVisiblePaginator ===
       this.numberOfVisiblePaginators
@@ -665,7 +704,7 @@ export class CompanyComponent implements OnInit {
       this.lastVisiblePaginator -=
         this.numberOfPaginators % this.numberOfVisiblePaginators;
     }
-//  }
+    //  }
 
     this.activePage -= 1;
     this.firstVisibleIndex =
