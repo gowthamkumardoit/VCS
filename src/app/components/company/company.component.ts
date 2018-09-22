@@ -61,6 +61,8 @@ export class CompanyComponent implements OnInit {
   currency2: string;
   status2: string;
   profileStatus: string;
+  directorStatus: string;
+
   @ViewChildren('pages')
   pages: QueryList<any>;
   itemsPerPage = 5;
@@ -91,7 +93,7 @@ export class CompanyComponent implements OnInit {
   constructor(private companyService: CompanyService, private fb: FormBuilder,
     private nav: RoleService, public datepipe: DatePipe,
     private toastService: ToastrService
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.today = new Date();
@@ -117,7 +119,7 @@ export class CompanyComponent implements OnInit {
       closeButton: true
     };
 
-    
+
 
     this.initializeCompanyForm();
     this.initializeProfileForm();
@@ -165,7 +167,9 @@ export class CompanyComponent implements OnInit {
     this.isCompanyExists = false;
     this.isProfileExists = false;
     this.isDirectorExists = false;
-
+    this.isEditCompany = false;
+    this.isEditProfile = false;
+    this.isEditDirector = false;
     // Initializing the default values
     this.statusOptions = [
       { value: '1', label: 'Live', selected: true },
@@ -215,6 +219,7 @@ export class CompanyComponent implements OnInit {
       this.status1 = '1';
       this.status2 = '1';
       this.profileStatus = '1';
+      this.directorStatus = '1';
 
     }, 500);
 
@@ -266,7 +271,7 @@ export class CompanyComponent implements OnInit {
             this.directorDataArray.push(val);
           }
         });
-        if(this.directorDataArray.length > 0) {
+        if (this.directorDataArray.length > 0) {
           this.isEditDirector = true;
         } else {
           this.isEditDirector = false;
@@ -369,10 +374,11 @@ export class CompanyComponent implements OnInit {
             cmid: this.defaultId,
             CustomerUEN: item.CustomerUEN,
           });
+          console.log('temp', tempProfiledata[0]);
           this.currency1 = (tempProfiledata[0].Currency).toString();
           this.currency2 = (tempProfiledata[0].Currency1).toString();
-          this.status1 = '1';
-          this.status2 = '1';
+          this.status1 = (tempProfiledata[0].Sharetype).toString();
+          this.status2 = (tempProfiledata[0].Sharetype1).toString();
           this.profileStatus = (tempProfiledata[0].Status).toString();
           this.directorForm.patchValue({
             cmid: this.defaultId,
@@ -381,16 +387,19 @@ export class CompanyComponent implements OnInit {
           });
           this.profileData = tempProfiledata[0];
           this.getDirectorList();
+          console.log('update');
         }, 200);
       } else {
+        console.log('update 1');
         this.noProfile(item);
         this.getDirectorList();
       }
     } else {
+      console.log('update 2');
       this.noProfile(item);
       this.getDirectorList();
     }
-    
+
 
     this.basicModal.show();
     this.statusOptions = NEW_STATUS;
@@ -425,6 +434,7 @@ export class CompanyComponent implements OnInit {
       this.status1 = '1';
       this.status2 = '1';
       this.profileStatus = '1';
+      this.directorStatus = '1';
       this.directorForm.patchValue({
         cmid: this.defaultId,
         CustomerUEN: item.CustomerUEN,
@@ -449,6 +459,7 @@ export class CompanyComponent implements OnInit {
         this.getPagination();
         this.isCompanyExists = false;
         this.toastService.success('Company Updated Successfully', '', this.toastOptions);
+        this.staticTabs.setActiveTab(2);
       }
 
     });
@@ -476,7 +487,13 @@ export class CompanyComponent implements OnInit {
     const postData = {
       ...this.profileForm.value,
       modifyby: parseInt(this.userid),
+      Currency: parseInt(this.profileForm.value.Currency),
+      Currency1: parseInt(this.profileForm.value.Currency1),
+      Sharetype: parseInt(this.profileForm.value.Sharetype),
+      Sharetype1: parseInt(this.profileForm.value.Sharetype1),
+      Status: parseInt(this.profileForm.value.Status),
     };
+    console.log(postData);
     this.companyService.updateProfile(postData).subscribe((data: any) => {
       if (data && data.isSaved == "false") {
         this.isProfileExists = true;
@@ -486,8 +503,8 @@ export class CompanyComponent implements OnInit {
         this.getCompanyList();
         this.getCompanyProfileList();
         this.toastService.success('Profile Updated Successfully', '', this.toastOptions);
+        this.staticTabs.setActiveTab(3);
       }
-
     });
   }
 
@@ -511,6 +528,7 @@ export class CompanyComponent implements OnInit {
         });
         this.isDirectorExists = false;
         this.toastService.success('Director Added Successfully', '', this.toastOptions);
+        this.directorStatus = '1';
       }
     });
   }
@@ -640,6 +658,7 @@ export class CompanyComponent implements OnInit {
       noofsharedir: ['', Validators.required],
       cmid: [''],
       doa: ['', Validators.required],
+      status: ['', Validators.required]
     });
   }
   // Pagination code
