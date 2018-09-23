@@ -1,71 +1,170 @@
 <div style="height:100px;"></div>
-<div class="container-fluid px-5">
+<div class="container px-5">
   <div class="row">
     <div class="col-sm-8"></div>
     <div class='col-sm-4'>
       <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" (click)="openModal()"
         mdbWavesEffect>
-        <i class="fa fa-plus-circle mr-2"></i> Add Tasks</button>
+        <i class="fa fa-plus-circle mr-2"></i> Add Template</button>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-md-2 col-lg-1 mt-4">
+          <div mdbBtn color="teal" size="sm" class="waves-light" mdbWavesEffect>
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+        <div class="col-md-5 space">
+          <div class="md-form">
+            <input type="search" [(ngModel)]="searchText" id="search" class="form-control" autocomplete="off"
+              data-error=" " data-success=" " mdbInputDirective [mdbValidate]="false">
+            <label for="search">Search Template</label>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="teal white-text">
+            <tr>
+              <ng-container *ngFor="let item of tableHeadings; let i= index;">
+                <th scope="col">{{item}}</th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="templateList.length > 0">
+              <tr *ngFor="let item of search(); let i=index;">
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex" scope="row">{{(i+1)}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.templateName}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.createdOn }}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.modifiedOn }}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">
+                  <div class="d-inline cursor" (click)="editTemplate(item)" mdbTooltip="Edit" placment="top">
+                    <i class="fa fa-edit" style="color:rgb(24, 119, 111);"></i>
+                  </div>
+                  <div class="d-inline ml-3 cursor" (click)="deleteTemplate(item)" mdbTooltip="Delete" placment="top">
+                    <i class="fa fa-trash" style="color:red;"></i>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+
+        <ng-container *ngIf="templateList.length == 0">
+          <div class="col-sm-12 mt-5">
+            <p class="h3 text-center teal-text">No Template's Found</p>
+          </div>
+        </ng-container>
+      </div>
+      <hr class="my-0" *ngIf="templateList.length > 0">
+      <div class="d-flex justify-content-center" *ngIf="templateList.length > 0">
+        <nav class="my-4 pt-2">
+          <ul class="pagination pagination-circle pg-teal mb-0">
+            <li class="page-item clearfix d-none d-md-block" (click)="firstPage()" [ngClass]="{disabled: activePage == 1}">
+              <a class="page-link">First</a>
+            </li>
+            <li #pages *ngFor="let page of paginators | slice:firstVisiblePaginator:lastVisiblePaginator; let i = index"
+              class="page-item" [ngClass]="{active: i + firstVisiblePaginator + 1 == activePage}">
+              <a class="page-link waves-light" (click)="changePage($event)" mdbWavesEffect>{{page}}</a>
+            </li>
+            <li class="page-item clearfix d-none d-md-block" (click)="lastPage()" [ngClass]="{disabled: activePage == numberOfPaginators}">
+              <a class="page-link">Last</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-md-9">
-      <mdb-card>
-        <mdb-card-header class="teal lighten-1 white-text">
-          Editor
-        </mdb-card-header>
-        <mdb-card-body>
-          <div>
-            <div class="editor" style="min-height: 500px;">
-              <div class="ckeditor" cols="10" id="editor1" name="editor1" rows="100" contenteditable="true" #myTemplate>
-                <h1>The Annual Meeting of Fictional Characters</h1>
-                <h3>Technical Announcement</h3>
-                <p>We hereby have the pleasure to announce that the theme of this year's meeting is "
-                  <strong>E–ink Technology and Classical Fairy Tales</strong>". As every year, the event will be hosted
-                  in
-                  <em>The Wonderland</em> by
-                  <span class="h-card">
-                    <a class="p-name u-email" href="mailto:alice@example.com">Alice</a>
-                    <span class="p-tel">+20 4345 234 235</span>
-                  </span>and starts tomorrow at 8:00 GMT.</p>
-                <h3>Speakers and Agenda</h3>
-                <p>TBA.</p>
-                <h3>Venue</h3>
-                <p>For detailed information, please contact
-                  <span class="h-card">
-                    <a class="p-name u-email" href="mailto:h.finn@example.com">Huckleberry Finn</a>
-                    <span class="p-tel">+48 1345 234 235</span>
-                  </span>.</p>
-                <h3>Accommodation</h3>
-                <p>Many thanks to
-                  <span class="h-card">
-                    <a class="p-name u-email" href="mailto:r.crusoe@example.com">Robinson Crusoe</a>
-                    <span class="p-tel">+45 2345 234 235</span>
-                  </span>who kindly offered his island to the guests of the annual meeting.</p>
-                <hr>
-                <p style="text-align: right;">
-                  <span class="h-card">
-                    <a class="p-name u-email" href="mailto:lrrh@example.com">Little Red Riding Hood</a>
-                    <span class="p-tel">+45 2345 234 235</span>
-                  </span>
-                </p>
+
+
+<div mdbModal #basicModal="mdbModal" class="modal fade top" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Template</h4>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="templateForm" novalidate>
+          <div class="row px-3">
+            <div class="col-md-12">
+              <div class="error" *ngIf="isTemplateExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
+                {{errorMessage}}</div>
+            </div>
+            <div class="col-3">
+              <div class="md-form ">
+                <input mdbInputDirective maxlength="40" autocomplete="off" data-error=" " data-success=" " maxlength="40"
+                  type="text" id="form1" class="form-control" formControlName="templateName">
+                <label for="form1">Template Name</label>
+              </div>
+            </div>
+            <div class="col-9"></div>
+            <div class="col-md-9">
+              <mdb-card>
+                <mdb-card-header class="teal lighten-1 white-text">
+                  Editor
+                </mdb-card-header>
+                <mdb-card-body>
+                  <div>
+                    <div class="editor" style="min-height: 500px;">
+                      <div class="ckeditor" cols="10" id="editor1" name="editor1" rows="100" contenteditable="true"
+                        #myTemplate>
+                        <div class="addtext" [innerHTML]="newTemplate"></div>
+                      </div>
+                    </div>
+                  </div>
+                </mdb-card-body>
+              </mdb-card>
+            </div>
+            <div class="col-md-3 p-3" id="draggableList" style="max-height: 600px; overflow-y: auto">
+              <div *ngFor="let item of items; let i = index;">
+                <button *ngIf="(i%2) == 0" mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true"
+                  class="waves-light my-3" mdbWavesEffect>{{item}}</button>
+                <button *ngIf="(i%2) != 0" mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true"
+                  class="waves-light my-3" mdbWavesEffect>{{item}}</button>
               </div>
             </div>
           </div>
-        </mdb-card-body>
-      </mdb-card>
+        </form>
+      </div>
+      <div class="modal-footer ">
+        <button type="button" mdbBtn color="warning" class="waves-light pull-right" aria-label="Close" (click)="close()"
+          mdbWavesEffect>Cancel</button>
+        <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" [disabled]="templateForm.invalid"
+          (click)="save()" mdbWavesEffect>Save</button>
+      </div>
     </div>
-    <div class="col-md-3 p-3" id="draggableList">
-      <button mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true" class="waves-light my-3"
-        mdbWavesEffect>Gowtham Kumar</button>
-      <button mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true" class="waves-light my-3"
-        mdbWavesEffect>Excel Forte</button>
-      <button mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true" class="waves-light my-3"
-        mdbWavesEffect>Chennai - 600100</button>
-      <button mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true" class="waves-light my-3"
-        mdbWavesEffect>9876543210</button>
-      <button mdbBtn type="button" color="warning" class="waves-light my-5" mdbWavesEffect (click)="getData()">Get Data</button>
+  </div>
+</div>
+
+<div mdbModal #delete="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="modal-header d-flex justify-content-center">
+        <p class="heading">Are you sure?</p>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <i class="fa fa-times fa-4x animated rotateIn"></i>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+        <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect (click)="deleteConfirm();">Yes</a>
+        <a type="button" mdbBtn color="danger" class="waves-effect" mdbWavesEffect data-dismiss="modal" (click)="delete.hide()">No</a>
+      </div>
     </div>
-  </div> -->
+    <!--/.Content-->
+  </div>
+</div>
