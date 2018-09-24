@@ -22,7 +22,7 @@ import { IMyOptions } from 'ng-uikit-pro-standard';
 })
 export class CompanyComponent implements OnInit {
   public myDatePickerOptions: IMyOptions = {
-    closeAfterSelect: true;
+    closeAfterSelect: true
   };
   statusOptions: any = [];
   customTypeOptions: any = [];
