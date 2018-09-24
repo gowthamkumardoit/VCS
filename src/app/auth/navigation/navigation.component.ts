@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class NavigationComponent implements OnInit {
   navBarToggle: boolean;
   toastOptions: any = {};
+  userName: string;
   constructor(private nav: RoleService, private router: Router,
       private toastService: ToastrService
      ) { }
@@ -22,6 +23,7 @@ export class NavigationComponent implements OnInit {
       toastClass: 'black',
       closeButton: true
     };
+    this.userName = localStorage.getItem('userName');
 
     this.nav.navigationBarShow.subscribe(data => {
       if (data === true) {

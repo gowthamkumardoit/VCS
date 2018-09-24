@@ -327,7 +327,7 @@ export class CompanyComponent implements OnInit {
       Createby: this.userid,
     };
     this.companyService.createCompany(postData).subscribe((response: any) => {
-      if (response && response.isSaved == "false") {
+      if (response && response.isSaved == 'false') {
         this.isCompanyExists = true;
         this.errorMessage = response.message;
       } else {
@@ -365,8 +365,8 @@ export class CompanyComponent implements OnInit {
       DateGSTStatusVerified: new Date(item.DateGSTStatusVerified),
       OpeningBalanceDate: new Date(item.OpeningBalanceDate),
     });
-    let opdate = item.OpeningBalanceDate.split(',')[0];
-    let GSTdate = item.DateGSTStatusVerified.split(',')[0];
+    const opdate = item.OpeningBalanceDate.split(',')[0];
+    const GSTdate = item.DateGSTStatusVerified.split(',')[0];
     setTimeout(() => {
       this.OpeningBalanceDate = opdate;
       this.DateGSTStatusVerified = GSTdate;
@@ -382,24 +382,17 @@ export class CompanyComponent implements OnInit {
       console.log(tempProfiledata);
       if (tempProfiledata !== undefined && tempProfiledata.length > 0) {
         console.log(tempProfiledata[0].IncorporationDate);
-          let IncorporationDate = tempProfiledata[0].IncorporationDate.split('T')[0];
-          let Statusdate = tempProfiledata[0].Statusdate.split('T')[0];
-          let Dateofaddress = tempProfiledata[0].Dateofaddress.split('T')[0];
-          let DateoflastAGM = tempProfiledata[0].DateoflastAGM.split('T')[0];
-          let DateoflastAR = tempProfiledata[0].DateoflastAR.split('T')[0];
-          let DateofAClaidatlastAGM = tempProfiledata[0].DateofAClaidatlastAGM.split('T')[0];
-          let DateoflodgementofARAC = tempProfiledata[0].DateoflodgementofARAC.split('T')[0];
+        const IncorporationDate = tempProfiledata[0].IncorporationDate.split('T')[0];
+        const Statusdate = tempProfiledata[0].Statusdate.split('T')[0];
+        const Dateofaddress = tempProfiledata[0].Dateofaddress.split('T')[0];
+        const DateoflastAGM = tempProfiledata[0].DateoflastAGM.split('T')[0];
+        const DateoflastAR = tempProfiledata[0].DateoflastAR.split('T')[0];
+        const DateofAClaidatlastAGM = tempProfiledata[0].DateofAClaidatlastAGM.split('T')[0];
+        const DateoflodgementofARAC = tempProfiledata[0].DateoflodgementofARAC.split('T')[0];
         setTimeout(() => {
           this.isEditProfile = true;
           this.profileForm.patchValue({
             ...tempProfiledata[0],
-            // IncorporationDate: new Date((tempProfiledata[0].IncorporationDate).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            // Statusdate: new Date((tempProfiledata[0].Statusdate).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            // Dateofaddress: new Date((tempProfiledata[0].Dateofaddress).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            // DateoflastAGM: new Date((tempProfiledata[0].DateoflastAGM).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            // DateoflastAR: new Date((tempProfiledata[0].DateoflastAR).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            // DateofAClaidatlastAGM: new Date((tempProfiledata[0].DateofAClaidatlastAGM).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            // DateoflodgementofARAC: new Date((tempProfiledata[0].DateoflodgementofARAC).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
             cmid: this.defaultId,
             CustomerUEN: item.CustomerUEN,
             Currency: (tempProfiledata[0].Currency).toString(),
@@ -457,7 +450,7 @@ export class CompanyComponent implements OnInit {
     this.profileData = {
       ...this.profileData,
       id: 0,
-    }
+    };
     this.isEditProfile = false;
     setTimeout(() => {
       this.profileForm.patchValue({
@@ -493,7 +486,7 @@ export class CompanyComponent implements OnInit {
       modifyby: this.userid,
     };
     this.companyService.updateCompany(postData).subscribe((response: any) => {
-      if (response && response.isSaved == "false") {
+      if (response && response.isSaved === 'false') {
         this.isCompanyExists = true;
         this.errorMessage = response.message;
       } else {
@@ -520,14 +513,15 @@ export class CompanyComponent implements OnInit {
       Createby: this.userid,
     };
     this.companyService.createProfile(postData).subscribe((data: any) => {
-      if (data && data.isSaved == "false") {
+      if (data && data.isSaved === 'false') {
         this.isProfileExists = true;
         this.errorMessage = data.message;
       } else {
         this.getCompanyList();
         this.toastService.success('Profile Added Successfully', '', this.toastOptions);
         this.staticTabs.setActiveTab(3);
-
+        this.directorDataArray = [];
+        this.directorStatus = '1';
       }
     });
   }
@@ -543,7 +537,7 @@ export class CompanyComponent implements OnInit {
       Status: parseInt(this.profileForm.value.Status),
     };
     this.companyService.updateProfile(postData).subscribe((data: any) => {
-      if (data && data.isSaved == "false") {
+      if (data && data.isSaved == 'false') {
         this.isProfileExists = true;
         this.errorMessage = data.message;
       } else {
@@ -563,7 +557,7 @@ export class CompanyComponent implements OnInit {
       Createby: this.userid,
     };
     this.companyService.createDirector(postData).subscribe((data: any) => {
-      if (data && data.isSaved == "false") {
+      if (data && data.isSaved == 'false') {
         this.isDirectorExists = true;
         this.errorMessage = data.message;
       } else {

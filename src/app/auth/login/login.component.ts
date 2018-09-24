@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: Router,
-    private toastService: ToastrService, 
+    private toastService: ToastrService,
     private nav: RoleService,
     private loginService: LoginService
   ) {
@@ -42,9 +42,10 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.loginService.login(this.loginForm.value).subscribe((data: any) => {
-      if (data && data.isSaved == 'true') {
+      if (data && data.isSaved === 'true') {
         this.loginService.userid.next(data.userid);
         localStorage.setItem('userid', data.userid);
+        localStorage.setItem('userName', this.loginForm.value.uname);
         this.route.navigate(['/home']);
         this.toastService.success('Successfully Logged In', '', this.toastOptions);
       } else {
