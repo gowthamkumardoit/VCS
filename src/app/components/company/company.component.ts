@@ -333,6 +333,7 @@ export class CompanyComponent implements OnInit {
       } else {
         this.isCompanyExists = false;
         this.getCompanyList();
+        this.toastService.success('Company Added Successfully', '', this.toastOptions);
         this.getPagination();
         this.defaultId = (response.message).toString();
         this.profileForm.patchValue({
@@ -345,7 +346,6 @@ export class CompanyComponent implements OnInit {
           CustomerUEN: this.companyForm.value.CustomerUEN,
           id: 0
         });
-        this.toastService.success('Company Added Successfully', '', this.toastOptions);
         this.staticTabs.setActiveTab(2);
       }
     });
@@ -497,10 +497,10 @@ export class CompanyComponent implements OnInit {
         this.isCompanyExists = true;
         this.errorMessage = response.message;
       } else {
+        this.toastService.success('Company Updated Successfully', '', this.toastOptions);
         this.getCompanyList();
         this.getPagination();
         this.isCompanyExists = false;
-        this.toastService.success('Company Updated Successfully', '', this.toastOptions);
         this.staticTabs.setActiveTab(2);
       }
 
@@ -599,9 +599,10 @@ export class CompanyComponent implements OnInit {
     this.companyService.deleteCompany(this.companyData).subscribe(data => {
       if (data) {
         this.deleteModal.hide();
+        this.toastService.success('Company Deleted Successfully', '', this.toastOptions);
         this.getCompanyList();
         this.getPagination();
-        this.toastService.success('Company Deleted Successfully', '', this.toastOptions);
+
       }
     });
   }
