@@ -39,7 +39,8 @@ export class TemplateComponent implements OnInit {
   lastVisibleIndex: number = this.itemsPerPage;
   firstVisiblePaginator = 0;
   lastVisiblePaginator = this.numberOfVisiblePaginators;
-  constructor(private nav: RoleService, private fb: FormBuilder, private templateService: TemplateService, private toastService: ToastrService) { }
+  constructor(private nav: RoleService, private fb: FormBuilder, private templateService: TemplateService,
+    private toastService: ToastrService) { }
 
   ngOnInit() {
     this.tableHeadings = ['No', 'Template Name', 'Created On', 'Modified On', 'Actions'];
@@ -61,7 +62,8 @@ export class TemplateComponent implements OnInit {
       });
     });
 
-    this.items = ['Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No', 'Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No', 'Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No'];
+    this.items = ['Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No', 'Customer Name', 'Company Name',
+     'Company UEN', 'Email', 'Contact No', 'Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No'];
     this.userid = parseInt(localStorage.getItem('userid'));
     this.templateData = {
       templatehead: '',
@@ -96,10 +98,7 @@ export class TemplateComponent implements OnInit {
   openModal() {
     this.basicModal.show();
     this.templateForm.reset();
-    let tArea = document.getElementsByClassName('cke_editable ');
-    console.log(tArea);
-    tArea['innerHTML'] = '';
-    this.newTemplate = "";
+    CKEDITOR.instances['editor1'].setData('');
     this.isEditTemplate = false;
     this.isTemplateExists = false;
     this.templateData = {
@@ -142,7 +141,7 @@ export class TemplateComponent implements OnInit {
       templates: getData,
       createby: this.userid,
       status: parseInt(this.templateForm.value.status),
-    }
+    };
     this.templateService.postTemplateData(postData).subscribe((res: any) => {
       if (res && res.isSaved == 'false') {
         this.isTemplateExists = true;
@@ -162,9 +161,18 @@ export class TemplateComponent implements OnInit {
     this.templateData = {
       ...this.templateData,
       ...item
-    }
+    };
+    console.log(item);
+    setTimeout(() => {
+      this.templateService.getDataById(item.id).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          this.newTemplate = data.message;
+          CKEDITOR.instances['editor1'].setData(this.newTemplate);
+        }
+      });
+    }, 300);
     this.basicModal.show();
-    this.newTemplate = item.templates; 
     this.templateForm.patchValue({
       templatehead: item.templatehead,
       status: (item.status).toString()
