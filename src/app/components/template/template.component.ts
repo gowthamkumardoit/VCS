@@ -1,6 +1,8 @@
 import { RoleService } from '../../services/role.service';
 import { Component, OnInit, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { TemplateService } from '../../services/template.service';
+import { ToastrService } from 'ngx-toastr';
 declare var CKEDITOR: any;
 @Component({
   selector: 'app-template',
@@ -14,9 +16,15 @@ export class TemplateComponent implements OnInit {
   templateList: any = [];
   tableHeadings: any = [];
   templateForm: FormGroup;
+  isEditTemplate: boolean;
   isTemplateExists: boolean;
   errorMessage: string;
-  items:any = [];
+  items: any = [];
+  userid: number;
+  templateData: any;
+  toastOptions: any;
+  deletedItem: any;
+  options: any = [];
 
   @ViewChild('basicModal') basicModal;
   @ViewChild('delete') deleteModal;
@@ -31,38 +39,84 @@ export class TemplateComponent implements OnInit {
   lastVisibleIndex: number = this.itemsPerPage;
   firstVisiblePaginator = 0;
   lastVisiblePaginator = this.numberOfVisiblePaginators;
-  constructor(private nav: RoleService, private fb: FormBuilder) { }
+  constructor(private nav: RoleService, private fb: FormBuilder, private templateService: TemplateService, private toastService: ToastrService) { }
 
   ngOnInit() {
     this.tableHeadings = ['No', 'Template Name', 'Created On', 'Modified On', 'Actions'];
-    this.newTemplate = "<p>Hello</p>";
+    this.newTemplate = "";
     this.templateForm = this.fb.group({
-      templateName: ['', [Validators.required, Validators.maxLength(40)]],
+      templatehead: ['', [Validators.required, Validators.maxLength(40)]],
+      status: ['', [Validators.required]],
     });
     CKEDITOR.replace('editor1');
     this.nav.navigationBarShow.next(true);
     this.nav.navigationBarShow.subscribe(data => {
-      CKEDITOR.on('instanceReady', function() {
-        CKEDITOR.document.getById('draggableList' ).on( 'dragstart', function( evt ) {
+      CKEDITOR.on('instanceReady', function () {
+        CKEDITOR.document.getById('draggableList').on('dragstart', function (evt) {
           const target = evt.data.getTarget();
-          CKEDITOR.plugins.clipboard.initDragDataTransfer( evt );
+          CKEDITOR.plugins.clipboard.initDragDataTransfer(evt);
           const dataTransfer = evt.data.dataTransfer;
-          dataTransfer.setData( 'text/html', target.getText() );
+          dataTransfer.setData('text/html', target.getText());
         });
       });
     });
 
     this.items = ['Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No', 'Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No', 'Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No'];
-
-    this.templateList = [
-      {templateName: 'First Template', createdOn: '20/10/2018', modifiedOn: '21/10/2018' }
+    this.userid = parseInt(localStorage.getItem('userid'));
+    this.templateData = {
+      templatehead: '',
+      templates: '',
+      id: 0,
+      createby: this.userid,
+      status: 1,
+      createon: new Date(),
+    }
+    this.toastOptions = {
+      progressBar: true,
+      timeOut: 1000,
+      toastClass: 'black',
+      closeButton: true
+    };
+    this.options = [
+      { value: '1', label: 'Live', selected: true },
+      { value: '2', label: 'Dormant' }
     ];
+    this.getTemplateList();
     this.getPagination();
   }
-
+  getTemplateList() {
+    this.templateService.getTemplateList().subscribe((data) => {
+      if (data) {
+        this.templateList = data;
+      } else {
+        this.templateList = [];
+      }
+    });
+  }
   openModal() {
     this.basicModal.show();
-    this.newTemplate = "<p>Hello</p>"
+    this.templateForm.reset();
+    let tArea = document.getElementsByClassName('cke_editable ');
+    console.log(tArea);
+    tArea['innerHTML'] = '';
+    this.newTemplate = "";
+    this.isEditTemplate = false;
+    this.isTemplateExists = false;
+    this.templateData = {
+      templatehead: '',
+      templates: '',
+      id: 0,
+      createby: this.userid,
+      status: 1,
+      createon: new Date(),
+    }
+    this.options = [
+      { value: '1', label: 'Live', selected: true },
+      { value: '2', label: 'Dormant' }
+    ];
+    setTimeout(() => {
+      this.selectedValue = '1';
+    }, 200);
   }
 
   close() {
@@ -70,22 +124,96 @@ export class TemplateComponent implements OnInit {
   }
 
   save() {
+    if (this.templateData) {
+      if (this.templateData.id == 0) {
+        this.createTemplate();
+      } else if (this.templateData.id > 0) {
+        this.updateTemplate();
+      }
+    }
+  }
+  createTemplate() {
     const editor = CKEDITOR.instances.editor1;
-    alert(editor.getData());
+    const getData = editor.getData();
+
+    let postData = {
+      ...this.templateData,
+      templatehead: this.templateForm.value.templatehead,
+      templates: getData,
+      createby: this.userid,
+      status: parseInt(this.templateForm.value.status),
+    }
+    this.templateService.postTemplateData(postData).subscribe((res: any) => {
+      if (res && res.isSaved == 'false') {
+        this.isTemplateExists = true;
+        this.errorMessage = res.message;
+      } else {
+        this.isTemplateExists = false;
+        this.errorMessage = '';
+        this.basicModal.hide();
+        this.toastService.success('Template Added Successfully', '', this.toastOptions);
+        this.getTemplateList();
+        this.getPagination();
+
+      }
+    });
   }
   editTemplate(item) {
+    this.templateData = {
+      ...this.templateData,
+      ...item
+    }
     this.basicModal.show();
+    this.newTemplate = item.templates; 
     this.templateForm.patchValue({
-      templateName : item.templateName
+      templatehead: item.templatehead,
+      status: (item.status).toString()
+    });
+    this.isEditTemplate = true;
+  }
+
+  updateTemplate() {
+    const editor = CKEDITOR.instances.editor1;
+    const getData = editor.getData();
+
+    let postData = {
+      ...this.templateData,
+      templatehead: this.templateForm.value.templatehead,
+      templates: getData,
+      modifyby: this.userid,
+      status: 1,
+      modifyon: new Date()
+    }
+    this.templateService.updateTemplateData(postData).subscribe((res: any) => {
+      if (res && res.isSaved == 'false') {
+        this.isTemplateExists = true;
+        this.errorMessage = res.message;
+      } else {
+        this.isTemplateExists = false;
+        this.errorMessage = '';
+        this.basicModal.hide();
+        this.getTemplateList();
+        this.getPagination();
+        this.toastService.success('Template Updated Successfully', '', this.toastOptions);
+      }
     });
   }
 
   deleteTemplate(item) {
+    this.deletedItem = item;
     this.deleteModal.show();
   }
 
   deleteConfirm() {
-    this.deleteModal.hide();
+    if (this.deletedItem) {
+      this.templateService.deleteTemplate(this.deletedItem).subscribe((res: any) => {
+        this.deleteModal.hide();
+        this.basicModal.hide();
+        this.getTemplateList();
+        this.getPagination();
+        this.toastService.success('Template Deleted Successfully', '', this.toastOptions);
+      });
+    }
   }
 
   filterIt(arr, searchKey) {

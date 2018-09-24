@@ -37,9 +37,9 @@
             <ng-container *ngIf="templateList.length > 0">
               <tr *ngFor="let item of search(); let i=index;">
                 <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex" scope="row">{{(i+1)}}</td>
-                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.templateName}}</td>
-                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.createdOn }}</td>
-                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.modifiedOn }}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.templatehead}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.createon | date: 'medium'}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.modifyon | date: 'medium'}}</td>
                 <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">
                   <div class="d-inline cursor" (click)="editTemplate(item)" mdbTooltip="Edit" placment="top">
                     <i class="fa fa-edit" style="color:rgb(24, 119, 111);"></i>
@@ -101,11 +101,19 @@
             <div class="col-3">
               <div class="md-form ">
                 <input mdbInputDirective maxlength="40" autocomplete="off" data-error=" " data-success=" " maxlength="40"
-                  type="text" id="form1" class="form-control" formControlName="templateName">
+                  type="text" id="form1" class="form-control" formControlName="templatehead">
                 <label for="form1">Template Name</label>
               </div>
             </div>
-            <div class="col-9"></div>
+            <div class="col-3">
+              <div class="md-form  mt-3">
+                <mdb-select id="form2" [options]="options" [(ngModel)]="selectedValue" data-error=" " data-success=" "
+                  class="colorful-select dropdown-default select-wrapper" formControlName="status">
+                </mdb-select>
+                <label for="form2">Status</label>
+              </div>
+            </div>
+            <div class="col-6"></div>
             <div class="col-md-9">
               <mdb-card>
                 <mdb-card-header class="teal lighten-1 white-text">
@@ -114,10 +122,10 @@
                 <mdb-card-body>
                   <div>
                     <div class="editor" style="min-height: 500px;">
-                      <div class="ckeditor" cols="10" id="editor1" name="editor1" rows="100" contenteditable="true"
+                      <textarea class="ckeditor" cols="10" id="editor1" name="editor1" rows="100" contenteditable="true"
                         #myTemplate>
                         <div class="addtext" [innerHTML]="newTemplate"></div>
-                      </div>
+                      </textarea>
                     </div>
                   </div>
                 </mdb-card-body>
@@ -138,7 +146,7 @@
         <button type="button" mdbBtn color="warning" class="waves-light pull-right" aria-label="Close" (click)="close()"
           mdbWavesEffect>Cancel</button>
         <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" [disabled]="templateForm.invalid"
-          (click)="save()" mdbWavesEffect>Save</button>
+          (click)="save()" mdbWavesEffect>{{isEditTemplate ? 'Update': 'Save'}}</button>
       </div>
     </div>
   </div>

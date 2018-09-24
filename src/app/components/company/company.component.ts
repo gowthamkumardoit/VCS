@@ -4,7 +4,7 @@ import {
   NEW_STATUS, CUSTOMER_TYPE, BANK_CODE, CREDIT_TERMS, ACCOUNT_SUBGROUP, CURRENCY,
   SHARE_TYPE
 } from './../../constants/common.constant';
-import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { CompanyService } from '../../services/company.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -13,6 +13,7 @@ import { Directors } from './../../modals/director.modal';
 import { CompanyProfiles } from './../../modals/company-profiles.modal';
 import { RoleService } from '../../services/role.service';
 import { TabsetComponent } from 'ng-uikit-pro-standard';
+
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
@@ -89,6 +90,14 @@ export class CompanyComponent implements OnInit {
   userid: any;
   defaultId: any;
 
+  IncorporationDate: any;
+  Statusdate: any;
+  Dateofaddress: any;
+  DateoflastAGM: any;
+  DateoflastAR: any;
+  DateofAClaidatlastAGM: any;
+  DateoflodgementofARAC: any;
+  doa: any;
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
   constructor(private companyService: CompanyService, private fb: FormBuilder,
     private nav: RoleService, public datepipe: DatePipe,
@@ -301,6 +310,8 @@ export class CompanyComponent implements OnInit {
   createCompany() {
     const postData = {
       ...this.companyForm.value,
+      OpeningBalanceDate: this.OpeningBalanceDate,
+      DateGSTStatusVerified: this.DateGSTStatusVerified,
       Createby: this.userid,
     };
     this.companyService.createCompany(postData).subscribe((response: any) => {
@@ -344,6 +355,12 @@ export class CompanyComponent implements OnInit {
       DateGSTStatusVerified: new Date(item.DateGSTStatusVerified),
       OpeningBalanceDate: new Date(item.OpeningBalanceDate),
     });
+    let opdate = item.OpeningBalanceDate.split(',')[0];
+    let GSTdate = item.DateGSTStatusVerified.split(',')[0];
+    setTimeout(() => {
+      this.OpeningBalanceDate = opdate;
+      this.DateGSTStatusVerified = GSTdate;
+    }, 100);
     this.today = new Date();
     this.defaultId = (item.id).toString();
     let tempProfiledata = [];
@@ -352,19 +369,27 @@ export class CompanyComponent implements OnInit {
       tempProfiledata = this.companyProfileList.filter(val => {
         return (parseInt(val.cmid) === item.id);
       });
-
+      console.log(tempProfiledata);
       if (tempProfiledata !== undefined && tempProfiledata.length > 0) {
+        console.log(tempProfiledata[0].IncorporationDate);
+          let IncorporationDate = tempProfiledata[0].IncorporationDate.split('T')[0];
+          let Statusdate = tempProfiledata[0].Statusdate.split('T')[0];
+          let Dateofaddress = tempProfiledata[0].Dateofaddress.split('T')[0];
+          let DateoflastAGM = tempProfiledata[0].DateoflastAGM.split('T')[0];
+          let DateoflastAR = tempProfiledata[0].DateoflastAR.split('T')[0];
+          let DateofAClaidatlastAGM = tempProfiledata[0].DateofAClaidatlastAGM.split('T')[0];
+          let DateoflodgementofARAC = tempProfiledata[0].DateoflodgementofARAC.split('T')[0];
         setTimeout(() => {
           this.isEditProfile = true;
           this.profileForm.patchValue({
             ...tempProfiledata[0],
-            IncorporationDate: new Date((tempProfiledata[0].IncorporationDate).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            Statusdate: new Date((tempProfiledata[0].Statusdate).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            Dateofaddress: new Date((tempProfiledata[0].Dateofaddress).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            DateoflastAGM: new Date((tempProfiledata[0].DateoflastAGM).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            DateoflastAR: new Date((tempProfiledata[0].DateoflastAR).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            DateofAClaidatlastAGM: new Date((tempProfiledata[0].DateofAClaidatlastAGM).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
-            DateoflodgementofARAC: new Date((tempProfiledata[0].DateoflodgementofARAC).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
+            // IncorporationDate: new Date((tempProfiledata[0].IncorporationDate).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
+            // Statusdate: new Date((tempProfiledata[0].Statusdate).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
+            // Dateofaddress: new Date((tempProfiledata[0].Dateofaddress).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
+            // DateoflastAGM: new Date((tempProfiledata[0].DateoflastAGM).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
+            // DateoflastAR: new Date((tempProfiledata[0].DateoflastAR).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
+            // DateofAClaidatlastAGM: new Date((tempProfiledata[0].DateofAClaidatlastAGM).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
+            // DateoflodgementofARAC: new Date((tempProfiledata[0].DateoflodgementofARAC).replace(/-/g, '\/').replace(/T.+/, '')) || new Date(),
             cmid: this.defaultId,
             CustomerUEN: item.CustomerUEN,
             Currency: (tempProfiledata[0].Currency).toString(),
@@ -373,6 +398,18 @@ export class CompanyComponent implements OnInit {
             Sharetype1: (tempProfiledata[0].Sharetype1).toString(),
             Status: (tempProfiledata[0].Status).toString(),
           });
+
+          
+
+          this.IncorporationDate = IncorporationDate;
+          this.Statusdate = Statusdate;
+          this.Dateofaddress = Dateofaddress;
+          this.DateoflastAGM = DateoflastAGM;
+          this.DateoflastAR = DateoflastAR;
+          this.DateofAClaidatlastAGM = DateofAClaidatlastAGM;
+          this.DateoflodgementofARAC = DateoflodgementofARAC;
+
+
           this.currency1 = (tempProfiledata[0].Currency).toString();
           this.currency2 = (tempProfiledata[0].Currency1).toString();
           this.status1 = (tempProfiledata[0].Sharetype).toString();
@@ -441,8 +478,8 @@ export class CompanyComponent implements OnInit {
   updateCompany() {
     const postData = {
       ...this.companyForm.value,
-      DateGSTStatusVerified: new Date((this.companyForm.value.DateGSTStatusVerified)),
-      OpeningBalanceDate: new Date((this.companyForm.value.OpeningBalanceDate)),
+      DateGSTStatusVerified: (this.DateGSTStatusVerified),
+      OpeningBalanceDate: (this.OpeningBalanceDate),
       modifyby: this.userid,
     };
     this.companyService.updateCompany(postData).subscribe((response: any) => {
@@ -463,6 +500,13 @@ export class CompanyComponent implements OnInit {
   createProfile() {
     const postData = {
       ...this.profileForm.value,
+      IncorporationDate: this.IncorporationDate,
+      Statusdate: this.Statusdate,
+      Dateofaddress: this.Dateofaddress,
+      DateoflastAGM: this.DateoflastAGM,
+      DateoflastAR: this.DateoflastAR,
+      DateofAClaidatlastAGM: this.DateofAClaidatlastAGM,
+      DateoflodgementofARAC: this.DateoflodgementofARAC,
       Createby: this.userid,
     };
     this.companyService.createProfile(postData).subscribe((data: any) => {
@@ -505,6 +549,7 @@ export class CompanyComponent implements OnInit {
   createDirector() {
     const postData = {
       ...this.directorForm.value,
+      doa: this.doa,
       Createby: this.userid,
     };
     this.companyService.createDirector(postData).subscribe((data: any) => {
