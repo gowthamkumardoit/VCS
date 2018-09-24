@@ -33,7 +33,7 @@ export class RoleService {
     return this.httpClient.delete(`${URL}userroles/${data.id}`);
   }
 
-  
+
   // For Navigation Purpose
   hide() { this.visible = false; }
 

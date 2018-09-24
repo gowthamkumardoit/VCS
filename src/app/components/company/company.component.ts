@@ -1,5 +1,5 @@
 import { ToastrService } from 'ngx-toastr';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
 import {
   NEW_STATUS, CUSTOMER_TYPE, BANK_CODE, CREDIT_TERMS, ACCOUNT_SUBGROUP, CURRENCY,
   SHARE_TYPE
@@ -13,6 +13,7 @@ import { Directors } from './../../modals/director.modal';
 import { CompanyProfiles } from './../../modals/company-profiles.modal';
 import { RoleService } from '../../services/role.service';
 import { TabsetComponent } from 'ng-uikit-pro-standard';
+import { IMyOptions } from 'ng-uikit-pro-standard';
 
 @Component({
   selector: 'app-company',
@@ -20,7 +21,9 @@ import { TabsetComponent } from 'ng-uikit-pro-standard';
   styleUrls: ['./company.component.scss']
 })
 export class CompanyComponent implements OnInit {
-
+  public myDatePickerOptions: IMyOptions = {
+    closeAfterSelect: true;
+  };
   statusOptions: any = [];
   customTypeOptions: any = [];
   bankCodeOptions: any = [];
@@ -157,7 +160,16 @@ export class CompanyComponent implements OnInit {
       }
     }, 200);
   }
+  closeDatePicker() {
+    const element: HTMLCollection = document.getElementsByClassName('mydp');
+    for (let i = 0; i < 10; i++) {
+      if (element[i]['classList'].contains('picker--opened')) {
+        element[i]['classList'].remove('picker--opened');
+     }
+    }
+  }
   openModal() {
+    this.closeDatePicker();
     this.companyData = {
       ...this.companyData,
       id: 0
@@ -340,9 +352,7 @@ export class CompanyComponent implements OnInit {
   }
 
   editCompany(item, i) {
-    this.companyForm.pristine;
-    this.profileForm.pristine;
-    this.directorForm.pristine;
+    this.closeDatePicker();
     this.isEditCompany = true;
     this.staticTabs.setActiveTab(1);
     this.companyData = item;
@@ -399,7 +409,7 @@ export class CompanyComponent implements OnInit {
             Status: (tempProfiledata[0].Status).toString(),
           });
 
-          
+
 
           this.IncorporationDate = IncorporationDate;
           this.Statusdate = Statusdate;

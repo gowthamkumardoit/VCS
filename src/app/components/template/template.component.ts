@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef, ViewChildren, QueryList } fro
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TemplateService } from '../../services/template.service';
 import { ToastrService } from 'ngx-toastr';
+import { TEMPLATE_BUTTONS } from './../../constants/common.constant';
 declare var CKEDITOR: any;
 @Component({
   selector: 'app-template',
@@ -44,7 +45,7 @@ export class TemplateComponent implements OnInit {
 
   ngOnInit() {
     this.tableHeadings = ['No', 'Template Name', 'Created On', 'Modified On', 'Actions'];
-    this.newTemplate = "";
+    this.newTemplate = '';
     this.templateForm = this.fb.group({
       templatehead: ['', [Validators.required, Validators.maxLength(40)]],
       status: ['', [Validators.required]],
@@ -62,8 +63,8 @@ export class TemplateComponent implements OnInit {
       });
     });
 
-    this.items = ['Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No', 'Customer Name', 'Company Name',
-     'Company UEN', 'Email', 'Contact No', 'Customer Name', 'Company Name', 'Company UEN', 'Email', 'Contact No'];
+    this.items = TEMPLATE_BUTTONS;
+
     this.userid = parseInt(localStorage.getItem('userid'));
     this.templateData = {
       templatehead: '',
@@ -72,7 +73,7 @@ export class TemplateComponent implements OnInit {
       createby: this.userid,
       status: 1,
       createon: new Date(),
-    }
+    };
     this.toastOptions = {
       progressBar: true,
       timeOut: 1000,
@@ -108,7 +109,7 @@ export class TemplateComponent implements OnInit {
       createby: this.userid,
       status: 1,
       createon: new Date(),
-    }
+    };
     this.options = [
       { value: '1', label: 'Live', selected: true },
       { value: '2', label: 'Dormant' }
@@ -124,7 +125,7 @@ export class TemplateComponent implements OnInit {
 
   save() {
     if (this.templateData) {
-      if (this.templateData.id == 0) {
+      if (this.templateData.id === 0) {
         this.createTemplate();
       } else if (this.templateData.id > 0) {
         this.updateTemplate();
@@ -135,7 +136,7 @@ export class TemplateComponent implements OnInit {
     const editor = CKEDITOR.instances.editor1;
     const getData = editor.getData();
 
-    let postData = {
+    const postData = {
       ...this.templateData,
       templatehead: this.templateForm.value.templatehead,
       templates: getData,
@@ -143,7 +144,7 @@ export class TemplateComponent implements OnInit {
       status: parseInt(this.templateForm.value.status),
     };
     this.templateService.postTemplateData(postData).subscribe((res: any) => {
-      if (res && res.isSaved == 'false') {
+      if (res && res.isSaved === 'false') {
         this.isTemplateExists = true;
         this.errorMessage = res.message;
       } else {
@@ -184,16 +185,16 @@ export class TemplateComponent implements OnInit {
     const editor = CKEDITOR.instances.editor1;
     const getData = editor.getData();
 
-    let postData = {
+    const postData = {
       ...this.templateData,
       templatehead: this.templateForm.value.templatehead,
       templates: getData,
       modifyby: this.userid,
       status: 1,
       modifyon: new Date()
-    }
+    };
     this.templateService.updateTemplateData(postData).subscribe((res: any) => {
-      if (res && res.isSaved == 'false') {
+      if (res && res.isSaved === 'false') {
         this.isTemplateExists = true;
         this.errorMessage = res.message;
       } else {
