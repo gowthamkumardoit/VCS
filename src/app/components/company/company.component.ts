@@ -806,15 +806,4 @@ export class CompanyComponent implements OnInit {
     }
   }
 
-  onInputFieldChange($event) {
-    console.log($event);
-    if($event) {
-      if(!$event.valid) {
-        this.setInvalidDate = true;
-      } else {
-        this.setInvalidDate = false;
-      }
-    }
-  }
-
 }
