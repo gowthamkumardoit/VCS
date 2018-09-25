@@ -1,5 +1,5 @@
 import { ToastrService } from 'ngx-toastr';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { RoleService } from '../../services/role.service';
 import { Router } from '@angular/router';
 
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, AfterViewChecked {
   navBarToggle: boolean;
   toastOptions: any = {};
   userName: string;
@@ -23,9 +23,6 @@ export class NavigationComponent implements OnInit {
       toastClass: 'black',
       closeButton: true
     };
-    setTimeout(() => {
-      this.userName = localStorage.getItem('userName');
-    }, 200);
 
     this.nav.navigationBarShow.subscribe(data => {
       if (data === true) {
@@ -34,6 +31,9 @@ export class NavigationComponent implements OnInit {
         this.navBarToggle = false;
       }
     });
+  }
+  ngAfterViewChecked() {
+    this.userName = localStorage.getItem('userName');
   }
 
   logout() {
