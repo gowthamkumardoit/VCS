@@ -23,7 +23,9 @@ export class NavigationComponent implements OnInit {
       toastClass: 'black',
       closeButton: true
     };
-    this.userName = localStorage.getItem('userName');
+    setTimeout(() => {
+      this.userName = localStorage.getItem('userName');
+    }, 200);
 
     this.nav.navigationBarShow.subscribe(data => {
       if (data === true) {
