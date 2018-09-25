@@ -601,7 +601,7 @@
                 </ng-container>
               </div>
               <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" mdbWavesEffect
-                [disabled]="directorForm.invalid" (click)="saveDirector()">{{isEditDirector ? 'Update' : 'Save' }}</button>
+                [disabled]="directorForm.invalid" (click)="saveDirector()">{{isEditDirector && directorDataArray.length > 0 ? 'Update' : 'Save' }}</button>
               <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" mdbWavesEffect
                 (click)="basicModal.hide()">cancel</button>
             </mdb-tab>
