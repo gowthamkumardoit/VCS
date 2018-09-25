@@ -22,8 +22,9 @@ import { IMyOptions } from 'ng-uikit-pro-standard';
 })
 export class CompanyComponent implements OnInit {
   public myDatePickerOptions: IMyOptions = {
-    closeAfterSelect: true
+    closeAfterSelect: true,
   };
+  setInvalidDate: boolean;
   statusOptions: any = [];
   customTypeOptions: any = [];
   bankCodeOptions: any = [];
@@ -802,6 +803,17 @@ export class CompanyComponent implements OnInit {
       this.firstVisiblePaginator =
         this.lastVisiblePaginator -
         (this.numberOfPaginators % this.numberOfVisiblePaginators);
+    }
+  }
+
+  onInputFieldChange($event) {
+    console.log($event);
+    if($event) {
+      if(!$event.valid) {
+        this.setInvalidDate = true;
+      } else {
+        this.setInvalidDate = false;
+      }
     }
   }
 

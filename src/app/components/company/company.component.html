@@ -187,7 +187,7 @@
                         class="form-control" [value]="OpeningBalanceDate" formControlName="OpeningBalanceDate"
                         useValueAsDate>
                       <label for="form20">Op Bal Date</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [options]="myDatePickerOptions" formControlName="OpeningBalanceDate" [label]="'Opening Balance Date'" [placeholder]="'Selected date'" [(ngModel)]="OpeningBalanceDate" required></mdb-date-picker>
+                      <mdb-date-picker (inputFieldChanged)="onInputFieldChange($event)" data-success=" " data-error=" " name="mydate" [options]="myDatePickerOptions" formControlName="OpeningBalanceDate" [label]="'Opening Balance Date'" [placeholder]="'Selected date'" [(ngModel)]="OpeningBalanceDate" required></mdb-date-picker>
                     </div>
                   </div>
                   <div class="col-sm-3 ">
@@ -212,7 +212,7 @@
                         class="form-control" [value]="DateGSTStatusVerified" formControlName="DateGSTStatusVerified"
                         useValueAsDate>
                       <label for="form23">GST verified Date</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="DateGSTStatusVerified" [label]="'GST verified Date'" [placeholder]="'Selected date'" [(ngModel)]="DateGSTStatusVerified" required></mdb-date-picker>
+                      <mdb-date-picker [options]="myDatePickerOptions"  name="mydate" [selector]="0" formControlName="DateGSTStatusVerified" [label]="'GST verified Date'" [placeholder]="'Selected date'" [(ngModel)]="DateGSTStatusVerified" required></mdb-date-picker>
                     </div>
                   </div>
 
@@ -251,7 +251,7 @@
                 </div>
               </form>
               <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" mdbWavesEffect
-                [disabled]="companyForm.invalid" (click)="save()">{{isEditCompany ? 'Update' : 'Save' }}</button>
+                [disabled]="companyForm.invalid && setInvalidDate" (click)="save()">{{isEditCompany ? 'Update' : 'Save' }}</button>
               <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" mdbWavesEffect
                 (click)="basicModal.hide()">cancel</button>
             </mdb-tab>
