@@ -38,8 +38,10 @@
               <tr *ngFor="let item of search(); let i=index;">
                 <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex" scope="row">{{(i+1)}}</td>
                 <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.templatehead}}</td>
-                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.createon | date: 'medium'}}</td>
-                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.modifyon | date: 'medium'}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.createon | date:
+                  'medium'}}</td>
+                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.modifyon | date:
+                  'medium'}}</td>
                 <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">
                   <div class="d-inline cursor" (click)="editTemplate(item)" mdbTooltip="Edit" placment="top">
                     <i class="fa fa-edit" style="color:rgb(24, 119, 111);"></i>
@@ -83,7 +85,7 @@
 
 <div mdbModal #basicModal="mdbModal" class="modal fade top" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog modal-fluid" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
@@ -94,49 +96,45 @@
       <div class="modal-body">
         <form [formGroup]="templateForm" novalidate>
           <div class="row px-3">
-            <div class="col-md-12">
-              <div class="error" *ngIf="isTemplateExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
-                {{errorMessage}}</div>
-            </div>
-            <div class="col-3">
-              <div class="md-form ">
-                <input mdbInputDirective maxlength="40" autocomplete="off" data-error=" " data-success=" " maxlength="40"
-                  type="text" id="form1" class="form-control" formControlName="templatehead">
-                <label for="form1">Template Name</label>
+          
+            <div class="col-md-12" id="draggableList" style="max-height: 600px; overflow-y: auto">
+              <div *ngFor="let item of items; let i = index;" style="display: inline">
+                <button style="display: inline" *ngIf="(i%2) == 0" mdbBtn type="button" draggable="true" tabindex="0"
+                  color="default" size="sm" class="waves-light " mdbWavesEffect>{{item}}</button>
+                <button style="display: inline" *ngIf="(i%2) != 0" mdbBtn type="button" draggable="true" tabindex="0"
+                  color="blue-grey" size="sm" class="waves-light " mdbWavesEffect>{{item}}</button>
               </div>
             </div>
-            <div class="col-3">
-              <div class="md-form  mt-3">
-                <mdb-select id="form2" [options]="options" [(ngModel)]="selectedValue" data-error=" " data-success=" "
-                  class="colorful-select dropdown-default select-wrapper" formControlName="status">
-                </mdb-select>
-                <label for="form2">Status</label>
-              </div>
-            </div>
-            <div class="col-6"></div>
-            <div class="col-md-9">
+            <div class="col-md-8 mt-3">
               <mdb-card>
                 <mdb-card-header class="teal lighten-1 white-text">
                   Editor
                 </mdb-card-header>
                 <mdb-card-body>
                   <div>
-                    <div class="editor" style="min-height: 500px;">
-                      <div class="ckeditor" cols="10" id="editor1" name="editor1" rows="100" contenteditable="true"
-                        #myTemplate>
+                    <div class="editor" >
+                      <div class="ckeditor" cols="13" id="editor1" name="editor1" rows="40" contenteditable="true"
+                        #myTemplate style="height:400px; overflow-y: auto;">
                         <div class="addtext" [innerHTML]="newTemplate"></div>
-                    </div>
+                      </div>
                     </div>
                   </div>
                 </mdb-card-body>
               </mdb-card>
             </div>
-            <div class="col-md-3 p-3" id="draggableList" style="max-height: 600px; overflow-y: auto">
-              <div *ngFor="let item of items; let i = index;">
-                <button *ngIf="(i%2) == 0" mdbBtn type="button" draggable="true" tabindex="0" color="default" block="true"
-                  class="waves-light my-3" mdbWavesEffect>{{item}}</button>
-                <button *ngIf="(i%2) != 0" mdbBtn type="button" draggable="true" tabindex="0" color="blue-grey" block="true"
-                  class="waves-light my-3" mdbWavesEffect>{{item}}</button>
+            <div class="col-3">
+              <div class="error" *ngIf="isTemplateExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
+                {{errorMessage}}</div>
+              <div class="md-form mt-5">
+                <input mdbInputDirective maxlength="40" autocomplete="off" data-error=" " data-success=" " maxlength="40"
+                  type="text" id="form1" class="form-control" formControlName="templatehead">
+                <label for="form1">Template Name</label>
+              </div>
+              <div class="md-form  mt-5">
+                <mdb-select id="form2" [options]="options" [(ngModel)]="selectedValue" data-error=" " data-success=" "
+                  class="colorful-select dropdown-default select-wrapper" formControlName="status">
+                </mdb-select>
+                <label for="form2">Status</label>
               </div>
             </div>
           </div>
