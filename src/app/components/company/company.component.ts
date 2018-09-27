@@ -291,11 +291,11 @@ export class CompanyComponent implements OnInit {
             this.directorDataArray.push(val);
           }
         });
-        if (this.directorDataArray.length > 0) {
-          this.isEditDirector = true;
-        } else {
-          this.isEditDirector = false;
-        }
+        // if (this.directorDataArray.length > 0) {
+        //   this.isEditDirector = true;
+        // } else {
+        //   this.isEditDirector = false;
+        // }
       }
     });
   }
@@ -354,6 +354,7 @@ export class CompanyComponent implements OnInit {
 
   editCompany(item, i) {
     this.closeDatePicker();
+    this.isEditDirector = true;
     this.isEditCompany = true;
     this.staticTabs.setActiveTab(1);
     this.companyData = item;
@@ -801,17 +802,6 @@ export class CompanyComponent implements OnInit {
       this.firstVisiblePaginator =
         this.lastVisiblePaginator -
         (this.numberOfPaginators % this.numberOfVisiblePaginators);
-    }
-  }
-
-  onInputFieldChange($event) {
-    console.log($event);
-    if($event) {
-      if(!$event.valid) {
-        this.setInvalidDate = true;
-      } else {
-        this.setInvalidDate = false;
-      }
     }
   }
 

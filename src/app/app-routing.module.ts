@@ -12,6 +12,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MyTasksComponent } from './components/my-tasks/my-tasks.component';
 import { CompanyComponent } from './components/company/company.component';
 import { InboxComponent } from './components/inbox/inbox.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -19,14 +20,14 @@ const routes: Routes = [
   { path: 'forgetPassword', component: ResetPasswordComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'reports', component: ReportsComponent },
-  { path: 'myTasks', component: MyTasksComponent },
-  { path: 'users', component: UserComponent },
-  { path: 'role', component: RoleComponent },
-  { path: 'company', component: CompanyComponent },
-  { path: 'service', component: ServiceComponent },
-  { path: 'inbox', component: InboxComponent },
-  { path: 'template', component: TemplateComponent },
+  { path: 'reports', component: ReportsComponent  },
+  { path: 'myTasks', component: MyTasksComponent  },
+  { path: 'users', component: UserComponent  },
+  { path: 'role', component: RoleComponent  },
+  { path: 'company', component: CompanyComponent  },
+  { path: 'service', component: ServiceComponent  },
+  { path: 'inbox', component: InboxComponent  },
+  { path: 'template', component: TemplateComponent  },
   { path: '**', redirectTo: '/login'}
 ];
 

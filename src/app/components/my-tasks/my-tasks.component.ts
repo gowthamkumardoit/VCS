@@ -21,6 +21,7 @@ export class MyTasksComponent implements OnInit {
   selectedCompany: any = '1';
   selectedService: any = '1';
   selectedUser: any = '1';
+  selectedUserFollowup: any = '1';
 
   taskForm: FormGroup;
   searchText: string;
@@ -56,7 +57,9 @@ export class MyTasksComponent implements OnInit {
   date1: any;
   date2: any;
   date3: any;
-
+  desc: string;
+  requiringArray: any = [];
+  selectedRequiring = '1';
   constructor(
     private nav: RoleService,
     private fb: FormBuilder,
@@ -66,7 +69,7 @@ export class MyTasksComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-   
+
     this.nav.navigationBarShow.next(true);
     this.tableHeadings = ['No', 'Task Name', 'Company Name', 'Service Name', 'User Name'];
     this.getList();
@@ -76,42 +79,84 @@ export class MyTasksComponent implements OnInit {
       pwd: ['', [Validators.required, Validators.minLength(5)]]
     });
 
-
+    this.taskList = [
+      { taskName: 'Task 1', companyName: 'Company 1', serviceName: 'Service 1', userName: 'User 1' },
+      { taskName: 'Task 2', companyName: 'Company 2', serviceName: 'Service 2', userName: 'User 2' },
+      { taskName: 'Task 3', companyName: 'Company 3', serviceName: 'Service 3', userName: 'User 3' },
+      { taskName: 'Task 4', companyName: 'Company 4', serviceName: 'Service 4', userName: 'User 4' },
+      { taskName: 'Task 5', companyName: 'Company 5', serviceName: 'Service 5', userName: 'User 5' },
+    ];
+    this.getPagination();
   }
+  getPagination() {
+    setTimeout(() => {
+      this.paginators = [];
+      if (this.taskList.length % this.itemsPerPage === 0) {
+        this.numberOfPaginators = Math.floor(
+          this.taskList.length / this.itemsPerPage
+        );
+      } else {
+        this.numberOfPaginators = Math.floor(
+          this.taskList.length / this.itemsPerPage + 1
+        );
+      }
 
+      for (let i = 1; i <= this.numberOfPaginators; i++) {
+        this.paginators.push(i);
+      }
+    }, 200);
+  }
+  closeDatePicker() {
+    const element: HTMLCollection = document.getElementsByClassName('mydp');
+    for (let i = 0; i < 10; i++) {
+      if (element[i]['classList'].contains('picker--opened')) {
+        element[i]['classList'].remove('picker--opened');
+      }
+    }
+  }
   getList() {
     this.taskService.getList().subscribe((res: any) => {
       if (res) {
         this.companyList = res.company,
           this.serviceList = res.service,
           this.userList = res.userdet;
-          for (let i = 0; i < this.companyList.length; i++) {
-            this.companyList[i].value = this.companyList[i]['id'];
-            this.companyList[i].label = this.companyList[i]['name'];
-            delete this.companyList[i].id;
-            delete this.companyList[i].name;
-          }
-          for (let i = 0; i < this.userList.length; i++) {
-            this.userList[i].value = this.userList[i]['id'];
-            this.userList[i].label = this.userList[i]['name'];
-            delete this.userList[i].id;
-            delete this.userList[i].name;
-          }
-          for (let i = 0; i < this.serviceList.length; i++) {
-            this.serviceList[i].value = this.serviceList[i]['id'];
-            this.serviceList[i].label = this.serviceList[i]['name'];
-            delete this.serviceList[i].id;
-            delete this.serviceList[i].name;
-          }
+        for (let i = 0; i < this.companyList.length; i++) {
+          this.companyList[i].value = this.companyList[i]['id'];
+          this.companyList[i].label = this.companyList[i]['name'];
+          delete this.companyList[i].id;
+          delete this.companyList[i].name;
+        }
+        for (let i = 0; i < this.userList.length; i++) {
+          this.userList[i].value = this.userList[i]['id'];
+          this.userList[i].label = this.userList[i]['name'];
+          delete this.userList[i].id;
+          delete this.userList[i].name;
+        }
+        for (let i = 0; i < this.serviceList.length; i++) {
+          this.serviceList[i].value = this.serviceList[i]['id'];
+          this.serviceList[i].label = this.serviceList[i]['name'];
+          delete this.serviceList[i].id;
+          delete this.serviceList[i].name;
+        }
       }
     });
   }
   openModal() {
+    // this.closeDatePicker();
     this.basicModal.show();
+    this.isEditTask = false;
+    this.requiringArray = [
+      { value: '1', label: 'Monthly' },
+      { value: '2', label: 'Quartly' },
+      { value: '3', label: 'Half Yearly' },
+      { value: '4', label: 'Yearly' }
+    ];
     setTimeout(() => {
       this.selectedCompany = this.companyList[0].value || '1';
       this.selectedService = this.serviceList[0].value || '1';
       this.selectedUser = this.userList[0].value || '1';
+      this.selectedRequiring = this.requiringArray[0].value;
+      this.selectedUserFollowup = this.userList[0].value || '1';
     }, 300)
 
   }
@@ -120,6 +165,10 @@ export class MyTasksComponent implements OnInit {
   }
 
   editTask(item) {
+    this.openModal();
+    setTimeout(() => {
+      this.isEditTask = true;
+    }, 100)
 
   }
   filterIt(arr, searchKey) {

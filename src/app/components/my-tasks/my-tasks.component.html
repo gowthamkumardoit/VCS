@@ -22,6 +22,27 @@
                 <div class="modal-body">
                     <div class="row px-3">
                         <div class="col-md-12">
+                            <div class="pull-right mb-3">
+                                <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Attachmet"
+                                    placment="top" (click)="fileInput.click()">
+                                    <mdb-icon icon="paperclip"></mdb-icon>
+                                </a>
+                                <input type="file" style="display:none" #fileInput>
+                                <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Add Chart"
+                                    placment="top">
+                                    <mdb-icon icon="line-chart"></mdb-icon>
+                                </a>
+                                <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Merge"
+                                    placment="top">
+                                    <mdb-icon icon="link"></mdb-icon>
+                                </a>
+                                <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Like"
+                                    placment="top">
+                                    <mdb-icon icon="thumbs-o-up"></mdb-icon>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
                             <div class="error" *ngIf="istaskExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
                                 {{errorMessage}}</div>
                         </div>
@@ -59,45 +80,55 @@
                         </div>
                         <div class="col-md-6"></div>
                         <div class="col-sm-4">
-                            <div class="md-form" style='margin-top:-8px;'>
-                                <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" [label]="'GST verified Date'"
-                                    [placeholder]="'Selected date'" [(ngModel)]="date1" required></mdb-date-picker>
+                            <div class="md-form">
+                                <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate"
+                                    [selector]="0" [label]="'GST verified Date'" [placeholder]="'Selected date'"
+                                    [(ngModel)]="date1" required></mdb-date-picker>
                             </div>
                         </div>
                         <div class="col-sm-4">
-                            <div class="md-form" style='margin-top:-8px;'>
-                                <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" [label]="'GST verified Date'"
-                                    [placeholder]="'Selected date'" [(ngModel)]="date2" required></mdb-date-picker>
+                            <div class="md-form">
+                                <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate"
+                                    [selector]="0" [label]="'GST verified Date'" [placeholder]="'Selected date'"
+                                    [(ngModel)]="date2" required></mdb-date-picker>
                             </div>
                         </div>
                         <div class="col-sm-4">
-                            <div class="md-form" style='margin-top:-8px;'>
-                                <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" [label]="'GST verified Date'"
-                                    [placeholder]="'Selected date'" [(ngModel)]="date3" required></mdb-date-picker>
+                            <div class="md-form">
+                                <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate"
+                                    [selector]="0" [label]="'GST verified Date'" [placeholder]="'Selected date'"
+                                    [(ngModel)]="date3" required></mdb-date-picker>
                             </div>
                         </div>
-                        <!-- <div class="col-4">
-                            <div class="md-form ">
-                                <mdb-autocomplete [label]="'Select Company'" name="autocomplete" [(ngModel)]="searchCompany"
-                                    [datasource]="dataService" [minSearchLength]="0">
-                                </mdb-autocomplete>
-                            </div>
-                        </div> -->
-
-                        <!-- <div class="col-4">
-                            <div class="md-form ">
-                                <mdb-autocomplete [label]="'Select Service'" name="autocomplete" [(ngModel)]="searchService"
-                                    [datasource]="dataService1" [minSearchLength]="0">
-                                </mdb-autocomplete>
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control"
+                                    mdbInputDirective [(ngModel)]="desc" data-success=" " data-error=" "></textarea>
+                                <label for="form7">Description</label>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="md-form ">
-                                <mdb-autocomplete [label]="'Select User'" name="autocomplete" [(ngModel)]="searchUser"
-                                    [datasource]="dataService2" [minSearchLength]="0">
-                                </mdb-autocomplete>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-4">
+                            <div class="md-form  mt-3">
+                                <mdb-select id="form4" [options]="requiringArray" [(ngModel)]="selectedRequiring"
+                                    data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper">
+                                </mdb-select>
+                                <label for="form4">Select User</label>
                             </div>
-                        </div> -->
+                        </div>
+                        <div class="col-md-4">
+                            <div class="md-form  mt-3">
+                                <mdb-select id="form4" [options]="userList" [(ngModel)]="selectedUserFollowup"
+                                    data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper">
+                                </mdb-select>
+                                <label for="form4">Follow up</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" mdbBtn color="warning" size="sm" class="relative waves-light pull-right"
+                                mdbWavesEffect>  <mdb-icon icon="check" class="mr-1"></mdb-icon>Mark as Complete</button>
+                        </div>
+                    
                     </div>
                 </div>
 
@@ -138,23 +169,12 @@
                     </thead>
                     <tbody>
                         <ng-container *ngIf="taskList.length > 0">
-                            <tr *ngFor="let item of search(); let i=index;">
+                            <tr *ngFor="let item of search(); let i=index;" (click)="editTask(item)">
                                 <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex" scope="row">{{(i+1)}}</td>
-                                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.roliname}}</td>
-                                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.createon
-                                    | date:
-                                    'medium'}}</td>
-                                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.modifyon
-                                    | date:
-                                    'medium'}}</td>
-                                <!-- <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">
-                  <div class="d-inline cursor" (click)="editTask(item)" mdbTooltip="Edit" placment="top">
-                    <i class="fa fa-edit" style="color:rgb(24, 119, 111);"></i>
-                  </div>
-                  <div class="d-inline ml-3 cursor" (click)="deleteTask(item)" mdbTooltip="Delete" placment="top">
-                    <i class="fa fa-trash" style="color:red;"></i>
-                  </div>
-                </td> -->
+                                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.taskName}}</td>
+                                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.companyName}}</td>
+                                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.serviceName}}</td>
+                                <td *ngIf="(i + 1) >= firstVisibleIndex && (i + 1) <= lastVisibleIndex">{{item.userName}}</td>
                             </tr>
                         </ng-container>
                     </tbody>

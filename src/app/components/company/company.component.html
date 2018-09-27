@@ -183,7 +183,11 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="md-form" style='margin-top:-8px;'>
-                      <mdb-date-picker (inputFieldChanged)="onInputFieldChange($event)" data-success=" " data-error=" " name="mydate" [options]="myDatePickerOptions" formControlName="OpeningBalanceDate" [label]="'Opening Balance Date'" [placeholder]="'Selected date'" [(ngModel)]="OpeningBalanceDate" required></mdb-date-picker>
+                      <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form20"
+                        class="form-control" [value]="OpeningBalanceDate" formControlName="OpeningBalanceDate"
+                        useValueAsDate>
+                      <label for="form20">Op Bal Date</label> -->
+                      <mdb-date-picker  onkeydown="return false;" data-success=" " data-error=" " name="mydate" [options]="myDatePickerOptions" formControlName="OpeningBalanceDate" [label]="'Opening Balance Date'" [placeholder]="'Selected date'" [(ngModel)]="OpeningBalanceDate" required></mdb-date-picker>
                     </div>
                   </div>
                   <div class="col-sm-3 ">
@@ -204,7 +208,11 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="md-form" style='margin-top:-8px;'>
-                      <mdb-date-picker [options]="myDatePickerOptions"  name="mydate" [selector]="0" formControlName="DateGSTStatusVerified" [label]="'GST verified Date'" [placeholder]="'Selected date'" [(ngModel)]="DateGSTStatusVerified" required></mdb-date-picker>
+                      <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form20"
+                        class="form-control" [value]="DateGSTStatusVerified" formControlName="DateGSTStatusVerified"
+                        useValueAsDate>
+                      <label for="form23">GST verified Date</label> -->
+                      <mdb-date-picker  onkeydown="return false;" [options]="myDatePickerOptions"  name="mydate" [selector]="0" formControlName="DateGSTStatusVerified" [label]="'GST verified Date'" [placeholder]="'Selected date'" [(ngModel)]="DateGSTStatusVerified" required></mdb-date-picker>
                     </div>
                   </div>
 
@@ -282,7 +290,7 @@
                       <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form39"
                         class="form-control" formControlName="IncorporationDate" [value]="today" useValueAsDate>
                       <label for="form39">Incorporation Date</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="IncorporationDate" [label]="'Incorporation Date'" [placeholder]="'Selected date'" [(ngModel)]="IncorporationDate" required></mdb-date-picker>
+                      <mdb-date-picker  onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="IncorporationDate" [label]="'Incorporation Date'" [placeholder]="'Selected date'" [(ngModel)]="IncorporationDate" required></mdb-date-picker>
                     </div>
                   </div>
                 </div>
@@ -306,7 +314,7 @@
                       <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form62"
                         class="form-control" formControlName="Statusdate" [value]="today" useValueAsDate>
                       <label for="form62">Status Date</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="Statusdate" [label]="'Status Date'" [placeholder]="'Selected date'" [(ngModel)]="Statusdate" required></mdb-date-picker>
+                      <mdb-date-picker  onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="Statusdate" [label]="'Status Date'" [placeholder]="'Selected date'" [(ngModel)]="Statusdate" required></mdb-date-picker>
                     </div>
                   </div>
                   <div class="col-sm-3">
@@ -444,7 +452,7 @@
                       <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form56"
                         class="form-control" formControlName="Dateofaddress" [value]="today" useValueAsDate>
                       <label for="form56">Date of Address</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="Dateofaddress" [label]="'Date of Address'" [placeholder]="'Selected date'" [(ngModel)]="Dateofaddress" required></mdb-date-picker>
+                      <mdb-date-picker  onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="Dateofaddress" [label]="'Date of Address'" [placeholder]="'Selected date'" [(ngModel)]="Dateofaddress" required></mdb-date-picker>
                     </div>
                   </div>
                   <div class="col-sm-3">
@@ -452,7 +460,7 @@
                       <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form57"
                         class="form-control" formControlName="DateoflastAGM" [value]="today" useValueAsDate>
                       <label for="form57">Date of Last AGM</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="DateoflastAGM" [label]="'Date of Last AGM'" [placeholder]="'Selected date'" [(ngModel)]="DateoflastAGM" required></mdb-date-picker>
+                      <mdb-date-picker  onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="DateoflastAGM" [label]="'Date of Last AGM'" [placeholder]="'Selected date'" [(ngModel)]="DateoflastAGM" required></mdb-date-picker>
                     </div>
                   </div>
                 </div>
@@ -462,7 +470,7 @@
                       <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form58"
                         class="form-control" formControlName="DateoflastAR" [value]="today" useValueAsDate>
                       <label for="form58">Date of Last AR</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="DateoflastAR" [label]="'Date of Last AR'" [placeholder]="'Selected date'" [(ngModel)]="DateoflastAR" required></mdb-date-picker>
+                      <mdb-date-picker  onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="DateoflastAR" [label]="'Date of Last AR'" [placeholder]="'Selected date'" [(ngModel)]="DateoflastAR" required></mdb-date-picker>
                     </div>
                   </div>
                   <div class="col-sm-4">
@@ -470,7 +478,7 @@
                       <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form59"
                         class="form-control" formControlName="DateoflodgementofARAC" [value]="today" useValueAsDate>
                       <label for="form59">Date of Lodgment of ARAC</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="DateoflodgementofARAC" [label]="'Date of Lodgment of ARAC'" [placeholder]="'Selected date'" [(ngModel)]="DateoflodgementofARAC" required></mdb-date-picker>
+                      <mdb-date-picker  onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="DateoflodgementofARAC" [label]="'Date of Lodgment of ARAC'" [placeholder]="'Selected date'" [(ngModel)]="DateoflodgementofARAC" required></mdb-date-picker>
                     </div>
                   </div>
                   <div class="col-sm-4">
@@ -478,7 +486,7 @@
                       <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form59"
                         class="form-control" formControlName="DateofAClaidatlastAGM" [value]="today" useValueAsDate>
                       <label for="form59">Date of A/C Laid at Last AGM</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="DateofAClaidatlastAGM" [label]="'Date of A/C Laid at Last AGM'" [placeholder]="'Selected date'" [(ngModel)]="DateofAClaidatlastAGM" required></mdb-date-picker>
+                      <mdb-date-picker  onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="DateofAClaidatlastAGM" [label]="'Date of A/C Laid at Last AGM'" [placeholder]="'Selected date'" [(ngModel)]="DateofAClaidatlastAGM" required></mdb-date-picker>
                     </div>
                   </div>
                 </div>
@@ -538,7 +546,7 @@
                       <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form30"
                         class="form-control" [value]="today" formControlName="doa" useValueAsDate>
                       <label for="form30">Date of Appointment</label> -->
-                      <mdb-date-picker [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="doa" [label]="'Date of Appointment'" [placeholder]="'Selected date'" [(ngModel)]="doa" required></mdb-date-picker>
+                      <mdb-date-picker  onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0" formControlName="doa" [label]="'Date of Appointment'" [placeholder]="'Selected date'" [(ngModel)]="doa" required></mdb-date-picker>
                     </div>
                   </div>
                   <div class="col-sm-3">
@@ -593,7 +601,7 @@
                 </ng-container>
               </div>
               <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" mdbWavesEffect
-                [disabled]="directorForm.invalid" (click)="saveDirector()">{{isEditDirector ? 'Update' : 'Save' }}</button>
+                [disabled]="directorForm.invalid" (click)="saveDirector()">{{isEditDirector && directorDataArray.length > 0 ? 'Update' : 'Save' }}</button>
               <button type="button" mdbBtn color="warning" class="relative waves-light pull-right" mdbWavesEffect
                 (click)="basicModal.hide()">cancel</button>
             </mdb-tab>
