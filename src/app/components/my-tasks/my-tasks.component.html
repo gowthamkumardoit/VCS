@@ -52,7 +52,7 @@
                                 <mdb-select id="form2" [options]="companyList" [(ngModel)]="selectedCompany" data-error=" "
                                     data-success=" " class="colorful-select dropdown-default select-wrapper">
                                 </mdb-select>
-                                <label for="form2">Select Company</label>
+                                <label for="form2">Company</label>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -60,7 +60,7 @@
                                 <mdb-select id="form3" [options]="serviceList" [(ngModel)]="selectedService" data-error=" "
                                     data-success=" " class="colorful-select dropdown-default select-wrapper">
                                 </mdb-select>
-                                <label for="form3">Select Service</label>
+                                <label for="form3">Service</label>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -68,7 +68,7 @@
                                 <mdb-select id="form4" [options]="userList" [(ngModel)]="selectedUser" data-error=" "
                                     data-success=" " class="colorful-select dropdown-default select-wrapper">
                                 </mdb-select>
-                                <label for="form4">Select User</label>
+                                <label for="form4">User</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -82,21 +82,21 @@
                         <div class="col-sm-4">
                             <div class="md-form">
                                 <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate"
-                                    [selector]="0" [label]="'GST verified Date'" [placeholder]="'Selected date'"
+                                    [selector]="0" [label]="'Start Date'" [placeholder]="'Selected date'"
                                     [(ngModel)]="date1" required></mdb-date-picker>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="md-form">
                                 <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate"
-                                    [selector]="0" [label]="'GST verified Date'" [placeholder]="'Selected date'"
+                                    [selector]="0" [label]="'Due Date'" [placeholder]="'Selected date'"
                                     [(ngModel)]="date2" required></mdb-date-picker>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="md-form">
                                 <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate"
-                                    [selector]="0" [label]="'GST verified Date'" [placeholder]="'Selected date'"
+                                    [selector]="0" [label]="'End Date'" [placeholder]="'Selected date'"
                                     [(ngModel)]="date3" required></mdb-date-picker>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
                                 <mdb-select id="form4" [options]="requiringArray" [(ngModel)]="selectedRequiring"
                                     data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper">
                                 </mdb-select>
-                                <label for="form4">Select User</label>
+                                <label for="form4">Requiring</label>
                             </div>
                         </div>
                         <div class="col-md-4">
