@@ -60,6 +60,7 @@ export class MyTasksComponent implements OnInit {
   desc: string;
   requiringArray: any = [];
   selectedRequiring = '1';
+  showRightPanel: boolean;
   constructor(
     private nav: RoleService,
     private fb: FormBuilder,
@@ -87,6 +88,7 @@ export class MyTasksComponent implements OnInit {
       { taskName: 'Task 5', companyName: 'Company 5', serviceName: 'Service 5', userName: 'User 5' },
     ];
     this.getPagination();
+    this.showRightPanel = false;
   }
   getPagination() {
     setTimeout(() => {
@@ -143,8 +145,10 @@ export class MyTasksComponent implements OnInit {
   }
   openModal() {
     // this.closeDatePicker();
-    this.basicModal.show();
+    //this.basicModal.show();
+    this.showRightPanel = true;
     this.isEditTask = false;
+
     this.requiringArray = [
       { value: '1', label: 'Monthly' },
       { value: '2', label: 'Quartly' },
