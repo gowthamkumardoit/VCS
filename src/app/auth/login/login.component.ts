@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
         this.loginService.userid.next(data.userid);
         localStorage.setItem('userid', data.userid);
         localStorage.setItem('userName', this.loginForm.value.uname);
-        this.route.navigate(['/home']);
+        this.route.navigate(['/myTasks']);
         this.toastService.success('Successfully Logged In', '', this.toastOptions);
       } else {
         const options = {  progressBar: true, timeOut: 1000,   closeButton: true};

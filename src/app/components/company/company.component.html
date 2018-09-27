@@ -183,10 +183,6 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="md-form" style='margin-top:-8px;'>
-                      <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form20"
-                        class="form-control" [value]="OpeningBalanceDate" formControlName="OpeningBalanceDate"
-                        useValueAsDate>
-                      <label for="form20">Op Bal Date</label> -->
                       <mdb-date-picker (inputFieldChanged)="onInputFieldChange($event)" data-success=" " data-error=" " name="mydate" [options]="myDatePickerOptions" formControlName="OpeningBalanceDate" [label]="'Opening Balance Date'" [placeholder]="'Selected date'" [(ngModel)]="OpeningBalanceDate" required></mdb-date-picker>
                     </div>
                   </div>
@@ -208,10 +204,6 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="md-form" style='margin-top:-8px;'>
-                      <!-- <input mdbInputDirective autocomplete="off" data-success=" " data-error=" " type="date" id="form20"
-                        class="form-control" [value]="DateGSTStatusVerified" formControlName="DateGSTStatusVerified"
-                        useValueAsDate>
-                      <label for="form23">GST verified Date</label> -->
                       <mdb-date-picker [options]="myDatePickerOptions"  name="mydate" [selector]="0" formControlName="DateGSTStatusVerified" [label]="'GST verified Date'" [placeholder]="'Selected date'" [(ngModel)]="DateGSTStatusVerified" required></mdb-date-picker>
                     </div>
                   </div>

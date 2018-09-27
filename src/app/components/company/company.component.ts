@@ -380,9 +380,7 @@ export class CompanyComponent implements OnInit {
       tempProfiledata = this.companyProfileList.filter(val => {
         return (parseInt(val.cmid) === item.id);
       });
-      console.log(tempProfiledata);
       if (tempProfiledata !== undefined && tempProfiledata.length > 0) {
-        console.log(tempProfiledata[0].IncorporationDate);
         const IncorporationDate = tempProfiledata[0].IncorporationDate.split('T')[0];
         const Statusdate = tempProfiledata[0].Statusdate.split('T')[0];
         const Dateofaddress = tempProfiledata[0].Dateofaddress.split('T')[0];
