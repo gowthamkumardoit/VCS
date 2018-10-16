@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TaskService } from '../../services/task.service';
 import { CompleterService, CompleterData } from 'ng-uikit-pro-standard';
 import { IMyOptions } from 'ng-uikit-pro-standard';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-my-tasks',
@@ -14,6 +15,7 @@ import { IMyOptions } from 'ng-uikit-pro-standard';
 export class MyTasksComponent implements OnInit {
   public myDatePickerOptions: IMyOptions = {
     closeAfterSelect: true,
+   // dateFormat: 'yyyy.mm.dd'
   };
   dataService: CompleterData;
   dataService1: CompleterData;
@@ -43,7 +45,7 @@ export class MyTasksComponent implements OnInit {
   serviceList: any = [];
   userList: any = [];
 
-  taskName: any;
+  taskName: string;
   date1: any;
   date2: any;
   date3: any;
@@ -51,6 +53,14 @@ export class MyTasksComponent implements OnInit {
   requiringArray: any = [];
   selectedRequiring = '1';
   showRightPanel: boolean;
+
+  messageInput: string;
+  followList: any;
+  tempArr: any[] = [];
+  selectedFollowersList: any[] = [];
+
+  userName: string;
+  inputMessages: any[]= [];
   constructor(
     private nav: RoleService,
     private fb: FormBuilder,
@@ -70,16 +80,12 @@ export class MyTasksComponent implements OnInit {
       pwd: ['', [Validators.required, Validators.minLength(5)]]
     });
 
-    this.taskList = [
-      { taskName: 'Task 1', companyName: 'Company 1', serviceName: 'Service 1', userName: 'User 1' },
-      { taskName: 'Task 2', companyName: 'Company 2', serviceName: 'Service 2', userName: 'User 2' },
-      { taskName: 'Task 3', companyName: 'Company 3', serviceName: 'Service 3', userName: 'User 3' },
-      { taskName: 'Task 4', companyName: 'Company 4', serviceName: 'Service 4', userName: 'User 4' },
-      { taskName: 'Task 5', companyName: 'Company 5', serviceName: 'Service 5', userName: 'User 5' },
-    ];
     this.showRightPanel = false;
+
+    this.userName = localStorage.getItem('userName').substr(0, 2).toUpperCase();
+    this.getTaskList();
   }
- 
+
   closeDatePicker() {
     const element: HTMLCollection = document.getElementsByClassName('mydp');
     for (let i = 0; i < 10; i++) {
@@ -87,6 +93,13 @@ export class MyTasksComponent implements OnInit {
         element[i]['classList'].remove('picker--opened');
       }
     }
+  }
+
+  getTaskList() {
+    this.taskService.getTaskList().subscribe(data => {
+      console.log('get', data);
+      this.taskList = data;
+    })
   }
   getList() {
     this.taskService.getList().subscribe((res: any) => {
@@ -105,6 +118,8 @@ export class MyTasksComponent implements OnInit {
           this.userList[i].label = this.userList[i]['name'];
           delete this.userList[i].id;
           delete this.userList[i].name;
+
+          this.followList = _.map(this.userList, _.clone);
         }
         for (let i = 0; i < this.serviceList.length; i++) {
           this.serviceList[i].value = this.serviceList[i]['id'];
@@ -130,7 +145,6 @@ export class MyTasksComponent implements OnInit {
       this.selectedService = this.serviceList[0].value || '1';
       this.selectedUser = this.userList[0].value || '1';
       this.selectedRequiring = this.requiringArray[0].value;
-      this.selectedUserFollowup = this.userList[0].value || '1';
     }, 300)
 
   }
@@ -139,9 +153,24 @@ export class MyTasksComponent implements OnInit {
   }
 
   editTask(item) {
-    this.openModal();
+    this.showRightPanel = true;
+    this.requiringArray = [
+      { value: '1', label: 'Monthly' },
+      { value: '2', label: 'Quartly' },
+      { value: '3', label: 'Half Yearly' },
+      { value: '4', label: 'Yearly' }
+    ];
     setTimeout(() => {
       this.isEditTask = true;
+      console.log(item);
+      this.selectedCompany = this.companyList.filter(val => { return val.label == item.Companydetail.companyname1 })[0].value || '1';
+      this.selectedService = this.serviceList.filter(val => { return val.label == item.servicecrt.servicename })[0].value || '1';
+      this.selectedUser = this.userList.filter(val => { return val.label == item.usercreate.username })[0].value || '1';
+      this.selectedRequiring = this.requiringArray[0].value;
+      this.taskName = item.taskname;
+      this.date1 = item.startdate;
+      this.date2 = item.duedate;
+      this.date3 = item.enddate;
     }, 100)
 
   }
@@ -171,5 +200,34 @@ export class MyTasksComponent implements OnInit {
     if (this.deletedItem) {
     }
   }
-  
+
+  changedFollowers(event) {
+    this.followList.filter(val => {
+      if (val.value == event) {
+        this.tempArr.push(val);
+      }
+    });
+
+    this.selectedFollowersList = _.uniqBy(_.map(this.tempArr, _.clone), 'value');
+    this.selectedFollowersList = this.selectedFollowersList.map(val => {
+      return (val.label).substr(0, 2).toUpperCase();
+    });
+
+    // this.followList = this.followList.filter(val => {
+    //   return val.value != event;
+    // });
+  }
+
+  onKeydown(event) {
+    if (event.key === "Enter") {
+      this.inputMessages.push(event.target.value);
+      event.target.value = '';
+      console.log(event.target.value);
+    }
+  }
+
+  enter(event) {
+
+  }
+
 }
