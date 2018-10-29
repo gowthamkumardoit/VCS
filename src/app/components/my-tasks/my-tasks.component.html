@@ -42,21 +42,21 @@
                         <mdb-icon icon="check" class="mr-1"></mdb-icon>Mark as Complete
                     </button>
                     <div class="pull-right">
-                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Attachmet" placment="top"
+                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Attachmet" placment="bottom"
                             (click)="fileInput.click()">
                             <mdb-icon icon="paperclip"></mdb-icon>
                         </a>
-                        <input type="file" style="display:none" #fileInput>
-                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Add Chart" placment="top">
+                        <input type="file" style="display:none" #fileInput (change)="onSelectedFile($event)">
+                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Add Chart" placment="bottom">
                             <mdb-icon icon="line-chart"></mdb-icon>
                         </a>
-                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Merge" placment="top">
+                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Merge" placment="bottom">
                             <mdb-icon icon="link"></mdb-icon>
                         </a>
-                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Like" placment="top">
+                        <!-- <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Like" placment="bottom">
                             <mdb-icon icon="thumbs-o-up"></mdb-icon>
-                        </a>
-                        <a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect mdbTooltip="Close" placment="top"
+                        </a> -->
+                        <a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect mdbTooltip="Close" placment="bottom"
                             (click)="showRightPanel = !showRightPanel">
                             <mdb-icon icon="times"></mdb-icon>
                         </a>
@@ -64,6 +64,9 @@
                 </mdb-card-header>
                 <mdb-card-body>
                     <div class="row mx-3" style="height:500px; overflow-y:auto">
+                      <div class="col-md-12">
+
+                      </div>
                         <div class="col-md-12">
                             <div class="error" *ngIf="istaskExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
                                 {{errorMessage}}</div>

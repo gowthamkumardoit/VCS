@@ -60,7 +60,8 @@ export class MyTasksComponent implements OnInit {
   selectedFollowersList: any[] = [];
 
   userName: string;
-  inputMessages: any[]= [];
+  inputMessages: any[] = [];
+  fileNames: any = [];
   constructor(
     private nav: RoleService,
     private fb: FormBuilder,
@@ -99,7 +100,7 @@ export class MyTasksComponent implements OnInit {
     this.taskService.getTaskList().subscribe(data => {
       console.log('get', data);
       this.taskList = data;
-    })
+    });
   }
   getList() {
     this.taskService.getList().subscribe((res: any) => {
@@ -145,7 +146,14 @@ export class MyTasksComponent implements OnInit {
       this.selectedService = this.serviceList[0].value || '1';
       this.selectedUser = this.userList[0].value || '1';
       this.selectedRequiring = this.requiringArray[0].value;
-    }, 300)
+      this.taskName = '';
+      this.date1 = '';
+      this.date2 = '';
+      this.date3 = '';
+      this.desc = '';
+      this.messageInput = '';
+
+    }, 300);
 
   }
   save() {
@@ -163,15 +171,15 @@ export class MyTasksComponent implements OnInit {
     setTimeout(() => {
       this.isEditTask = true;
       console.log(item);
-      this.selectedCompany = this.companyList.filter(val => { return val.label == item.Companydetail.companyname1 })[0].value || '1';
-      this.selectedService = this.serviceList.filter(val => { return val.label == item.servicecrt.servicename })[0].value || '1';
-      this.selectedUser = this.userList.filter(val => { return val.label == item.usercreate.username })[0].value || '1';
+      this.selectedCompany = this.companyList.filter(val =>  val.label === item.Companydetail.companyname1 )[0].value || '1';
+      this.selectedService = this.serviceList.filter(val =>  val.label === item.servicecrt.servicename )[0].value || '1';
+      this.selectedUser = this.userList.filter(val => val.label === item.usercreate.username )[0].value || '1';
       this.selectedRequiring = this.requiringArray[0].value;
       this.taskName = item.taskname;
       this.date1 = item.startdate;
       this.date2 = item.duedate;
       this.date3 = item.enddate;
-    }, 100)
+    }, 100);
 
   }
   filterIt(arr, searchKey) {
@@ -203,7 +211,7 @@ export class MyTasksComponent implements OnInit {
 
   changedFollowers(event) {
     this.followList.filter(val => {
-      if (val.value == event) {
+      if (val.value === event) {
         this.tempArr.push(val);
       }
     });
@@ -219,7 +227,7 @@ export class MyTasksComponent implements OnInit {
   }
 
   onKeydown(event) {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       this.inputMessages.push(event.target.value);
       event.target.value = '';
       console.log(event.target.value);
@@ -230,4 +238,14 @@ export class MyTasksComponent implements OnInit {
 
   }
 
+  onSelectedFile($event) {
+    console.log($event);
+    // this.fileNames = [];
+    this.fileNames.push($event.target.files[0].name);
+    console.log(this.fileNames);
+  }
+
+  removeFiles(index) {
+    this.fileNames.splice(index, 1);
+  }
 }

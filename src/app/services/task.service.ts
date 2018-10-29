@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { URL, URL1 } from '../constants/common.constant';
+import { URL } from '../constants/common.constant';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class TaskService {
 
   // Get task List
   getTaskList() {
-    return this.httpClient.get(`${URL1}tcreatetasks`);
+    return this.httpClient.get(`${URL}tcreatetasks`);
   }
 
   // Post User Data
