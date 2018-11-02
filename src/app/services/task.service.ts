@@ -20,13 +20,13 @@ export class TaskService {
   }
 
   // Post User Data
-  createRole(data) {
-    return this.httpClient.post(`${URL}userroles`, data);
+  createTasks(data) {
+    return this.httpClient.post(`${URL}NewTaskDetail`, data);
   }
 
-  // Update Role
-  updateRole(data) {
-    return this.httpClient.put(`${URL}userroles/${data.id}`, data);
+  // Save Files
+  saveFiles(data) {
+    return this.httpClient.post(`${URL}TaskAttachment`, data);
   }
 
   // Delete Role

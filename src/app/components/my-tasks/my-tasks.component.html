@@ -1,196 +1,207 @@
 <div style="height: 100px"></div>
 <div class="container-fluid px-5">
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div [ngClass]="{'col-md-5 col-sm-10' : showRightPanel, 'col-md-10 col-sm-10': !showRightPanel}">
-            <div class="card" style="min-height:calc(85vh);max-height: 650px; overflow-y:auto ">
-                <mdb-card-header>
-                    <button type="button" mdbBtn color="teal" class="relative waves-light" (click)="openModal()"
-                        mdbWavesEffect size="sm">
-                        <i class="fa fa-plus-circle mr-2"></i>Add Task</button>
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div [ngClass]="{'col-md-5 col-sm-10' : showRightPanel, 'col-md-10 col-sm-10': !showRightPanel}">
+      <div class="card" style="min-height:calc(85vh);max-height: 650px; overflow-y:auto ">
+        <mdb-card-header>
+          <button type="button" mdbBtn color="teal" class="relative waves-light" (click)="openModal()" mdbWavesEffect
+            size="sm">
+            <i class="fa fa-plus-circle mr-2"></i>Add Task</button>
 
-                    <button type="button" mdbBtn color="teal" outline="true" class="relative waves-light"
-                        mdbWavesEffect size="sm">
-                        <i class="fa fa-plus-circle mr-2"></i>Add Service</button>
-                    <!-- <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Change view" placment="top"
+          <button type="button" mdbBtn color="teal" outline="true" class="relative waves-light" mdbWavesEffect size="sm">
+            <i class="fa fa-plus-circle mr-2"></i>Add Service</button>
+          <!-- <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Change view" placment="top"
                         class="pull-right">
                         <mdb-icon icon="list-alt"></mdb-icon>
                     </a> -->
-                </mdb-card-header>
-                <!-- <mdb-card-body > -->
-                <table class="table table-hover">
-                    <tbody>
-                        <ng-container *ngIf="taskList.length > 0">
-                            <tr *ngFor="let item of taskList; let i=index;" (click)="editTask(item)">
-                                <td>{{(i+1)}}</td>
-                                <td>{{item.taskname}}</td>
-                                <td>{{item.Companydetail.companyname1}}</td>
-                                <td>{{item.servicecrt.servicename}}</td>
-                                <td>{{item.usercreate.username}}</td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-                <!-- </mdb-card-body> -->
-            </div>
-        </div>
-        <div class="col-md-5" *ngIf="showRightPanel">
-            <div class="card" style="min-height:calc(60vh); overflow-y:auto">
-                <mdb-card-header>
-                    <button type="button" mdbBtn color="teal" outline=true size="sm" class="relative waves-light"
-                        mdbWavesEffect>
-                        <mdb-icon icon="check" class="mr-1"></mdb-icon>Mark as Complete
-                    </button>
-                    <div class="pull-right">
-                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Attachmet" placment="bottom"
-                            (click)="fileInput.click()">
-                            <mdb-icon icon="paperclip"></mdb-icon>
-                        </a>
-                        <input type="file" style="display:none" #fileInput (change)="onSelectedFile($event)">
-                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Add Chart" placment="bottom">
-                            <mdb-icon icon="line-chart"></mdb-icon>
-                        </a>
-                        <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Merge" placment="bottom">
-                            <mdb-icon icon="link"></mdb-icon>
-                        </a>
-                        <!-- <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Like" placment="bottom">
+        </mdb-card-header>
+        <!-- <mdb-card-body > -->
+        <table class="table table-hover">
+          <tbody>
+            <ng-container *ngIf="taskList.length > 0">
+              <tr *ngFor="let item of taskList; let i=index;" (click)="editTask(item)">
+                <td>{{(i+1)}}</td>
+                <td>{{item.taskname}}</td>
+                <td>{{item.Companydetail.companyname1}}</td>
+                <td>{{item.servicecrt.servicename}}</td>
+                <td>{{item.usercreate.username}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <!-- </mdb-card-body> -->
+      </div>
+    </div>
+    <div class="col-md-5" *ngIf="showRightPanel">
+      <div class="card" style="min-height:calc(60vh); overflow-y:auto">
+        <mdb-card-header>
+          <button type="button" mdbBtn color="teal" outline=true size="sm" class="relative waves-light" mdbWavesEffect>
+            <mdb-icon icon="check" class="mr-1"></mdb-icon>Mark as Complete
+          </button>
+          <div class="pull-right">
+            <!--mdbTooltip="Attachmet"-->
+            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" (click)="fileInput.click()">
+              <mdb-icon icon="paperclip"></mdb-icon>
+            </a>
+            <input type="file" style="display:none" #fileInput (change)="onSelectedFile($event)">
+            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom">
+              <mdb-icon icon="line-chart"></mdb-icon>
+            </a>
+            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom">
+              <mdb-icon icon="link"></mdb-icon>
+            </a>
+            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" (click)="save()">
+              <mdb-icon icon="save"></mdb-icon>
+            </a>
+            <!-- <a mdbBtn
+              floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Like" placment="bottom">
                             <mdb-icon icon="thumbs-o-up"></mdb-icon>
                         </a> -->
-                        <a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect mdbTooltip="Close" placment="bottom"
-                            (click)="showRightPanel = !showRightPanel">
-                            <mdb-icon icon="times"></mdb-icon>
-                        </a>
-                    </div>
-                </mdb-card-header>
-                <mdb-card-body>
-                    <div class="row mx-3" style="height:500px; overflow-y:auto">
-                      <div class="col-md-12">
+            <a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect placment="bottom" (click)="showRightPanel = !showRightPanel">
+              <mdb-icon icon="times"></mdb-icon>
+            </a>
+          </div>
+        </mdb-card-header>
+        <mdb-card-body>
+          <form [formGroup]="taskForm">
+            <div class="row mx-3" style="height:500px; overflow-y:auto">
+              <div class="col-md-3" *ngFor="let file of files; let i = index">
+                <p>{{file.files[i].name.length > 10 ? file.name.substr(0,10) : file.name}} <span aria-hidden="true" (click)="removeFiles(i)"
+                    style="cursor: pointer;">&times;</span></p>
+              </div>
+              <div class="col-md-12">
+                <div class="error" *ngIf="istaskExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
+                  {{errorMessage}}</div>
+              </div>
 
-                      </div>
-                        <div class="col-md-12">
-                            <div class="error" *ngIf="istaskExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
-                                {{errorMessage}}</div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="md-form  mt-3">
-
-                                <!-- <mdb-autocomplete [label]="'Company'" name="autocomplete" initialValue="'Company'"
+              <div class="col-md-4">
+                <div class="md-form  mt-3">
+                  <!-- <mdb-autocomplete [label]="'Company'" name="autocomplete" initialValue="'Company'"
                                     [(ngModel)]="selectedCompany" [datasource]="dataService" [minSearchLength]="0">
                                 </mdb-autocomplete> -->
-                                <mdb-select id="form2" [options]="companyList" [(ngModel)]="selectedCompany" data-error=" "
-                                    data-success=" " class="colorful-select dropdown-default select-wrapper">
-                                </mdb-select>
-                                <label for="form2">Company</label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="md-form  mt-3">
-                                <!-- <mdb-autocomplete [label]="'Service'" name="autocomplete" initialValue="'Company'"
+                  <mdb-select id="form2" [options]="companyList" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
+                    formControlName="companyid">
+                  </mdb-select>
+                  <label for="form2">Company</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="md-form  mt-3">
+                  <!-- <mdb-autocomplete [label]="'Service'" name="autocomplete" initialValue="'Company'"
                                     [(ngModel)]="selectedCompany" [datasource]="dataService" [minSearchLength]="0">
                                 </mdb-autocomplete> -->
-                                <mdb-select id="form3" [options]="serviceList" [(ngModel)]="selectedService" data-error=" "
-                                    data-success=" " class="colorful-select dropdown-default select-wrapper">
-                                </mdb-select>
-                                <label for="form3">Service</label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="md-form  mt-3">
-                                <mdb-select id="form4" [options]="userList" [(ngModel)]="selectedUser" data-error=" "
-                                    data-success=" " class="colorful-select dropdown-default select-wrapper">
-                                </mdb-select>
-                                <label for="form4">User</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="md-form">
-                                <input mdbInputDirective maxlength="150" autocomplete="off" data-success=" " data-error=" "
-                                    type="text" id="form16" class="form-control" [(ngModel)]="taskName">
-                                <label for="form16">Task Name</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6"></div>
-                        <div class="col-sm-4">
-                            <div class="md-form">
-                                <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate"
-                                    [selector]="0" [label]="'Start Date'" [placeholder]="'Selected date'" [(ngModel)]="date1"
-                                    required></mdb-date-picker>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="md-form">
-                                <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate"
-                                    [selector]="0" [label]="'Due Date'" [placeholder]="'Selected date'" [(ngModel)]="date2"
-                                    required></mdb-date-picker>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="md-form">
-                                <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate"
-                                    [selector]="0" [label]="'End Date'" [placeholder]="'Selected date'" [(ngModel)]="date3"
-                                    required></mdb-date-picker>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="md-form">
-                                <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control"
-                                    mdbInputDirective [(ngModel)]="desc" data-success=" " data-error=" "></textarea>
-                                <label for="form7">Description</label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="md-form  mt-5">
-                                <mdb-select id="form4" [options]="requiringArray" [(ngModel)]="selectedRequiring"
-                                    data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper">
-                                </mdb-select>
-                                <label for="form4">Requiring</label>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
+                  <mdb-select id="form3" [options]="serviceList" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
+                    formControlName="serviceid">
+                  </mdb-select>
+                  <label for="form3">Service</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="md-form  mt-3">
+                  <mdb-select id="form4" [options]="userList" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
+                    formControlName="userid">
+                  </mdb-select>
+                  <label for="form4">User</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="md-form">
+                  <mdb-autocomplete [label]="'Task Name'" name="autocomplete" initialValue="'Task Name'"  formControlName="taskname" autocomplete="off" data-success=" " data-error=" "
+                    [datasource]="dataService" [minSearchLength]="1">
+                  </mdb-autocomplete>
+                  <!-- <input mdbInputDirective maxlength="150" autocomplete="off" data-success=" " data-error=" " type="text"
+                    id="form16" class="form-control" formControlName="taskname"> -->
+                  <!-- <label for="form16">Task Name</label> -->
+                </div>
+              </div>
+              <div class="col-md-6"></div>
+              <div class="col-sm-4">
+                <div class="md-form">
+                  <input mdbInputDirective autocomplete="off" id="form1" class="form-control" type="date"
+                    formControlName="startdate" data-success=" " data-error=" " useValueAsDate>
+                  <label for="form1" class="">Start Date </label>
 
-                        </div>
-                        <div class="col-md-12">
-                            <p class="" *ngFor="let item of inputMessages">{{item}}</p>
-                        </div>
-
-                    </div>
-                </mdb-card-body>
-
+                  <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
+                  [label]="'Start Date'" [placeholder]="'Selected date'" [(ngModel)]="date1" required></mdb-date-picker> -->
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="md-form">
+                  <input mdbInputDirective autocomplete="off" id="form2" class="form-control" type="date"
+                    formControlName="duedate" data-success=" " data-error=" " useValueAsDate>
+                  <label for="form2" class="">Due Date </label>
+                  <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
+                  [label]="'Due Date'" [placeholder]="'Selected date'" [(ngModel)]="date2" required></mdb-date-picker> -->
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="md-form">
+                  <input mdbInputDirective autocomplete="off" id="form3" class="form-control" type="date"
+                    formControlName="enddate" data-success=" " data-error=" " useValueAsDate>
+                  <label for="form3" class="">End Date </label>
+                  <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
+                  [label]="'End Date'" [placeholder]="'Selected date'" [(ngModel)]="date3" required></mdb-date-picker> -->
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="md-form">
+                  <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInputDirective
+                    data-success=" " data-error=" " formControlName="description"></textarea>
+                  <label for="form7">Description</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="md-form  mt-5">
+                  <mdb-select id="form4" [options]="requiringArray" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
+                    formControlName="requiring">
+                  </mdb-select>
+                  <label for="form4">Requiring</label>
+                </div>
+              </div>
+              <div class="col-md-2">
+              </div>
+              <div class="col-md-12">
+                <p class="" *ngFor="let item of inputMessages">{{item}}</p>
+              </div>
             </div>
-            <div class="row">
-                <div class="col-md-2 mt-1">
-                    <a mdbBtn floating="true" size="sm" color="dark-green" mdbWavesEffect class="pull-right">
-                        <p style="padding: 8px;">{{userName}}</p>
-                    </a>
-                </div>
-                <div class="col-md-9">
-                    <div class="mt-3">
-                        <input mdbInputDirective maxlength="150" autocomplete="off" data-success=" " data-error=" "
-                            type="text" id="form17" class="form-control test" [(ngModel)]="messageInput" (keydown)="onKeydown($event)">
-                        <i class="fa fa-paper-plane" style="color:rgb(24, 119, 111);position: absolute;right: 23px; bottom: 23px;"
-                            (click)="enter($event)"></i>
-                    </div>
-                </div>
+          </form>
+        </mdb-card-body>
 
-                <div class="col-md-6 mt-1">
-                    <a mdbBtn floating="true" size="sm" color="dark-green" mdbWavesEffect class="pull-right" *ngFor="let item of selectedFollowersList">
-                        <p style="padding: 8px;">{{item}}</p>
-                    </a>
-                </div>
-                <div class="col-md-5">
-                    <div class="md-form mt-3">
-                        <mdb-select id="form4" [options]="followList" [(ngModel)]="selectedUserFollowup" data-error=" "
-                            data-success=" " class="colorful-select dropdown-default select-wrapper" (ngModelChange)="changedFollowers($event)">
-                        </mdb-select>
-                        <label for="form4">Follow up</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" (click)="save()"
-                        mdbWavesEffect>{{isEditTask ? 'Update': 'Save'}}</button>
-                </div>
-            </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 mt-1">
+          <a mdbBtn floating="true" size="sm" color="dark-green" mdbWavesEffect class="pull-right">
+            <p style="padding: 8px;">{{userName}}</p>
+          </a>
         </div>
+        <div class="col-md-9">
+          <div class="mt-3">
+            <input mdbInputDirective maxlength="150" autocomplete="off" data-success=" " data-error=" " type="text" id="form17"
+              class="form-control test" [(ngModel)]="messageInput" (keydown)="onKeydown($event)">
+            <i class="fa fa-paper-plane" style="color:rgb(24, 119, 111);position: absolute;right: 23px; bottom: 23px;"
+              (click)="enter($event)"></i>
+          </div>
+        </div>
+
+        <div class="col-md-6 mt-1">
+          <a mdbBtn floating="true" size="sm" color="dark-green" mdbWavesEffect class="pull-right" *ngFor="let item of selectedFollowersList">
+            <p style="padding: 8px;">{{item}}</p>
+          </a>
+        </div>
+        <div class="col-md-5">
+          <div class="md-form mt-3">
+            <mdb-select id="form4" [options]="followList" [(ngModel)]="selectedUserFollowup" data-error=" "
+              data-success=" " class="colorful-select dropdown-default select-wrapper" (ngModelChange)="changedFollowers($event)">
+            </mdb-select>
+            <label for="form4">Follow up</label>
+          </div>
+        </div>
+        <!-- <div class="col-md-12">
+          <button type="button" mdbBtn color="teal" class="relative waves-light pull-right" (click)="save()"
+            mdbWavesEffect>{{isEditTask ? 'Update': 'Save'}}</button>
+        </div> -->
+      </div>
     </div>
+  </div>
 </div>
