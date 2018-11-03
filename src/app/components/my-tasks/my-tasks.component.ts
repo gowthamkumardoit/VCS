@@ -49,6 +49,7 @@ export class MyTasksComponent implements OnInit {
   followList: any;
   tempArr: any[] = [];
   selectedFollowersList: any[] = [];
+  followersId: any;
 
   userName: string;
   inputMessages: any[] = [];
@@ -57,7 +58,18 @@ export class MyTasksComponent implements OnInit {
   updateTaskDetails: any;
   taskNameArray: any = [];
   base64Url: any;
+  dbFilesList: any = [];
+  allFilesBase64: any = [];
 
+  subTaskArray: any = [];
+  updatedSubTaskArray: any = [];
+
+  chatListArray: any = [];
+  chatInputArray: any = [];
+
+  dateArray: any = [];
+  createdBy: any;
+  fileNamesArray: any = [];
   constructor(
     private nav: RoleService,
     private fb: FormBuilder,
@@ -65,6 +77,7 @@ export class MyTasksComponent implements OnInit {
     private taskService: TaskService,
     private completerService: CompleterService
   ) {
+    this.userid = Number(localStorage.getItem('userid'));
     this.getTaskList();
   }
 
@@ -72,7 +85,6 @@ export class MyTasksComponent implements OnInit {
 
     this.nav.navigationBarShow.next(true);
     this.tableHeadings = ['No', 'Task Name', 'Company Name', 'Service Name', 'User Name'];
-    this.getList();
 
     this.taskForm = this.fb.group({
       companyid: ['', Validators.required],
@@ -89,7 +101,13 @@ export class MyTasksComponent implements OnInit {
     this.showRightPanel = false;
 
     this.userName = localStorage.getItem('userName').substr(0, 2).toUpperCase();
-    this.userid = Number(localStorage.getItem('userid'));
+    setTimeout(() => {
+      this.getList();
+    }, 1000);
+
+  }
+  trackByIndex(index: number, obj: any): any {
+    return index;
   }
 
   closeDatePicker() {
@@ -102,18 +120,17 @@ export class MyTasksComponent implements OnInit {
   }
 
   getTaskList() {
-    this.taskService.getTaskList().subscribe(data => {
-      console.log('get', data);
-      this.taskList = data;
-      this.taskNameArray = [];
-      if (this.taskList && this.taskList.length > 0) {
-        this.taskList.forEach((item) => {
-          this.taskNameArray.push({name:  item.taskname});
-        });
-      }
-      this.dataService = this.completerService.local(this.taskNameArray, 'name', 'name');
-      console.log(this.dataService);
-    });
+      this.taskService.getTaskList(this.userid).subscribe((data: any) => {
+        this.taskList = data.tot;
+        this.taskNameArray = [];
+        if (this.taskList && this.taskList.length > 0) {
+          this.taskList.forEach((item) => {
+            this.taskNameArray.push({name:  item.taskname});
+          });
+        }
+        this.dataService = this.completerService.local(this.taskNameArray, 'name', 'name');
+
+      });
   }
   getList() {
     this.taskService.getList().subscribe((res: any) => {
@@ -169,11 +186,16 @@ export class MyTasksComponent implements OnInit {
         requiring:  this.requiringArray[0].value,
       });
       this.messageInput = '';
+      this.inputMessages = [];
+      this.updatedSubTaskArray = [];
     }, 300);
 
   }
   save() {
-
+    this.chatInputArray = [];
+    this.inputMessages.forEach((val) => {
+      this.chatInputArray.push({name: val.message});
+    });
     if (!this.isEditTask) {
       const obj = {
         ...this.taskForm.value,
@@ -181,21 +203,21 @@ export class MyTasksComponent implements OnInit {
           serviceid :  Number(this.taskForm.value.serviceid),
           userid :  Number(this.taskForm.value.userid),
           requiringifany : (this.taskForm.value.requiring !== '' || this.taskForm.value.requiring !== null) ? 'Yes' : 'No',
-          followup : (this.tempArr || this.tempArr[0] || this.tempArr[0].value === undefined ? 0 : Number(this.tempArr[0].value) )  ,
+          followup : (this.followersId === undefined ? 0 : this.followersId ),
           createby : this.userid,
-          subtask : [],
+          subtask : this.updatedSubTaskArray,
+          chatlist: this.chatInputArray,
           taskid : 0,
           data : 'save',
-          modifyby: this.userid
+          modifyby: this.userid,
       };
       this.taskService.createTasks(obj).subscribe((res: any) => {
         if (res.isSaved) {
-          // this.updateTaskDetails.id = Number(res.taskid);
           setTimeout(() => {
-            this.saveFiles();
+            this.saveFiles(res.taskid);
           }, 300);
-          // this.getList();
-          // this.getTaskList();
+          this.getList();
+          this.getTaskList();
         }
       });
     } else {
@@ -206,17 +228,18 @@ export class MyTasksComponent implements OnInit {
           userid :  Number(this.taskForm.value.userid),
           requiringifany : (this.taskForm.value.requiring !== '' || this.taskForm.value.requiring !== null) ? 'Yes' : 'No',
           followup : (this.tempArr || this.tempArr[0] || this.tempArr[0].value === undefined ? 0 : Number(this.tempArr[0].value) )  ,
-          subtask : [],
+          subtask : this.updatedSubTaskArray,
+          chatlist: this.chatInputArray,
           taskid : this.updateTaskDetails.id,
           data : 'update',
-          modifyby: this.userid
+          modifyby: this.userid,
+          createby: Number(this.createdBy)
       };
       this.taskService.createTasks(obj).subscribe((res: any) => {
-        console.log('edit save');
         if (res.isSaved) {
-          // this.getList();
-          // this.getTaskList();
-          this.saveFiles();
+          this.getList();
+          this.getTaskList();
+          this.saveFiles(res.taskid);
         }
       });
     }
@@ -231,40 +254,71 @@ export class MyTasksComponent implements OnInit {
       { value: '3', label: 'Half Yearly' },
       { value: '4', label: 'Yearly' }
     ];
-    setTimeout(() => {
-      this.isEditTask = true;
-      this.taskForm.patchValue({
-        companyid: this.companyList.filter(val =>  val.label === item.Companydetail.companyname1 )[0].value || '1',
-        serviceid: this.serviceList.filter(val =>  val.label === item.servicecrt.servicename )[0].value || '1',
-        userid:  this.userList.filter(val => val.label === item.usercreate.username )[0].value || '1',
-        taskname: item.taskname,
-        startdate: new Date(item.startdate),
-        duedate: new Date(item.duedate),
-        enddate: new Date(item.enddate),
-        description: item.description,
-        requiring:  this.requiringArray[0].value,
+    const obj = {
+      userid: this.userid,
+      taskid: Number(item.taskid)
+    };
+    this.taskService.getFiles(obj).subscribe((res: any) => {
+      setTimeout(() => {
+        this.isEditTask = true;
+        this.taskForm.patchValue({
+          companyid: this.companyList.filter(val =>  val.label === item.compname )[0].value || '1',
+          serviceid: this.serviceList.filter(val =>  val.label === item.servname )[0].value || '1',
+          userid:  this.userList.filter(val => val.label === item.user )[0].value || '1',
+          taskname: item.taskname,
+          startdate: new Date(res.td.startdate),
+          duedate: new Date(res.td.duedate),
+          enddate: new Date(res.td.enddate),
+          description: res.td.description,
+          requiring:  this.requiringArray[Number(res.td.requiring) - 1].value,
+        });
+        this.createdBy =  res.createby;
+      }, 100);
+      this.dbFilesList = [];
+      this.dbFilesList = res.filelist;
+      this.taskService.getAllFileDetails(obj).subscribe((response: any) => {
+        this.allFilesBase64 = response.fn;
       });
+      this.subTaskArray = res.subtasklist;
+      this.chatListArray = res.chatlist;
+        this.inputMessages = [];
+        this.updatedSubTaskArray = [];
+        if (this.subTaskArray && this.subTaskArray.length > 0) {
+          this.subTaskArray.forEach((val) => {
+            this.updatedSubTaskArray.push({ name: val.name });
+          });
+        }
+        if (this.chatListArray && this.chatListArray.length > 0) {
+          this.chatListArray.forEach((val) => {
+            this.inputMessages.push({ message: val.message, date: val.date });
 
-    }, 100);
+          });
+          this.dateArray = [];
+          this.inputMessages.forEach(val => {
+            this.dateArray.push(new Date(val.date ));
+          });
+        }
+        this.getFollowers(res.td.requiring);
+    });
 
   }
-  filterIt(arr, searchKey) {
-    return arr.filter((obj) => {
-      return Object.keys(obj).some((key) => {
-        return obj[key] === null ? obj[key] : (obj[key]).toString().includes(searchKey);
-
-      });
+  getFollowers(followId) {
+    this.tempArr = [];
+    this.followList.filter(val => {
+      if (val.value === followId) {
+        this.tempArr.push(val);
+      }
+    });
+    this.selectedFollowersList = _.uniqBy(_.map(this.tempArr, _.clone), 'value');
+    this.selectedFollowersList = this.selectedFollowersList.map(val => {
+      this.followersId = val.value;
+      return (val.label).substr(0, 2).toUpperCase();
     });
   }
-
-  search() {
-    if (!this.searchText) {
-      return this.taskList;
-    }
-    if (this.searchText) {
-      return this.filterIt(this.taskList, this.searchText);
-    }
+  addSubtask() {
+    this.updatedSubTaskArray.push({name: ''});
   }
+
 
   deleteTask(item) {
     this.deletedItem = item;
@@ -282,22 +336,17 @@ export class MyTasksComponent implements OnInit {
         this.tempArr.push(val);
       }
     });
-    console.log('aa', this.tempArr);
     this.selectedFollowersList = _.uniqBy(_.map(this.tempArr, _.clone), 'value');
     this.selectedFollowersList = this.selectedFollowersList.map(val => {
+      this.followersId = val.value;
       return (val.label).substr(0, 2).toUpperCase();
     });
-
-    // this.followList = this.followList.filter(val => {
-    //   return val.value != event;
-    // });
   }
 
   onKeydown(event) {
     if (event.key === 'Enter') {
-      this.inputMessages.push(event.target.value);
+      this.inputMessages.push({message: event.target.value, date: new Date()});
       event.target.value = '';
-      console.log(event.target.value);
     }
   }
 
@@ -306,43 +355,44 @@ export class MyTasksComponent implements OnInit {
   }
 
   onSelectedFile($event) {
-    console.log($event);
-    // this.fileNames = [];
     this.files.push($event.target);
-    console.log(this.files);
+    console.log($event.target.files[0].name);
+    this.fileNamesArray.push($event.target.files[0].name);
+    console.log(this.fileNamesArray);
+
   }
 
   removeFiles(index) {
     this.files.splice(index, 1);
-    console.log('after remove', this.files);
   }
-
-  saveFiles() {
+  removeFilesFromDb(index) {
+    this.dbFilesList.splice(index, 1);
+  }
+  saveFiles(id) {
     const newArray = [];
-
+    this.fileNamesArray = [];
     this.files.forEach((item: any) => {
     this.encodeImageFileAsURL(item);
       setTimeout(() => {
         const obj = {
-          taskid: 19,
+          taskid: id,
           userid: this.userid,
           fname: item.files[0].name,
           attachment_details : this.base64Url
         };
+
         newArray.push(obj);
       }, 300);
     });
     setTimeout(() => {
     newArray.forEach(val => {
       this.taskService.saveFiles(val).subscribe((data: any) => {
-        console.log(data);
       });
     });
   }, 350);
   }
 
   encodeImageFileAsURL(element) {
-
     if (element.files && element.files[0]) {
       let url = '';
       const reader = new FileReader();
@@ -350,9 +400,23 @@ export class MyTasksComponent implements OnInit {
       reader.onload = ($event: any) => { // called once readAsDataURL is completed
         url = $event.target.result;
         url =  url.replace('data:image/jpeg;base64,', '');
-        console.log(url);
         this.base64Url = url;
       };
+    }
+  }
+
+  openFileinTarget(file) {
+    if (file) {
+    let dataUrl =  '';
+     this.allFilesBase64.forEach((item) => {
+      if (item.fname = file.name) {
+        dataUrl = item.fbase64;
+      }
+    });
+      const image = new Image();
+      image.src = `data:image/jpg;base64,${dataUrl}`;
+      const w = window.open('');
+      w.document.write(image.outerHTML);
     }
   }
 }

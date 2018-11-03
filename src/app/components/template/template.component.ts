@@ -65,7 +65,7 @@ export class TemplateComponent implements OnInit {
 
     this.items = TEMPLATE_BUTTONS;
 
-    this.userid = parseInt(localStorage.getItem('userid'));
+    this.userid = Number(localStorage.getItem('userid'));
     this.templateData = {
       templatehead: '',
       templates: '',
@@ -141,7 +141,7 @@ export class TemplateComponent implements OnInit {
       templatehead: this.templateForm.value.templatehead,
       templates: getData,
       createby: this.userid,
-      status: parseInt(this.templateForm.value.status),
+      status: Number(this.templateForm.value.status),
     };
     this.templateService.postTemplateData(postData).subscribe((res: any) => {
       if (res && res.isSaved === 'false') {
@@ -163,10 +163,8 @@ export class TemplateComponent implements OnInit {
       ...this.templateData,
       ...item
     };
-    console.log(item);
     setTimeout(() => {
       this.templateService.getDataById(item.id).subscribe((data: any) => {
-        console.log(data);
         if (data) {
           this.newTemplate = data.message;
           CKEDITOR.instances['editor1'].setData(this.newTemplate);

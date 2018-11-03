@@ -14,9 +14,14 @@ export class TaskService {
     return this.httpClient.get(`${URL}task`);
   }
 
+  // Get Task Details, Date, Files, Chat, Subtask data in post method
+  getFiles(data) {
+    return this.httpClient.post(`${URL}task`, data);
+  }
+
   // Get task List
-  getTaskList() {
-    return this.httpClient.get(`${URL}tcreatetasks`);
+  getTaskList(id) {
+    return this.httpClient.get(`${URL}task/${id}`);
   }
 
   // Post User Data
@@ -24,9 +29,18 @@ export class TaskService {
     return this.httpClient.post(`${URL}NewTaskDetail`, data);
   }
 
+  // updateData(data) {
+  //   return this.httpClient.post(`${URL}updatedata`, data);
+  // }
+
   // Save Files
   saveFiles(data) {
     return this.httpClient.post(`${URL}TaskAttachment`, data);
+  }
+
+  // Get Files by id
+  getAllFileDetails(data) {
+    return this.httpClient.post(`${URL}TaskAttachmentOut`, data);
   }
 
   // Delete Role

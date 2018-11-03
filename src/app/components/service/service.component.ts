@@ -85,7 +85,7 @@ export class ServiceComponent implements OnInit {
       sid: 0
     };
 
-    this.userid = parseInt(localStorage.getItem('userid'));
+    this.userid = Number(localStorage.getItem('userid'));
     this.toastOptions = {
       progressBar: true,
       timeOut: 1000,

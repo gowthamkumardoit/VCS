@@ -30,6 +30,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AngularFireModule } from '@angular/fire';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from './auth.guard';
+import { TimeAgoPipe } from 'time-ago-pipe';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { AuthGuard } from './auth.guard';
     ServiceComponent,
     RoleComponent,
     DeleteComponent,
-    TemplateComponent
+    TemplateComponent,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
