@@ -32,6 +32,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from './auth.guard';
 import { TimeAgoPipe } from 'time-ago-pipe';
 
+import { BsDatepickerModule  } from 'ngx-bootstrap/datepicker';
+
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,9 +72,15 @@ import { TimeAgoPipe } from 'time-ago-pipe';
     MDBBootstrapModulesPro.forRoot(),
     ToastrModule.forRoot(),
     AngularFireModule.initializeApp(environment),
-    NgbModule
+    NgbModule,
+    BsDatepickerModule.forRoot(),
+    PerfectScrollbarModule
   ],
-  providers: [MDBSpinningPreloader, UserService, DatePipe, AuthGuard],
+  providers: [MDBSpinningPreloader, UserService, DatePipe, AuthGuard,
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA ]
 })

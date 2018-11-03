@@ -6,6 +6,7 @@ import { TaskService } from '../../services/task.service';
 import { CompleterService, CompleterData } from 'ng-uikit-pro-standard';
 import { IMyOptions } from 'ng-uikit-pro-standard';
 import * as _ from 'lodash';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-my-tasks',
@@ -17,6 +18,10 @@ export class MyTasksComponent implements OnInit {
     closeAfterSelect: true,
    // dateFormat: 'yyyy.mm.dd'
   };
+  bsValue = new Date();
+  colorTheme = 'theme-default';
+  bsConfig: Partial<BsDatepickerConfig>;
+
   dataService: CompleterData;
   dataService1: CompleterData;
   dataService2: CompleterData;
@@ -80,7 +85,14 @@ export class MyTasksComponent implements OnInit {
     this.userid = Number(localStorage.getItem('userid'));
     this.getTaskList();
   }
-
+  applyTheme(pop: any) {
+    // create new object on each property change
+    // so Angular can catch object reference change
+    this.bsConfig = Object.assign({}, { containerClass: this.colorTheme });
+    setTimeout(() => {
+      pop.show();
+    });
+  }
   ngOnInit() {
 
     this.nav.navigationBarShow.next(true);
@@ -298,7 +310,7 @@ export class MyTasksComponent implements OnInit {
             this.dateArray.push(new Date(val.date ));
           });
         }
-        this.getFollowers(res.td.requiring);
+        this.getFollowers(res.td.followup);
     });
 
   }
@@ -314,6 +326,7 @@ export class MyTasksComponent implements OnInit {
       this.followersId = val.value;
       return (val.label).substr(0, 2).toUpperCase();
     });
+    console.log(this.selectedFollowersList);
   }
   addSubtask() {
     this.updatedSubTaskArray.push({name: ''});
@@ -407,6 +420,7 @@ export class MyTasksComponent implements OnInit {
 
   openFileinTarget(file) {
     if (file) {
+      console.log(this.allFilesBase64);
     let dataUrl =  '';
      this.allFilesBase64.forEach((item) => {
       if (item.fname = file.name) {
@@ -414,7 +428,19 @@ export class MyTasksComponent implements OnInit {
       }
     });
       const image = new Image();
-      image.src = `data:image/jpg;base64,${dataUrl}`;
+      let extension = '';
+      if (file.name) {
+         extension = file.name.split('.')[1];
+      }
+
+      if (extension === 'jpg') {
+        image.src = `data:image/jpg;base64,${dataUrl}`;
+      } else if (extension === 'jpeg') {
+        image.src = `data:image/jpeg;base64,${dataUrl}`;
+      } if (extension === 'png') {
+        image.src = `data:image/png;base64,${dataUrl}`;
+      }
+      console.log(image);
       const w = window.open('');
       w.document.write(image.outerHTML);
     }

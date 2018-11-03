@@ -239,7 +239,7 @@ export class ServiceComponent implements OnInit {
       Createby: this.userid
     };
     this.service.postServiceData(postData).subscribe((data: any) => {
-      if (data && data.isSaved == "false") {
+      if (data && data.isSaved === 'false') {
         this.isServiceExists = true;
         this.errorMessage = data.Message;
       } else {
@@ -271,7 +271,7 @@ export class ServiceComponent implements OnInit {
       modifyby: this.userid
     };
     this.service.updateService(postData).subscribe((data: any) => {
-      if (data && data.isSaved == "false") {
+      if (data && data.isSaved === 'false') {
         this.isServiceExists = true;
         this.errorMessage = data.Message;
       } else {

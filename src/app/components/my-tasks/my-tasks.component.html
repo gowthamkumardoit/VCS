@@ -1,9 +1,9 @@
 <div style="height: 100px"></div>
 <div class="container-fluid px-5">
   <div class="row">
-    <div class="col-md-1"></div>
-    <div [ngClass]="{'col-md-5 col-sm-10' : showRightPanel, 'col-md-10 col-sm-10': !showRightPanel}">
-      <div class="card" style="min-height:calc(80vh);max-height: 600px; overflow-y:auto ">
+    <!-- <div class="col-md-1"></div> -->
+    <div [ngClass]="{'col-md-6 col-sm-12' : showRightPanel, 'col-md-12 col-sm-12': !showRightPanel}">
+      <div class="card" style="min-height:calc(75vh);max-height: 500px; overflow-y:auto ">
         <mdb-card-header>
           <button type="button" mdbBtn color="teal" class="relative waves-light" (click)="openModal()" mdbWavesEffect
             size="sm">
@@ -17,24 +17,27 @@
                     </a> -->
         </mdb-card-header>
         <!-- <mdb-card-body > -->
-        <table class="table table-hover">
-          <tbody>
-            <ng-container *ngIf="taskList.length > 0">
-              <tr *ngFor="let item of taskList; let i=index;" (click)="editTask(item)">
-                <td>{{(i+1)}}</td>
-                <td>{{item.taskname}}</td>
-                <td>{{item.compname}}</td>
-                <td>{{item.servname}}</td>
-                <td>{{item.user}}</td>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
+        <perfect-scrollbar style="max-height: 550px;">
+          <table class="table table-hover">
+            <tbody>
+              <ng-container *ngIf="taskList.length > 0">
+                <tr *ngFor="let item of taskList; let i=index;" (click)="editTask(item)">
+                  <td>{{(i+1)}}</td>
+                  <td>{{item.taskname}}</td>
+                  <td>{{item.compname}}</td>
+                  <td>{{item.servname}}</td>
+                  <td>{{item.user}}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </perfect-scrollbar>
+
         <!-- </mdb-card-body> -->
       </div>
     </div>
-    <div class="col-md-5" *ngIf="showRightPanel">
-      <div class="card" style="min-height:calc(60vh); max-height:600px; overflow-y:auto">
+    <div class="col-md-6" *ngIf="showRightPanel">
+      <div class="card" >
         <mdb-card-header>
           <button type="button" mdbBtn color="teal" outline=true size="sm" class="relative waves-light" mdbWavesEffect>
             <mdb-icon icon="check" class="mr-1"></mdb-icon>Mark as Complete
@@ -64,109 +67,125 @@
           </div>
         </mdb-card-header>
         <mdb-card-body>
-          <form [formGroup]="taskForm">
-            <div class="row mx-3" style="height:450px; overflow-y:auto">
-              <div class="col-md-3" *ngFor="let dbfile of dbFilesList; let index = index">
-                <p  (click)="openFileinTarget(dbfile)"> <small>{{dbfile.name.length > 10 ? dbfile.name.substr(0,10) :
-                  dbfile.name}} </small><span aria-hidden="true" (click)="removeFilesFromDb(index)" style="cursor: pointer;">&times;</span></p>
-              </div>
-              <div class="col-md-3" *ngFor="let file of fileNamesArray; let i = index">
-                <p><small>{{file}}</small> <span
-                    aria-hidden="true" (click)="removeFiles(i)" style="cursor: pointer;">&times;</span></p>
-              </div>
-              <div class="col-md-12">
-                <div class="error" *ngIf="istaskExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
-                  {{errorMessage}}</div>
-              </div>
+          <perfect-scrollbar style="max-height: 500px;">
+            <form [formGroup]="taskForm">
+              <div class="row mx-3" >
+                <div class="col-md-3" *ngFor="let dbfile of dbFilesList; let index = index">
+                  <p (click)="openFileinTarget(dbfile)"> <small>{{dbfile.name}} </small><span aria-hidden="true"
+                      (click)="removeFilesFromDb(index)" style="cursor: pointer;">&times;</span></p>
+                </div>
+                <div class="col-md-3" *ngFor="let file of fileNamesArray; let i = index">
+                  <p><small>{{file}}</small> <span aria-hidden="true" (click)="removeFiles(i)" style="cursor: pointer;">&times;</span></p>
+                </div>
+                <div class="col-md-12">
+                  <div class="error" *ngIf="istaskExists" style="color: red; font-size: 12px; margin-bottom: 20px;">*
+                    {{errorMessage}}</div>
+                </div>
 
-              <div class="col-md-4">
-                <div class="md-form  mt-3">
-                  <mdb-select id="form2" [options]="companyList" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
-                    formControlName="companyid">
-                  </mdb-select>
-                  <label for="form2">Company</label>
+                <div class="col-md-4">
+                  <div class="md-form  mt-3">
+                    <mdb-select id="form2" [options]="companyList" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
+                      formControlName="companyid">
+                    </mdb-select>
+                    <label for="form2">Company</label>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="md-form  mt-3">
-                  <mdb-select id="form3" [options]="serviceList" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
-                    formControlName="serviceid">
-                  </mdb-select>
-                  <label for="form3">Service</label>
+                <div class="col-md-4">
+                  <div class="md-form  mt-3">
+                    <mdb-select id="form3" [options]="serviceList" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
+                      formControlName="serviceid">
+                    </mdb-select>
+                    <label for="form3">Service</label>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="md-form  mt-3">
-                  <mdb-select id="form4" [options]="userList" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
-                    formControlName="userid">
-                  </mdb-select>
-                  <label for="form4">User</label>
+                <div class="col-md-4">
+                  <div class="md-form  mt-3">
+                    <mdb-select id="form4" [options]="userList" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
+                      formControlName="userid">
+                    </mdb-select>
+                    <label for="form4">User</label>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="md-form">
-                  <mdb-autocomplete [label]="'Task Name'" name="autocomplete" initialValue="'Task Name'" maxlength="90"
-                    formControlName="taskname" autocomplete="off" data-success=" " data-error=" " [datasource]="dataService"
-                    [minSearchLength]="1">
-                  </mdb-autocomplete>
+                <div class="col-md-6">
+                  <div class="md-form">
+                    <mdb-autocomplete [label]="'Task Name'" name="autocomplete" initialValue="'Task Name'" maxlength="90"
+                      formControlName="taskname" autocomplete="off" data-success=" " data-error=" " [datasource]="dataService"
+                      [minSearchLength]="1">
+                    </mdb-autocomplete>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6"></div>
-              <div class="col-sm-4">
-                <div class="md-form">
-                  <input mdbInputDirective autocomplete="off" id="form1" class="form-control" type="date"  data-date-format="DD/MM/YYYY"
+                <div class="col-md-6"></div>
+                <div class="col-sm-4">
+                  <div class="md-form">
+                    <label for="form1" class="" style="font-size:0.75em; top: -13px">Start Date </label>
+                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
+                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" formControlName="startdate">
+
+                    <!-- <input mdbInputDirective autocomplete="off" id="form1" class="form-control" type="date"  data-date-format="DD/MM/YYYY"
                     formControlName="startdate" data-success=" " data-error=" " useValueAsDate>
-                  <label for="form1" class="">Start Date </label>
+                  <label for="form1" class="">Start Date </label> -->
 
-                  <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
+
+                    <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
                   [label]="'Start Date'" [placeholder]="'Selected date'" [(ngModel)]="date1" required></mdb-date-picker> -->
+                  </div>
                 </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="md-form">
-                  <input mdbInputDirective autocomplete="off" id="form2" class="form-control" type="date" data-date-format="DD/MM/YYYY"
-                    formControlName="duedate" data-success=" " data-error=" " useValueAsDate>
-                  <label for="form2" class="">Due Date </label>
-                  <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
+                <div class="col-sm-4">
+                  <div class="md-form">
+                    <label for="form1" class="" style="font-size:0.75em; top: -13px">Due Date </label>
+                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
+                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" formControlName="duedate">
+                    <!-- <input mdbInputDirective autocomplete="off" id="form2" class="form-control" type="date"
+                    data-date-format="DD/MM/YYYY" formControlName="duedate" data-success=" " data-error=" "
+                    useValueAsDate>
+                  <label for="form2" class="">Due Date </label> -->
+                    <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
                   [label]="'Due Date'" [placeholder]="'Selected date'" [(ngModel)]="date2" required></mdb-date-picker> -->
+                  </div>
                 </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="md-form">
-                  <input mdbInputDirective autocomplete="off" id="form3" class="form-control" type="date" data-date-format="DD/MM/YYYY"
-                    formControlName="enddate" data-success=" " data-error=" " useValueAsDate>
-                  <label for="form3" class="">End Date </label>
-                  <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
+                <div class="col-sm-4">
+                  <div class="md-form">
+                    <label for="form1" class="" style="font-size:0.75em; top: -13px">End Date </label>
+                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
+                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" formControlName="enddate">
+                    <!-- <input mdbInputDirective autocomplete="off" id="form3" class="form-control" type="date"
+                    data-date-format="DD/MM/YYYY" formControlName="enddate" data-success=" " data-error=" "
+                    useValueAsDate>
+                  <label for="form3" class="">End Date </label> -->
+                    <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
                   [label]="'End Date'" [placeholder]="'Selected date'" [(ngModel)]="date3" required></mdb-date-picker> -->
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="">
+                <div class="col-md-6">
+                  <div class="">
                     <label for="form7">Description</label>
-                  <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInputDirective
-                    data-success=" " data-error=" " formControlName="description" maxlength="450"></textarea>
+                    <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control"
+                      mdbInputDirective data-success=" " data-error=" " formControlName="description" maxlength="450"></textarea>
 
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="md-form  mt-5">
+                    <mdb-select id="form4" [options]="requiringArray" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
+                      formControlName="requiring">
+                    </mdb-select>
+                    <label for="form4">Requiring</label>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-12">
+                  <div contenteditable="true" style="border-bottom: 1px solid #ced4da" *ngFor="let subtask of updatedSubTaskArray; let i = index; trackBy:trackByIndex;">
+                    <input type="text" maxlength="90" autocomplete="off" [(ngModel)]="subtask.name" [ngModelOptions]="{standalone: true}"
+                      style="width:100%; border: none"></div>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <p class="" *ngFor="let item of inputMessages">{{item.message}} <small>{{item.date | timeAgo}}</small>
+                  </p>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="md-form  mt-5">
-                  <mdb-select id="form4" [options]="requiringArray" data-error=" " data-success=" " class="colorful-select dropdown-default select-wrapper"
-                    formControlName="requiring">
-                  </mdb-select>
-                  <label for="form4">Requiring</label>
-                </div>
-              </div>
-              <div class="col-md-2">
-              </div>
-              <div class="col-md-12">
-                <div contenteditable="true"  style="border-bottom: 1px solid #ced4da" *ngFor="let subtask of updatedSubTaskArray; let i = index; trackBy:trackByIndex;">
-                  <input type="text" maxlength="90" autocomplete="off" [(ngModel)]="subtask.name" [ngModelOptions]="{standalone: true}" style="width:100%; border: none"></div>
-              </div>
-              <div class="col-md-12 mt-3">
-                <p class="" *ngFor="let item of inputMessages">{{item.message}} <small>{{item.date | timeAgo}}</small> </p>
-              </div>
-            </div>
-          </form>
+            </form>
+          </perfect-scrollbar>
         </mdb-card-body>
 
       </div>
