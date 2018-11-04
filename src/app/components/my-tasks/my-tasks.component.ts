@@ -69,13 +69,18 @@ export class MyTasksComponent implements OnInit {
 
   subTaskArray: any = [];
   updatedSubTaskArray: any = [];
+  dbSubTaskArray: any = [];
+  dbUpdatedSubTaskArray: any = [];
 
   chatListArray: any = [];
   chatInputArray: any = [];
+  dbChatList: any = [];
+  dbInputChatArray: any = [];
 
-  dateArray: any = [];
   createdBy: any;
   fileNamesArray: any = [];
+
+  newArray: any = [];
   constructor(
     private nav: RoleService,
     private fb: FormBuilder,
@@ -111,28 +116,21 @@ export class MyTasksComponent implements OnInit {
       enddate: ['', Validators.required],
       description: ['', [Validators.required]],
       requiring: ['', Validators.required],
+      createby: ['']
     });
 
     this.showRightPanel = false;
-
     this.userName = localStorage.getItem('userName').substr(0, 2).toUpperCase();
     setTimeout(() => {
       this.getList();
     }, 1000);
-
   }
+
   trackByIndex(index: number, obj: any): any {
     return index;
   }
 
-  closeDatePicker() {
-    const element: HTMLCollection = document.getElementsByClassName('mydp');
-    for (let i = 0; i < 10; i++) {
-      if (element[i]['classList'].contains('picker--opened')) {
-        element[i]['classList'].remove('picker--opened');
-      }
-    }
-  }
+
 
   getTaskList() {
       this.taskService.getTaskList(this.userid).subscribe((data: any) => {
@@ -144,7 +142,6 @@ export class MyTasksComponent implements OnInit {
           });
         }
         this.dataService = this.completerService.local(this.taskNameArray, 'name', 'name');
-
       });
   }
   getList() {
@@ -179,7 +176,13 @@ export class MyTasksComponent implements OnInit {
   openModal() {
     this.showRightPanel = true;
     this.isEditTask = false;
-
+    this.selectedUserFollowup = '';
+    this.dbFilesList = [];
+    this.selectedFollowersList = [];
+    this.dbChatList = [];
+    this.dbSubTaskArray = [];
+    this.dbInputChatArray = [];
+    this.files = [];
     this.requiringArray = [
       { value: '1', label: 'Monthly' },
       { value: '2', label: 'Quartly' },
@@ -203,6 +206,7 @@ export class MyTasksComponent implements OnInit {
       this.messageInput = '';
       this.inputMessages = [];
       this.updatedSubTaskArray = [];
+      this.dbUpdatedSubTaskArray = [];
     }, 300);
 
   }
@@ -218,13 +222,13 @@ export class MyTasksComponent implements OnInit {
           serviceid :  Number(this.taskForm.value.serviceid),
           userid :  Number(this.taskForm.value.userid),
           requiringifany : (this.taskForm.value.requiring !== '' || this.taskForm.value.requiring !== null) ? 'Yes' : 'No',
-          followup : (this.followersId === undefined ? 0 : this.followersId ),
-          createby : this.userid,
+          followup : (this.followersId === undefined ? 0 : Number(this.followersId) ),
+          createby : Number(this.userid),
           subtask : this.updatedSubTaskArray,
           chatlist: this.chatInputArray,
           taskid : 0,
           data : 'save',
-          modifyby: this.userid,
+          modifyby: Number(this.userid),
       };
       this.taskService.createTasks(obj).subscribe((res: any) => {
         if (res.isSaved) {
@@ -242,12 +246,12 @@ export class MyTasksComponent implements OnInit {
           serviceid :  Number(this.taskForm.value.serviceid),
           userid :  Number(this.taskForm.value.userid),
           requiringifany : (this.taskForm.value.requiring !== '' || this.taskForm.value.requiring !== null) ? 'Yes' : 'No',
-          followup : (this.tempArr || this.tempArr[0] || this.tempArr[0].value === undefined ? 0 : Number(this.tempArr[0].value) )  ,
+          followup : (this.followersId === undefined ? 0 : Number(this.followersId) ),
           subtask : this.updatedSubTaskArray,
           chatlist: this.chatInputArray,
-          taskid : this.updateTaskDetails.id,
+          taskid : Number(this.updateTaskDetails.taskid),
           data : 'update',
-          modifyby: this.userid,
+          modifyby: Number(this.userid),
           createby: Number(this.createdBy)
       };
       this.taskService.createTasks(obj).subscribe((res: any) => {
@@ -261,8 +265,11 @@ export class MyTasksComponent implements OnInit {
   }
 
   editTask(item) {
+    this.taskForm.reset();
+    this.selectedUserFollowup = '';
     this.updateTaskDetails = item;
     this.showRightPanel = true;
+    this.fileNamesArray = [];
     this.requiringArray = [
       { value: '1', label: 'Monthly' },
       { value: '2', label: 'Quartly' },
@@ -274,43 +281,44 @@ export class MyTasksComponent implements OnInit {
       taskid: Number(item.taskid)
     };
     this.taskService.getFiles(obj).subscribe((res: any) => {
-      setTimeout(() => {
-        this.isEditTask = true;
-        this.taskForm.patchValue({
-          companyid: this.companyList.filter(val =>  val.label === item.compname )[0].value || '1',
-          serviceid: this.serviceList.filter(val =>  val.label === item.servname )[0].value || '1',
-          userid:  this.userList.filter(val => val.label === item.user )[0].value || '1',
-          taskname: item.taskname,
-          startdate: new Date(res.td.startdate),
-          duedate: new Date(res.td.duedate),
-          enddate: new Date(res.td.enddate),
-          description: res.td.description,
-          requiring:  this.requiringArray[Number(res.td.requiring) - 1].value,
-        });
-        this.createdBy =  res.createby;
-      }, 100);
+      if (res) {
+          this.isEditTask = true;
+          this.taskForm.patchValue({
+            companyid: this.companyList.filter(val =>  val.label === item.compname )[0].value || '1',
+            serviceid: this.serviceList.filter(val =>  val.label === item.servname )[0].value || '1',
+            userid:  this.userList.filter(val => val.label === item.user )[0].value || '1',
+            taskname: item.taskname,
+            startdate: new Date(res.td.startdate),
+            duedate: new Date(res.td.duedate),
+            enddate: new Date(res.td.enddate),
+            description: res.td.description,
+            requiring:  this.requiringArray[Number(res.td.requiring) - 1].value,
+            createby: res.td.createby
+          });
+          this.createdBy =  res.td.createby;
+      }
+
+
       this.dbFilesList = [];
       this.dbFilesList = res.filelist;
       this.taskService.getAllFileDetails(obj).subscribe((response: any) => {
         this.allFilesBase64 = response.fn;
       });
-      this.subTaskArray = res.subtasklist;
-      this.chatListArray = res.chatlist;
+      this.dbSubTaskArray = res.subtasklist;
+      this.dbChatList = res.chatlist;
         this.inputMessages = [];
         this.updatedSubTaskArray = [];
-        if (this.subTaskArray && this.subTaskArray.length > 0) {
-          this.subTaskArray.forEach((val) => {
-            this.updatedSubTaskArray.push({ name: val.name });
+        this.dbUpdatedSubTaskArray = [];
+
+        if (this.dbSubTaskArray && this.dbSubTaskArray.length > 0) {
+          this.dbSubTaskArray.forEach((val) => {
+            this.dbUpdatedSubTaskArray.push({ name: val.name });
           });
         }
-        if (this.chatListArray && this.chatListArray.length > 0) {
-          this.chatListArray.forEach((val) => {
-            this.inputMessages.push({ message: val.message, date: val.date });
-
-          });
-          this.dateArray = [];
-          this.inputMessages.forEach(val => {
-            this.dateArray.push(new Date(val.date ));
+        this.dbInputChatArray = [];
+        if (this.dbChatList && this.dbChatList.length > 0) {
+          this.dbChatList.forEach((val) => {
+            this.dbInputChatArray.push({ message: val.message, date: val.date });
           });
         }
         this.getFollowers(res.td.followup);
@@ -327,14 +335,13 @@ export class MyTasksComponent implements OnInit {
     this.selectedFollowersList = _.uniqBy(_.map(this.tempArr, _.clone), 'value');
     this.selectedFollowersList = this.selectedFollowersList.map(val => {
       this.followersId = val.value;
+      this.selectedUserFollowup = val.value;
       return (val.label).substr(0, 2).toUpperCase();
     });
-    console.log(this.selectedFollowersList);
   }
   addSubtask() {
     this.updatedSubTaskArray.push({name: ''});
   }
-
 
   deleteTask(item) {
     this.deletedItem = item;
@@ -371,11 +378,8 @@ export class MyTasksComponent implements OnInit {
   }
 
   onSelectedFile($event) {
-    this.files.push($event.target);
-    console.log($event.target.files[0].name);
+    this.files = this.files.concat($event.target);
     this.fileNamesArray.push($event.target.files[0].name);
-    console.log(this.fileNamesArray);
-
   }
 
   removeFiles(index) {
@@ -385,23 +389,21 @@ export class MyTasksComponent implements OnInit {
     this.dbFilesList.splice(index, 1);
   }
   saveFiles(id) {
-    const newArray = [];
-    this.fileNamesArray = [];
-    this.files.forEach((item: any) => {
-    this.encodeImageFileAsURL(item);
-      setTimeout(() => {
-        const obj = {
+    this.newArray = [];
+    // this.fileNamesArray = [];
+    let obj = {};
+    this.files.forEach((item: any, index: number) => {
+        obj = {
           taskid: id,
           userid: this.userid,
-          fname: item.files[0].name,
-          attachment_details : this.base64Url
+          fname: this.fileNamesArray[index],
+          attachment_details: this.encodeImageFileAsURL(item)
         };
-
-        newArray.push(obj);
-      }, 300);
+        this.newArray.push(obj);
+        obj = {};
     });
     setTimeout(() => {
-    newArray.forEach(val => {
+    this.newArray.forEach(val => {
       this.taskService.saveFiles(val).subscribe((data: any) => {
       });
     });
@@ -409,21 +411,31 @@ export class MyTasksComponent implements OnInit {
   }
 
   encodeImageFileAsURL(element) {
-    if (element.files && element.files[0]) {
+    if (element) {
       let url = '';
       const reader = new FileReader();
       reader.readAsDataURL(element.files[0]); // read file as data url
       reader.onload = ($event: any) => { // called once readAsDataURL is completed
         url = $event.target.result;
-        url =  url.replace('data:image/jpeg;base64,', '');
-        this.base64Url = url;
+        if (url.indexOf('data:image/jpeg;base64,') > -1) {
+          url =  url.replace('data:image/jpeg;base64,', '');
+        } else if (url.indexOf('data:image/jpg;base64,') > -1) {
+          url =  url.replace('data:image/jpg;base64,', '');
+        } else if (url.indexOf('data:image/png;base64,') > -1) {
+          url =  url.replace('data:image/png;base64,', '');
+        } else if (url.indexOf('data:application/pdf;base64,') > -1) {
+          url =  url.replace('data:application/pdf;base64,', '');
+        } else if (url.indexOf('data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64') > -1) {
+          url =  url.replace('data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,', '');
+        }
+       return url;
       };
+
     }
   }
 
   openFileinTarget(file) {
     if (file) {
-      console.log(this.allFilesBase64);
     let dataUrl =  '';
      this.allFilesBase64.forEach((item) => {
       if (item.fname = file.name) {
@@ -432,6 +444,7 @@ export class MyTasksComponent implements OnInit {
     });
       const image = new Image();
       let extension = '';
+      let objbuilder = '';
       if (file.name) {
          extension = file.name.split('.')[1];
       }
@@ -440,12 +453,34 @@ export class MyTasksComponent implements OnInit {
         image.src = `data:image/jpg;base64,${dataUrl}`;
       } else if (extension === 'jpeg') {
         image.src = `data:image/jpeg;base64,${dataUrl}`;
-      } if (extension === 'png') {
+      } else if (extension === 'png') {
         image.src = `data:image/png;base64,${dataUrl}`;
+      } else if (extension === 'pdf') {
+        const data = dataUrl;
+          objbuilder += ('<object width="100%" height="100%" data="data:application/pdf;base64,');
+          objbuilder += (data);
+          objbuilder += ('" type="application/pdf" class="internal">');
+          objbuilder += ('<embed src="data:application/pdf;base64,');
+          objbuilder += (data);
+          objbuilder += ('" type="application/pdf"  />');
+          objbuilder += ('</object>');
+      } else if (extension === 'docx') {
+        const data = dataUrl;
+          // tslint:disable-next-line:max-line-length
+          objbuilder += ('<object width="100%" height="100%" data="data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,');
+          objbuilder += (data);
+          objbuilder += ('" type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="internal">');
+          objbuilder += ('<embed src="data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,');
+          objbuilder += (data);
+          objbuilder += ('" type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"  />');
+          objbuilder += ('</object>');
       }
-      console.log(image);
       const w = window.open('');
-      w.document.write(image.outerHTML);
+      if (extension === 'png' || extension === 'jpg' || extension === 'jpeg' ) {
+         w.document.write(image.outerHTML);
+      } else {
+        w.document.write(objbuilder);
+      }
     }
   }
 }

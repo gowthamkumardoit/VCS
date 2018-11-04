@@ -1,23 +1,17 @@
 <div style="height: 70px"></div>
 <div class="container-fluid px-5">
   <div class="row">
-    <!-- <div class="col-md-1"></div> -->
     <div [ngClass]="{'col-md-6 col-sm-12' : showRightPanel, 'col-md-12 col-sm-12': !showRightPanel}">
-      <div class="card" style="min-height:calc(80vh);max-height: 500px; overflow-y:auto ">
+      <div class="card" style="max-height: 600px; overflow-y:auto ">
         <mdb-card-header>
           <button type="button" mdbBtn color="teal" class="relative waves-light" (click)="openModal()" mdbWavesEffect
             size="sm">
             <i class="fa fa-plus-circle mr-2"></i>Add Task</button>
-
           <button type="button" mdbBtn color="teal" outline="true" class="relative waves-light" mdbWavesEffect size="sm">
             <i class="fa fa-plus-circle mr-2"></i>Add Service</button>
-          <!-- <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Change view" placment="top"
-                        class="pull-right">
-                        <mdb-icon icon="list-alt"></mdb-icon>
-                    </a> -->
         </mdb-card-header>
         <!-- <mdb-card-body > -->
-        <perfect-scrollbar style="max-height: 550px;">
+        <perfect-scrollbar style="max-height: 600px;">
           <table class="table table-hover">
             <tbody>
               <ng-container *ngIf="taskList.length > 0">
@@ -37,31 +31,27 @@
       </div>
     </div>
     <div class="col-md-6" *ngIf="showRightPanel">
-      <div class="card" >
+      <div class="card">
         <mdb-card-header>
           <button type="button" mdbBtn color="teal" outline=true size="sm" class="relative waves-light" mdbWavesEffect>
             <mdb-icon icon="check" class="mr-1"></mdb-icon>Mark as Complete
           </button>
           <div class="pull-right">
             <!--mdbTooltip="Attachmet"-->
-            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" (click)="fileInput.click()">
+            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" (click)="fileInput.click()" class="btn-floating-new">
               <mdb-icon icon="paperclip"></mdb-icon>
             </a>
             <input type="file" style="display:none" #fileInput (change)="onSelectedFile($event)">
-            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" (click)="addSubtask()">
+            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" (click)="addSubtask()" class="btn-floating-new">
               <mdb-icon icon="line-chart"></mdb-icon>
             </a>
-            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom">
+            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" class="btn-floating-new">
               <mdb-icon icon="link"></mdb-icon>
             </a>
-            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" (click)="save()">
+            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" (click)="save()" class="btn-floating-new">
               <mdb-icon icon="save"></mdb-icon>
             </a>
-            <!-- <a mdbBtn
-              floating="true" size="sm" color="teal" mdbWavesEffect mdbTooltip="Like" placment="bottom">
-                            <mdb-icon icon="thumbs-o-up"></mdb-icon>
-                        </a> -->
-            <a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect placment="bottom" (click)="showRightPanel = !showRightPanel">
+            <a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect placment="bottom" (click)="showRightPanel = !showRightPanel; save()" class="btn-floating-new">
               <mdb-icon icon="times"></mdb-icon>
             </a>
           </div>
@@ -69,10 +59,10 @@
         <mdb-card-body>
           <perfect-scrollbar style="max-height: 450px;">
             <form [formGroup]="taskForm">
-              <div class="row mx-3" >
+              <div class="row mx-3">
                 <div class="col-md-3" *ngFor="let dbfile of dbFilesList; let index = index">
-                  <p (click)="openFileinTarget(dbfile)"> <small>{{dbfile.name}} </small><span aria-hidden="true"
-                      (click)="removeFilesFromDb(index)" style="cursor: pointer;">&times;</span></p>
+                  <p (click)="openFileinTarget(dbfile)"> <small class="font-italic" style="text-decoration: underline">{{dbfile.name}}
+                    </small><span aria-hidden="true" (click)="removeFilesFromDb(index)" style="cursor: pointer;">&times;</span></p>
                 </div>
                 <div class="col-md-3" *ngFor="let file of fileNamesArray; let i = index">
                   <p><small>{{file}}</small> <span aria-hidden="true" (click)="removeFiles(i)" style="cursor: pointer;">&times;</span></p>
@@ -120,14 +110,6 @@
                     <label for="form1" class="" style="font-size:0.75em; top: -13px">Start Date </label>
                     <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
                       [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" formControlName="startdate">
-
-                    <!-- <input mdbInputDirective autocomplete="off" id="form1" class="form-control" type="date"  data-date-format="DD/MM/YYYY"
-                    formControlName="startdate" data-success=" " data-error=" " useValueAsDate>
-                  <label for="form1" class="">Start Date </label> -->
-
-
-                    <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
-                  [label]="'Start Date'" [placeholder]="'Selected date'" [(ngModel)]="date1" required></mdb-date-picker> -->
                   </div>
                 </div>
                 <div class="col-sm-4">
@@ -135,12 +117,6 @@
                     <label for="form1" class="" style="font-size:0.75em; top: -13px">Due Date </label>
                     <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
                       [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" formControlName="duedate">
-                    <!-- <input mdbInputDirective autocomplete="off" id="form2" class="form-control" type="date"
-                    data-date-format="DD/MM/YYYY" formControlName="duedate" data-success=" " data-error=" "
-                    useValueAsDate>
-                  <label for="form2" class="">Due Date </label> -->
-                    <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
-                  [label]="'Due Date'" [placeholder]="'Selected date'" [(ngModel)]="date2" required></mdb-date-picker> -->
                   </div>
                 </div>
                 <div class="col-sm-4">
@@ -148,12 +124,7 @@
                     <label for="form1" class="" style="font-size:0.75em; top: -13px">End Date </label>
                     <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
                       [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" formControlName="enddate">
-                    <!-- <input mdbInputDirective autocomplete="off" id="form3" class="form-control" type="date"
-                    data-date-format="DD/MM/YYYY" formControlName="enddate" data-success=" " data-error=" "
-                    useValueAsDate>
-                  <label for="form3" class="">End Date </label> -->
-                    <!-- <mdb-date-picker onkeydown="return false;" [options]="myDatePickerOptions" name="mydate" [selector]="0"
-                  [label]="'End Date'" [placeholder]="'Selected date'" [(ngModel)]="date3" required></mdb-date-picker> -->
+
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -173,11 +144,22 @@
                   </div>
                 </div>
                 <div class="col-md-2">
+                  <input type="text" formControlName="createby" style="display: none">
+                </div>
+                <div class="col-md-12">
+                  <div contenteditable="true" style="border-bottom: 1px solid #ced4da" *ngFor="let subtask of dbUpdatedSubTaskArray; let i = index; trackBy:trackByIndex;">
+                    <input type="text" maxlength="90" autocomplete="off" [(ngModel)]="subtask.name" [ngModelOptions]="{standalone: true}"
+                      style="width:100%; border: none"></div>
                 </div>
                 <div class="col-md-12">
                   <div contenteditable="true" style="border-bottom: 1px solid #ced4da" *ngFor="let subtask of updatedSubTaskArray; let i = index; trackBy:trackByIndex;">
                     <input type="text" maxlength="90" autocomplete="off" [(ngModel)]="subtask.name" [ngModelOptions]="{standalone: true}"
                       style="width:100%; border: none"></div>
+                </div>
+                
+                <div class="col-md-12 mt-3">
+                  <p class="" *ngFor="let item of dbInputChatArray">{{item.message}} <small>{{item.date | timeAgo}}</small>
+                  </p>
                 </div>
                 <div class="col-md-12 mt-3">
                   <p class="" *ngFor="let item of inputMessages">{{item.message}} <small>{{item.date | timeAgo}}</small>
@@ -190,13 +172,13 @@
 
       </div>
       <div class="row">
-        <div class="col-md-2 mt-1">
+        <div class="col-md-2 ">
           <a mdbBtn floating="true" size="sm" color="dark-green" mdbWavesEffect class="pull-right">
             <p style="padding: 8px;">{{userName}}</p>
           </a>
         </div>
         <div class="col-md-9">
-          <div class="mt-3">
+          <div class="mt-2">
             <input mdbInputDirective maxlength="950" autocomplete="off" data-success=" " data-error=" " type="text" id="form17"
               class="form-control test" [(ngModel)]="messageInput" (keydown)="onKeydown($event)">
             <i class="fa fa-paper-plane" style="color:rgb(24, 119, 111);position: absolute;right: 23px; bottom: 23px;"
@@ -204,13 +186,13 @@
           </div>
         </div>
 
-        <div class="col-md-6 mt-1">
+        <div class="col-md-6 ">
           <a mdbBtn floating="true" size="sm" color="dark-green" mdbWavesEffect class="pull-right" *ngFor="let item of selectedFollowersList">
             <p style="padding: 8px;">{{item}}</p>
           </a>
         </div>
         <div class="col-md-5">
-          <div class="md-form mt-3">
+          <div class="md-form mt-1">
             <mdb-select id="form4" [options]="followList" [(ngModel)]="selectedUserFollowup" data-error=" "
               data-success=" " class="colorful-select dropdown-default select-wrapper" (ngModelChange)="changedFollowers($event)">
             </mdb-select>
