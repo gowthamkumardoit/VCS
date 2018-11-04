@@ -41,6 +41,11 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
+
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { enGbLocale } from 'ngx-bootstrap/locale';
+defineLocale('engb', enGbLocale);
+
 @NgModule({
   declarations: [
     AppComponent,

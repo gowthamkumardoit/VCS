@@ -7,6 +7,7 @@ import { CompleterService, CompleterData } from 'ng-uikit-pro-standard';
 import { IMyOptions } from 'ng-uikit-pro-standard';
 import * as _ from 'lodash';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-my-tasks',
@@ -80,8 +81,10 @@ export class MyTasksComponent implements OnInit {
     private fb: FormBuilder,
     private toastService: ToastrService,
     private taskService: TaskService,
-    private completerService: CompleterService
+    private completerService: CompleterService,
+    private _localeService: BsLocaleService
   ) {
+    this._localeService.use('engb');
     this.userid = Number(localStorage.getItem('userid'));
     this.getTaskList();
   }
