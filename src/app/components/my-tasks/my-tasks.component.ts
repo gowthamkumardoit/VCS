@@ -8,6 +8,7 @@ import { IMyOptions } from 'ng-uikit-pro-standard';
 import * as _ from 'lodash';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-my-tasks',
@@ -81,6 +82,10 @@ export class MyTasksComponent implements OnInit {
   fileNamesArray: any = [];
 
   newArray: any = [];
+  date1: any;
+  date2: any;
+  date3: any;
+
   constructor(
     private nav: RoleService,
     private fb: FormBuilder,
@@ -129,8 +134,6 @@ export class MyTasksComponent implements OnInit {
   trackByIndex(index: number, obj: any): any {
     return index;
   }
-
-
 
   getTaskList() {
       this.taskService.getTaskList(this.userid).subscribe((data: any) => {
@@ -189,6 +192,10 @@ export class MyTasksComponent implements OnInit {
       { value: '3', label: 'Half Yearly' },
       { value: '4', label: 'Yearly' }
     ];
+    this.date1 = moment(new Date()).format('DD/MM/YYYY');
+    this.date2 = moment(new Date()).format('DD/MM/YYYY');
+    this.date3 = moment(new Date()).format('DD/MM/YYYY');
+
     setTimeout(() => {
       this.taskForm.markAsUntouched();
       this.taskForm.markAsPristine();
@@ -197,9 +204,6 @@ export class MyTasksComponent implements OnInit {
         serviceid: this.serviceList[0].value || '1',
         userid:  this.userList[0].value || '1',
         taskname: '',
-        startdate: new Date(),
-        duedate: new Date(),
-        enddate: new Date(),
         description: '',
         requiring:  this.requiringArray[0].value,
       });
@@ -208,7 +212,6 @@ export class MyTasksComponent implements OnInit {
       this.updatedSubTaskArray = [];
       this.dbUpdatedSubTaskArray = [];
     }, 300);
-
   }
   save() {
     this.chatInputArray = [];
@@ -228,6 +231,9 @@ export class MyTasksComponent implements OnInit {
           chatlist: this.chatInputArray,
           taskid : 0,
           data : 'save',
+          startdate: this.date1,
+          duedate: this.date2,
+          enddate: this.date3,
           modifyby: Number(this.userid),
       };
       this.taskService.createTasks(obj).subscribe((res: any) => {
@@ -237,6 +243,7 @@ export class MyTasksComponent implements OnInit {
           }, 300);
           this.getList();
           this.getTaskList();
+          this.openModal();
         }
       });
     } else {
@@ -252,13 +259,17 @@ export class MyTasksComponent implements OnInit {
           taskid : Number(this.updateTaskDetails.taskid),
           data : 'update',
           modifyby: Number(this.userid),
-          createby: Number(this.createdBy)
+          createby: Number(this.createdBy),
+          startdate: moment(this.date1).format('DD/MM/YYYY'),
+          duedate: moment(this.date2).format('DD/MM/YYYY'),
+          enddate: moment(this.date3).format('DD/MM/YYYY'),
       };
       this.taskService.createTasks(obj).subscribe((res: any) => {
         if (res.isSaved) {
           this.getList();
           this.getTaskList();
           this.saveFiles(res.taskid);
+          this.openModal();
         }
       });
     }
@@ -288,13 +299,14 @@ export class MyTasksComponent implements OnInit {
             serviceid: this.serviceList.filter(val =>  val.label === item.servname )[0].value || '1',
             userid:  this.userList.filter(val => val.label === item.user )[0].value || '1',
             taskname: item.taskname,
-            startdate: new Date(res.td.startdate),
-            duedate: new Date(res.td.duedate),
-            enddate: new Date(res.td.enddate),
+
             description: res.td.description,
             requiring:  this.requiringArray[Number(res.td.requiring) - 1].value,
             createby: res.td.createby
           });
+          this.date1 = res.td.startdate;
+          this.date2 = res.td.duedate;
+          this.date3 = res.td.enddate;
           this.createdBy =  res.td.createby;
       }
 
@@ -378,7 +390,22 @@ export class MyTasksComponent implements OnInit {
   }
 
   onSelectedFile($event) {
-    this.files = this.files.concat($event.target);
+    let fileInput = document.getElementById('selectedFile');
+    // files is a FileList object (similar to NodeList)
+    let files = fileInput['files'];
+    let file;
+    // loop through files
+      for (let i = 0; i < files.length; i++) {
+
+        // get item
+        file = files.item(i);
+        // or
+        file = files[i];
+        this.files.push(files);
+
+        alert(file.name);
+      }
+    // let newFile = $event.target;
     this.fileNamesArray.push($event.target.files[0].name);
   }
 
@@ -397,7 +424,7 @@ export class MyTasksComponent implements OnInit {
           taskid: id,
           userid: this.userid,
           fname: this.fileNamesArray[index],
-          attachment_details: this.encodeImageFileAsURL(item)
+          attachment_details: this.encodeImageFileAsURL(this.files[index])
         };
         this.newArray.push(obj);
         obj = {};
@@ -414,7 +441,7 @@ export class MyTasksComponent implements OnInit {
     if (element) {
       let url = '';
       const reader = new FileReader();
-      reader.readAsDataURL(element.files[0]); // read file as data url
+      reader.readAsDataURL(element[0]); // read file as data url
       reader.onload = ($event: any) => { // called once readAsDataURL is completed
         url = $event.target.result;
         if (url.indexOf('data:image/jpeg;base64,') > -1) {

@@ -38,5 +38,18 @@
 
   .md-form{
     margin-top: 0.5rem !important;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0rem !important;
+  }
+
+  .form-control, input, input.form-control {
+    font-size: 0.85rem !important;
+  }
+  div.single {
+    font-size: 0.85rem !important;
+    padding-top: 0px !important;
+  }
+
+  div.value {
+    font-size: 0.85rem !important;
+    padding-bottom: 0px !important;
   }

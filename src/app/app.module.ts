@@ -46,6 +46,8 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
 defineLocale('engb', enGbLocale);
 
+import { MomentModule } from 'ngx-moment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,7 +81,8 @@ defineLocale('engb', enGbLocale);
     AngularFireModule.initializeApp(environment),
     NgbModule,
     BsDatepickerModule.forRoot(),
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    MomentModule
   ],
   providers: [MDBSpinningPreloader, UserService, DatePipe, AuthGuard,
     {

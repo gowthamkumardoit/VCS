@@ -42,6 +42,7 @@
     "ng2-toastr": "^4.1.2",
     "ngx-bootstrap": "^3.1.1",
     "ngx-editor": "^3.3.0",
+    "ngx-moment": "^3.2.0",
     "ngx-perfect-scrollbar": "^7.0.0",
     "ngx-quill": "^3.4.0",
     "ngx-toastr": "^9.1.0",
