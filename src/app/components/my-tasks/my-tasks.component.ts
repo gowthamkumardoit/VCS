@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
+// import * as moment from 'ngx-moment';
 
 @Component({
   selector: 'app-my-tasks',
@@ -116,9 +117,6 @@ export class MyTasksComponent implements OnInit {
       serviceid: ['', Validators.required],
       userid: ['', Validators.required],
       taskname: ['', [Validators.required, Validators.maxLength(40)]],
-      startdate: ['', [Validators.required]],
-      duedate: ['', Validators.required],
-      enddate: ['', Validators.required],
       description: ['', [Validators.required]],
       requiring: ['', Validators.required],
       createby: ['']
@@ -195,7 +193,6 @@ export class MyTasksComponent implements OnInit {
     this.date1 = moment(new Date()).format('DD/MM/YYYY');
     this.date2 = moment(new Date()).format('DD/MM/YYYY');
     this.date3 = moment(new Date()).format('DD/MM/YYYY');
-
     setTimeout(() => {
       this.taskForm.markAsUntouched();
       this.taskForm.markAsPristine();
@@ -214,64 +211,88 @@ export class MyTasksComponent implements OnInit {
     }, 300);
   }
   save() {
-    this.chatInputArray = [];
-    this.inputMessages.forEach((val) => {
-      this.chatInputArray.push({name: val.message});
-    });
-    if (!this.isEditTask) {
-      const obj = {
-        ...this.taskForm.value,
-          companyid : Number(this.taskForm.value.companyid),
-          serviceid :  Number(this.taskForm.value.serviceid),
-          userid :  Number(this.taskForm.value.userid),
-          requiringifany : (this.taskForm.value.requiring !== '' || this.taskForm.value.requiring !== null) ? 'Yes' : 'No',
-          followup : (this.followersId === undefined ? 0 : Number(this.followersId) ),
-          createby : Number(this.userid),
-          subtask : this.updatedSubTaskArray,
-          chatlist: this.chatInputArray,
-          taskid : 0,
-          data : 'save',
-          startdate: this.date1,
-          duedate: this.date2,
-          enddate: this.date3,
-          modifyby: Number(this.userid),
-      };
-      this.taskService.createTasks(obj).subscribe((res: any) => {
-        if (res.isSaved) {
-          setTimeout(() => {
+    if (this.taskForm.valid) {
+      this.chatInputArray = [];
+      this.inputMessages.forEach((val) => {
+        this.chatInputArray.push({name: val.message});
+      });
+      let date1 = '';
+      let date2 = '';
+      let date3 = '';
+      if (!this.isEditTask) {
+        if (this.date1 === moment(new Date()).format('DD/MM/YYYY')) {
+          date1 = this.date1;
+        } else {
+          date1 =  moment(this.date1).format('DD/MM/YYYY');
+        }
+        if (this.date2 === moment(new Date()).format('DD/MM/YYYY')) {
+          date2 = this.date2;
+        } else {
+          date2 =  moment(this.date2).format('DD/MM/YYYY');
+        }
+        if (this.date3 === moment(new Date()).format('DD/MM/YYYY')) {
+          date3 = this.date3;
+        } else {
+          date3 =  moment(this.date3).format('DD/MM/YYYY');
+        }
+
+        const obj = {
+          ...this.taskForm.value,
+            companyid : Number(this.taskForm.value.companyid),
+            serviceid :  Number(this.taskForm.value.serviceid),
+            userid :  Number(this.taskForm.value.userid),
+            requiringifany : (this.taskForm.value.requiring !== '' || this.taskForm.value.requiring !== null) ? 'Yes' : 'No',
+            followup : (this.followersId === undefined ? 0 : Number(this.followersId) ),
+            createby : Number(this.userid),
+            subtask : this.updatedSubTaskArray,
+            chatlist: this.chatInputArray,
+            taskid : 0,
+            data : 'save',
+            startdate: date1,
+            duedate: date2,
+            enddate: date3,
+            modifyby: Number(this.userid),
+        };
+        this.taskService.createTasks(obj).subscribe((res: any) => {
+          if (res.isSaved) {
+            setTimeout(() => {
+              this.saveFiles(res.taskid);
+            }, 300);
+            this.getList();
+            this.getTaskList();
+            this.openModal();
+          }
+        });
+      } else {
+        const obj = {
+          ...this.taskForm.value,
+            companyid : Number(this.taskForm.value.companyid),
+            serviceid :  Number(this.taskForm.value.serviceid),
+            userid :  Number(this.taskForm.value.userid),
+            requiringifany : (this.taskForm.value.requiring !== '' || this.taskForm.value.requiring !== null) ? 'Yes' : 'No',
+            followup : (this.followersId === undefined ? 0 : Number(this.followersId) ),
+            subtask : this.updatedSubTaskArray,
+            chatlist: this.chatInputArray,
+            taskid : Number(this.updateTaskDetails.taskid),
+            data : 'update',
+            modifyby: Number(this.userid),
+            createby: Number(this.createdBy),
+            // tslint:disable-next-line:max-line-length
+            startdate: moment(this.date1).format('DD/MM/YYYY') !== this.date1 ? typeof(this.date1) === 'string' ? this.date1 : moment(this.date1).format('DD/MM/YYYY') : moment(this.date1).format('DD/MM/YYYY'),
+            // tslint:disable-next-line:max-line-length
+            duedate: moment(this.date2).format('DD/MM/YYYY') !== this.date2 ? typeof(this.date2) === 'string' ? this.date2 : moment(this.date2).format('DD/MM/YYYY') : moment(this.date2).format('DD/MM/YYYY'),
+            // tslint:disable-next-line:max-line-length
+            enddate: moment(this.date3).format('DD/MM/YYYY') !== this.date3 ? typeof(this.date3) === 'string' ? this.date3 : moment(this.date3).format('DD/MM/YYYY') : moment(this.date3).format('DD/MM/YYYY'),
+        };
+        this.taskService.createTasks(obj).subscribe((res: any) => {
+          if (res.isSaved) {
+            this.getList();
+            this.getTaskList();
             this.saveFiles(res.taskid);
-          }, 300);
-          this.getList();
-          this.getTaskList();
-          this.openModal();
-        }
-      });
-    } else {
-      const obj = {
-        ...this.taskForm.value,
-          companyid : Number(this.taskForm.value.companyid),
-          serviceid :  Number(this.taskForm.value.serviceid),
-          userid :  Number(this.taskForm.value.userid),
-          requiringifany : (this.taskForm.value.requiring !== '' || this.taskForm.value.requiring !== null) ? 'Yes' : 'No',
-          followup : (this.followersId === undefined ? 0 : Number(this.followersId) ),
-          subtask : this.updatedSubTaskArray,
-          chatlist: this.chatInputArray,
-          taskid : Number(this.updateTaskDetails.taskid),
-          data : 'update',
-          modifyby: Number(this.userid),
-          createby: Number(this.createdBy),
-          startdate: this.date1,
-          duedate: this.date2,
-          enddate: this.date3,
-      };
-      this.taskService.createTasks(obj).subscribe((res: any) => {
-        if (res.isSaved) {
-          this.getList();
-          this.getTaskList();
-          this.saveFiles(res.taskid);
-          this.openModal();
-        }
-      });
+            this.openModal();
+          }
+        });
+      }
     }
   }
 
@@ -389,9 +410,9 @@ export class MyTasksComponent implements OnInit {
   }
 
   onSelectedFile($event) {
-    let fileInput = document.getElementById('selectedFile');
+    const fileInput = document.getElementById('selectedFile');
     // files is a FileList object (similar to NodeList)
-    let files = fileInput['files'];
+    const files = fileInput['files'];
     let file;
     // loop through files
       for (let i = 0; i < files.length; i++) {

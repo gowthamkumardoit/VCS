@@ -108,22 +108,22 @@
                 <div class="col-sm-4">
                   <div class="md-form">
                     <label for="form1" class="" style="font-size:0.75em; top: -13px">Start Date </label>
-                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
-                       formControlName="startdate" [(ngModel)]="date1">
+                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                    [ngModelOptions]="{standalone: true}" [(ngModel)]="date1">
                   </div>
                 </div>
                 <div class="col-sm-4">
                   <div class="md-form">
                     <label for="form1" class="" style="font-size:0.75em; top: -13px">Due Date </label>
-                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
-                       formControlName="duedate"  [(ngModel)]="date2">
+                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                    [ngModelOptions]="{standalone: true}"  [(ngModel)]="date2">
                   </div>
                 </div>
                 <div class="col-sm-4">
                   <div class="md-form">
                     <label for="form1" class="" style="font-size:0.75em; top: -13px">End Date </label>
-                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue"
-                       formControlName="enddate"  [(ngModel)]="date3">
+                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                    [ngModelOptions]="{standalone: true}" [(ngModel)]="date3">
 
                   </div>
                 </div>
