@@ -100,7 +100,7 @@
                   <div class="md-form">
                     <mdb-autocomplete [label]="'Task Name'" name="autocomplete" initialValue="'Task Name'" maxlength="90"
                       formControlName="taskname" autocomplete="off" data-success=" " data-error=" " [datasource]="dataService"
-                      [minSearchLength]="1">
+                      [minSearchLength]="1" [maxChars] ="90">
                     </mdb-autocomplete>
                   </div>
                 </div>
@@ -131,7 +131,7 @@
                   <div class="">
                     <label for="form7">Description</label>
                     <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" style="max-height: 70px; overflow: auto"
-                      mdbInputDirective data-success=" " data-error=" " formControlName="description" maxlength="450"></textarea>
+                      mdbInputDirective data-success=" " data-error=" " formControlName="description" maxlength="900"></textarea>
 
                   </div>
                 </div>
