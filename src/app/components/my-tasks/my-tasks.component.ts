@@ -210,7 +210,8 @@ export class MyTasksComponent implements OnInit {
       this.dbUpdatedSubTaskArray = [];
     }, 300);
   }
-  save() {
+  save(value) {
+
     if (this.taskForm.valid) {
       this.chatInputArray = [];
       this.inputMessages.forEach((val) => {
@@ -290,6 +291,9 @@ export class MyTasksComponent implements OnInit {
             this.getTaskList();
             this.saveFiles(res.taskid);
             this.openModal();
+            if (value === 'close') {
+              this.showRightPanel = false;
+            }
           }
         });
       }

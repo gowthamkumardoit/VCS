@@ -48,10 +48,10 @@
             <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom" class="btn-floating-new"  mdbTooltip="Link">
               <mdb-icon icon="link"></mdb-icon>
             </a>
-            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom"  [disabled]="true" (click)="save()" class="btn-floating-new"  mdbTooltip="Save">
+            <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placment="bottom"  [disabled]="true" (click)="save('save')" class="btn-floating-new"  mdbTooltip="Save">
               <mdb-icon icon="save"></mdb-icon>
             </a>
-            <a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect placment="bottom" (click)="showRightPanel = !showRightPanel; save()" class="btn-floating-new"  mdbTooltip="Close">
+            <a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect placment="bottom" (click)="showRightPanel = !showRightPanel; save('close')" class="btn-floating-new"  mdbTooltip="Close">
               <mdb-icon icon="times"></mdb-icon>
             </a>
           </div>
