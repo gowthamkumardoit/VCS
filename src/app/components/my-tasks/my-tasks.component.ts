@@ -260,9 +260,9 @@ export class MyTasksComponent implements OnInit {
           data : 'update',
           modifyby: Number(this.userid),
           createby: Number(this.createdBy),
-          startdate: moment(this.date1).format('DD/MM/YYYY'),
-          duedate: moment(this.date2).format('DD/MM/YYYY'),
-          enddate: moment(this.date3).format('DD/MM/YYYY'),
+          startdate: this.date1,
+          duedate: this.date2,
+          enddate: this.date3,
       };
       this.taskService.createTasks(obj).subscribe((res: any) => {
         if (res.isSaved) {
@@ -310,21 +310,20 @@ export class MyTasksComponent implements OnInit {
           this.createdBy =  res.td.createby;
       }
 
-
       this.dbFilesList = [];
       this.dbFilesList = res.filelist;
       this.taskService.getAllFileDetails(obj).subscribe((response: any) => {
         this.allFilesBase64 = response.fn;
       });
-      this.dbSubTaskArray = res.subtasklist;
+      this.subTaskArray = res.subtasklist;
       this.dbChatList = res.chatlist;
         this.inputMessages = [];
         this.updatedSubTaskArray = [];
         this.dbUpdatedSubTaskArray = [];
 
-        if (this.dbSubTaskArray && this.dbSubTaskArray.length > 0) {
-          this.dbSubTaskArray.forEach((val) => {
-            this.dbUpdatedSubTaskArray.push({ name: val.name });
+        if (this.subTaskArray && this.subTaskArray.length > 0) {
+          this.subTaskArray.forEach((val) => {
+            this.updatedSubTaskArray.push({ name: val.name });
           });
         }
         this.dbInputChatArray = [];

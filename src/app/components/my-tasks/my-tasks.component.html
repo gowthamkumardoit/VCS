@@ -146,11 +146,11 @@
                 <div class="col-md-2">
                   <input type="text" formControlName="createby" style="display: none">
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <div contenteditable="true" style="border-bottom: 1px solid #ced4da" *ngFor="let subtask of dbUpdatedSubTaskArray; let i = index; trackBy:trackByIndex;">
                     <input type="text" maxlength="90" autocomplete="off" [(ngModel)]="subtask.name" [ngModelOptions]="{standalone: true}"
                       style="width:100%; border: none"></div>
-                </div>
+                </div> -->
                 <div class="col-md-12">
                   <div contenteditable="true" style="border-bottom: 1px solid #ced4da" *ngFor="let subtask of updatedSubTaskArray; let i = index; trackBy:trackByIndex;">
                     <input type="text" maxlength="90" autocomplete="off" [(ngModel)]="subtask.name" [ngModelOptions]="{standalone: true}"
