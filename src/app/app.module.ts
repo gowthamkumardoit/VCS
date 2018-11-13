@@ -65,7 +65,7 @@ import { MomentModule } from 'ngx-moment';
     RoleComponent,
     DeleteComponent,
     TemplateComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
   ],
   imports: [
     BrowserModule,

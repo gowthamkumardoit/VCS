@@ -28,6 +28,8 @@ export class MyTasksComponent implements OnInit {
   dataService: CompleterData;
   dataService1: CompleterData;
   dataService2: CompleterData;
+  dataService3: CompleterData;
+
   selectedUserFollowup: any = '1';
 
   taskForm: FormGroup;
@@ -87,6 +89,9 @@ export class MyTasksComponent implements OnInit {
   date2: any;
   date3: any;
 
+  // New Design Objects
+  initialTasks: any = [];
+
   constructor(
     private nav: RoleService,
     private fb: FormBuilder,
@@ -109,8 +114,16 @@ export class MyTasksComponent implements OnInit {
   }
   ngOnInit() {
 
+   //
+   const num = 10;
+   this.initialTasks = [];
+   for (let i = 0; i < num; i ++) {
+    this.initialTasks.push({taskid: '', taskname: '', compname: '', servname: '', user: ''});
+   }
+
+
+
     this.nav.navigationBarShow.next(true);
-    this.tableHeadings = ['No', 'Task Name', 'Company Name', 'Service Name', 'User Name'];
 
     this.taskForm = this.fb.group({
       companyid: ['', Validators.required],
@@ -128,7 +141,9 @@ export class MyTasksComponent implements OnInit {
       this.getList();
     }, 1000);
   }
-
+  addTaskEvent() {
+      this.initialTasks.push({taskid: '', taskname: '', compname: '', servname: '', user: ''});
+  }
   trackByIndex(index: number, obj: any): any {
     return index;
   }
@@ -138,6 +153,11 @@ export class MyTasksComponent implements OnInit {
         this.taskList = data.tot;
         this.taskNameArray = [];
         if (this.taskList && this.taskList.length > 0) {
+          console.log(this.taskList);
+          this.initialTasks.forEach((item: any, i: number) => {
+
+            this.initialTasks[i] = this.taskList[i];
+          });
           this.taskList.forEach((item) => {
             this.taskNameArray.push({name:  item.taskname});
           });
@@ -154,22 +174,25 @@ export class MyTasksComponent implements OnInit {
         for (let i = 0; i < this.companyList.length; i++) {
           this.companyList[i].value = this.companyList[i]['id'];
           this.companyList[i].label = this.companyList[i]['name'];
+          this.dataService1 = this.completerService.local(this.companyList, 'label', 'label');
           delete this.companyList[i].id;
           delete this.companyList[i].name;
         }
-        this.dataService1 = this.completerService.local(this.taskNameArray, 'name', 'name');
+
         for (let i = 0; i < this.userList.length; i++) {
           this.userList[i].value = this.userList[i]['id'];
           this.userList[i].label = this.userList[i]['name'];
           delete this.userList[i].id;
           delete this.userList[i].name;
           this.followList = _.map(this.userList, _.clone);
+          this.dataService3 = this.completerService.local(this.userList, 'label', 'label');
         }
         for (let i = 0; i < this.serviceList.length; i++) {
           this.serviceList[i].value = this.serviceList[i]['id'];
           this.serviceList[i].label = this.serviceList[i]['name'];
           delete this.serviceList[i].id;
           delete this.serviceList[i].name;
+          this.dataService2 = this.completerService.local(this.serviceList, 'label', 'label');
         }
       }
     });
