@@ -35,3 +35,12 @@ input[type=date]::-webkit-outer-spin-button {
 .select-wrapper+label {
   top: -13px !important;
 }
+
+.first-section {
+  padding: 0px 20px;
+
+  div > mdb-autocomplete > div.md-form {
+    margin-bottom: 0rem !important;
+    margin-top: 1rem !important;
+  }
+}

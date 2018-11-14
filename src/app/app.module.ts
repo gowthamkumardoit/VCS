@@ -47,6 +47,7 @@ import { enGbLocale } from 'ngx-bootstrap/locale';
 defineLocale('engb', enGbLocale);
 
 import { MomentModule } from 'ngx-moment';
+import { NewTaskComponent } from './components/new-task/new-task.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { MomentModule } from 'ngx-moment';
     DeleteComponent,
     TemplateComponent,
     TimeAgoPipe,
+    NewTaskComponent,
   ],
   imports: [
     BrowserModule,

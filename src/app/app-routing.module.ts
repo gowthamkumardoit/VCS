@@ -13,6 +13,7 @@ import { MyTasksComponent } from './components/my-tasks/my-tasks.component';
 import { CompanyComponent } from './components/company/company.component';
 import { InboxComponent } from './components/inbox/inbox.component';
 import { AuthGuard } from './auth.guard';
+import { NewTaskComponent } from './components/new-task/new-task.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -21,7 +22,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
   { path: 'reports', component: ReportsComponent  },
-  { path: 'myTasks', component: MyTasksComponent  },
+  { path: 'myTasks', component: NewTaskComponent  },
   { path: 'users', component: UserComponent  },
   { path: 'role', component: RoleComponent  },
   { path: 'company', component: CompanyComponent  },

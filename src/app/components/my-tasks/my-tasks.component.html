@@ -6,27 +6,12 @@
         <div class="GridScroller-container">
           <div class="GridHeader" style="padding-right: 0px;">
             <div class="GridHeader-left">
-              <button
-                type="button"
-                mdbBtn
-                color="teal"
-                class="relative waves-light"
-                (click)="addTaskEvent()"
-                mdbWavesEffect
-                size="sm"
-              >
+              <button type="button" mdbBtn color="teal" class="relative waves-light" (click)="addTaskEvent()"
+                mdbWavesEffect size="sm">
                 <i class="fa fa-plus-circle mr-2"></i>Add Task
               </button>
 
-              <button
-                type="button"
-                mdbBtn
-                color="teal"
-                outline="true"
-                class="relative waves-light"
-                mdbWavesEffect
-                size="sm"
-              >
+              <button type="button" mdbBtn color="teal" outline="true" class="relative waves-light" mdbWavesEffect size="sm">
                 <i class="fa fa-plus-circle mr-2"></i>Add Section
               </button>
             </div>
@@ -34,21 +19,12 @@
           </div>
           <perfect-scrollbar class="scrollable--vertical">
             <div class="scrollable  GridScroller-scrollable">
-              <div
-                class="dividers-wrapper"
-                *ngFor="let items of initialTasks; let index = index"
-              >
-                <img
-                  src="../../../assets/images/drag.svg"
-                  style="height:16px; width:16px; margin-top:11px; margin-left: 4px;"
-                  class="drag"
-                />
+              <div class="dividers-wrapper" *ngFor="let items of initialTasks; let index = index">
+                <img src="../../../assets/images/drag.svg" style="height:16px; width:16px; margin-top:11px; margin-left: 4px;"
+                  class="drag" />
                 <div class="dividers">
-                  <img
-                    src="../../../assets/images/tick.svg"
-                    style="height:16px; width:16px; margin-top:11px; margin-left: 4px;"
-                    class="tick"
-                  />
+                  <img src="../../../assets/images/tick.svg" style="height:16px; width:16px; margin-top:11px; margin-left: 4px;"
+                    class="tick" />
                   <!--
                     <div class="input-class"  (keydown)="addTaskEvent($event)">
                       <div class="table-width">
@@ -81,22 +57,10 @@
                       </div>
                     </div>
                   -->
-                  <div
-                    class="md-form input-class"
-                    style="margin-top: -1.5rem !important;"
-                  >
-                    <mdb-autocomplete
-                      name="autocomplete"
-                      maxlength="90"
-                      data-success=" "
-                      data-error=" "
-                      [datasource]="dataService"
-                      [minSearchLength]="1"
-                      [maxChars]="90"
-                      onfocus="this.placeholder = 'write a task name'"
-                      onblur="this.placeholder = ''"
-                      style="border-bottom: none !important"
-                    >
+                  <div class="md-form input-class" style="margin-top: -1.5rem !important;">
+                    <mdb-autocomplete name="autocomplete" maxlength="90" data-success=" " data-error=" " [datasource]="dataService"
+                      [minSearchLength]="1" [maxChars]="90" onfocus="this.placeholder = 'write a task name'" onblur="this.placeholder = ''"
+                      style="border-bottom: none !important">
                     </mdb-autocomplete>
                   </div>
                   <!--
@@ -111,32 +75,14 @@
                     />
                   -->
 
-                  <input
-                    type="text"
-                    maxlength="90"
-                    autocomplete="off"
-                    class="input-class"
-                    onfocus="this.placeholder = 'select sompany'"
-                    onblur="this.placeholder = ''"
-                  />
+                  <input type="text" maxlength="90" autocomplete="off" class="input-class" onfocus="this.placeholder = 'select sompany'"
+                    onblur="this.placeholder = ''" />
 
-                  <input
-                    type="text"
-                    maxlength="90"
-                    autocomplete="off"
-                    class="input-class"
-                    onfocus="this.placeholder = 'select service'"
-                    onblur="this.placeholder = ''"
-                  />
+                  <input type="text" maxlength="90" autocomplete="off" class="input-class" onfocus="this.placeholder = 'select service'"
+                    onblur="this.placeholder = ''" />
 
-                  <input
-                    type="text"
-                    maxlength="90"
-                    autocomplete="off"
-                    class="input-class"
-                    onfocus="this.placeholder = 'select user'"
-                    onblur="this.placeholder = ''"
-                  />
+                  <input type="text" maxlength="90" autocomplete="off" class="input-class" onfocus="this.placeholder = 'select user'"
+                    onblur="this.placeholder = ''" />
                 </div>
               </div>
             </div>
@@ -147,95 +93,37 @@
         <div class="SingleTaskPane">
           <div class="SingleTaskPaneToolbar">
             <div style="">
-              <button
-                type="button"
-                mdbBtn
-                color="teal"
-                outline="true"
-                size="sm"
-                class="relative waves-light"
-                mdbWavesEffect
-              >
+              <button type="button" mdbBtn color="teal" outline="true" size="sm" class="relative waves-light"
+                mdbWavesEffect>
                 <mdb-icon icon="check" class="mr-1"></mdb-icon>Mark as Complete
               </button>
             </div>
 
             <div class="pull-right" style="float: right;">
-              <a
-                mdbBtn
-                floating="true"
-                size="sm"
-                color="teal"
-                mdbWavesEffect
-                placement="bottom"
-                (click)="fileInput.click()"
-                class="btn-floating-new"
-                mdbTooltip="Attachment"
-              >
+              <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placement="bottom" (click)="fileInput.click()"
+                class="btn-floating-new" mdbTooltip="Attachment">
                 <mdb-icon icon="paperclip"></mdb-icon>
               </a>
 
-              <input
-                type="file"
-                style="display:none"
-                #fileInput
-                (change)="onSelectedFile($event)"
-                id="selectedFile"
-              />
+              <input type="file" style="display:none" #fileInput (change)="onSelectedFile($event)" id="selectedFile" />
 
-              <a
-                mdbBtn
-                floating="true"
-                size="sm"
-                color="teal"
-                mdbWavesEffect
-                placement="bottom"
-                (click)="addSubtask()"
-                class="btn-floating-new"
-                mdbTooltip="Sub Task"
-              >
+              <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placement="bottom" (click)="addSubtask()"
+                class="btn-floating-new" mdbTooltip="Sub Task">
                 <mdb-icon icon="line-chart"></mdb-icon>
               </a>
 
-              <a
-                mdbBtn
-                floating="true"
-                size="sm"
-                color="teal"
-                mdbWavesEffect
-                placement="bottom"
-                class="btn-floating-new"
-                mdbTooltip="Link"
-              >
+              <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placement="bottom" class="btn-floating-new"
+                mdbTooltip="Link">
                 <mdb-icon icon="link"></mdb-icon>
               </a>
 
-              <a
-                mdbBtn
-                floating="true"
-                size="sm"
-                color="teal"
-                mdbWavesEffect
-                placement="bottom"
-                [disabled]="true"
-                (click)="save('save')"
-                class="btn-floating-new"
-                mdbTooltip="Save"
-              >
+              <a mdbBtn floating="true" size="sm" color="teal" mdbWavesEffect placement="bottom" [disabled]="true"
+                (click)="save('save')" class="btn-floating-new" mdbTooltip="Save">
                 <mdb-icon icon="save"></mdb-icon>
               </a>
 
-              <a
-                mdbBtn
-                floating="true"
-                size="sm"
-                color="danger"
-                mdbWavesEffect
-                placement="bottom"
-                (click)="showRightPanel = !showRightPanel; save('close')"
-                class="btn-floating-new"
-                mdbTooltip="Close"
-              >
+              <a mdbBtn floating="true" size="sm" color="danger" mdbWavesEffect placement="bottom" (click)="showRightPanel = !showRightPanel; save('close')"
+                class="btn-floating-new" mdbTooltip="Close">
                 <mdb-icon icon="times"></mdb-icon>
               </a>
             </div>
@@ -243,131 +131,64 @@
           <div class="Pane-space">
             <div class="single-pane-body">
               <div class="md-form" style="margin-top: 0rem !important;">
-                <mdb-autocomplete
-                  [label]="'Company'"
-                  name="autocomplete"
-                  maxlength="90"
-                  data-success=" "
-                  data-error=" "
-                  [datasource]="dataService1"
-                  [minSearchLength]="1"
-                  [maxChars]="90"
-                >
+                <mdb-autocomplete [label]="'Company'" name="autocomplete" maxlength="90" data-success=" " data-error=" "
+                  [datasource]="dataService1" [minSearchLength]="1" [maxChars]="90">
                 </mdb-autocomplete>
               </div>
               <div class="md-form" style="margin-top: 0rem !important;">
-                <mdb-autocomplete
-                  [label]="'Service'"
-                  name="autocomplete"
-                  maxlength="90"
-                  data-success=" "
-                  data-error=" "
-                  [datasource]="dataService2"
-                  [minSearchLength]="1"
-                  [maxChars]="90"
-                >
+                <mdb-autocomplete [label]="'Service'" name="autocomplete" maxlength="90" data-success=" " data-error=" "
+                  [datasource]="dataService2" [minSearchLength]="1" [maxChars]="90">
                 </mdb-autocomplete>
               </div>
               <div class="md-form" style="margin-top: 0rem !important;">
-                <mdb-autocomplete
-                  [label]="'User'"
-                  name="autocomplete"
-                  maxlength="90"
-                  data-success=" "
-                  data-error=" "
-                  [datasource]="dataService3"
-                  [minSearchLength]="1"
-                  [maxChars]="90"
-                >
+                <mdb-autocomplete [label]="'User'" name="autocomplete" maxlength="90" data-success=" " data-error=" "
+                  [datasource]="dataService3" [minSearchLength]="1" [maxChars]="90">
                 </mdb-autocomplete>
               </div>
             </div>
             <div class="single-pane-body-task">
               <div class="md-form" style="margin-top: -1.5rem !important;">
-                <mdb-autocomplete
-                  [label]="'Task'"
-                  name="autocomplete"
-                  maxlength="90"
-                  data-success=" "
-                  data-error=" "
-                  [datasource]="dataService"
-                  [minSearchLength]="1"
-                  [maxChars]="90"
-                >
+                <mdb-autocomplete [label]="'Task'" name="autocomplete" maxlength="90" data-success=" " data-error=" "
+                  [datasource]="dataService" [minSearchLength]="1" [maxChars]="90">
                 </mdb-autocomplete>
               </div>
             </div>
             <div class="single-pane-body-dates">
               <div class="md-form">
-                <label for="form1" class="" style="font-size:0.75em; top: -13px"
-                  >Start Date
+                <label for="form1" class="" style="font-size:0.75em; top: -13px">Start Date
                 </label>
 
-                <input
-                  type="text"
-                  class="form-control"
-                  #dp="bsDatepicker"
-                  bsDatepicker
-                  [bsValue]="bsValue"
-                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="date1"
-                />
+                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                  [ngModelOptions]="{ standalone: true }" [(ngModel)]="date1" />
               </div>
               <div class="md-form">
-                <label for="form1" class="" style="font-size:0.75em; top: -13px"
-                  >Due Date
+                <label for="form1" class="" style="font-size:0.75em; top: -13px">Due Date
                 </label>
 
-                <input
-                  type="text"
-                  class="form-control"
-                  #dp="bsDatepicker"
-                  bsDatepicker
-                  [bsValue]="bsValue"
-                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="date2"
-                />
+                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                  [ngModelOptions]="{ standalone: true }" [(ngModel)]="date2" />
               </div>
               <div class="md-form">
-                <label for="form1" class="" style="font-size:0.75em; top: -13px"
-                  >End Date
+                <label for="form1" class="" style="font-size:0.75em; top: -13px">End Date
                 </label>
 
-                <input
-                  type="text"
-                  class="form-control"
-                  #dp="bsDatepicker"
-                  bsDatepicker
-                  [bsValue]="bsValue"
-                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="date3"
-                />
+                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [bsValue]="bsValue" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                  [ngModelOptions]="{ standalone: true }" [(ngModel)]="date3" />
               </div>
             </div>
             <div class="single-pane-body-desc">
               <div class="md-form" style="width: 100%">
-                <textarea
-                  class="text-area"
-                  placeholder="Description"
-                ></textarea>
+                <textarea class="text-area" placeholder="Description"></textarea>
               </div>
             </div>
             <div class="single-pane-body-attachment">
 
-              </div>
+            </div>
           </div>
-          <div class="SingleTaskPane-footer" >
-            <div class="CommentComposer" >
-              <div
-                class="Avatar Avatar--medium Avatar--color3 CommentComposer-avatar"
-              ></div>
-              <textarea
-                class="text-area CommentComposerEditor CommentComposer-commentComposer"
-                placeholder="Message"
-              ></textarea>
+          <div class="SingleTaskPane-footer">
+            <div class="CommentComposer">
+              <div class="Avatar Avatar--medium Avatar--color3 CommentComposer-avatar"></div>
+              <textarea class="text-area CommentComposerEditor CommentComposer-commentComposer" placeholder="Message"></textarea>
               <!--
                 <div class="CommentComposerEditor CommentComposer-commentComposer">
 
