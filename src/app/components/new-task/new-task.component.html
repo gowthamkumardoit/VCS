@@ -145,13 +145,21 @@
     <div class="footer-section">
       <div class="avatar"></div>
       <textarea #resizeText class="text-area" placeholder="Message" (focus)="onFocus()" (blur)="onBlur()" [(ngModel)]="newChatComment"></textarea>
-      <button type="button" mdbBtn color="teal" class="relative waves-light" mdbWavesEffect size="sm" (click)="comment()">
+      <button tabindex="-1" #commentButton type="button" mdbBtn color="teal" class="relative waves-light buttonClass" mdbWavesEffect size="sm" (click)="comment()">
         Comment
       </button>
     </div>
 
     <div class="followers-section" #followersSection>
-
+      <div class="chips-normal-state" *ngIf="showUL && !showChips">
+        <ul>
+          <li class="li-color" *ngFor="let tag of addtags"><a> {{tag.substr(0,2)}}</a> </li>
+          <li  (click)="showChips = !showChips; showUL = !showUL"><a> +</a> </li>
+        </ul>
+      </div>
+      <div class="chips-input">
+          <mdb-material-chips style="padding: 0px 30px;" [(ngModel)]="addtags" *ngIf="showChips && !showUL" (mouseleave)="showChips = !showChips; showUL = !showUL" ></mdb-material-chips>
+      </div>
     </div>
   </div>
 </div>

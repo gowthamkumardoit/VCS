@@ -19,6 +19,7 @@ export class NewTaskComponent implements OnInit {
   @ViewChild('resizeText') resizeText: ElementRef;
   @ViewChild('fifthSection') fifthSection: ElementRef;
   @ViewChild('followersSection') followersSection: ElementRef;
+  @ViewChild('commentButton') commentButton: ElementRef;
 
   userName: any;
   userid: number;
@@ -91,6 +92,10 @@ export class NewTaskComponent implements OnInit {
   newUserId: number;
   newRequiringId: number;
 
+  addtags: any[] = [];
+  showChips: boolean;
+  showUL: boolean;
+
   constructor(
     private nav: RoleService,
     private taskService: TaskService,
@@ -112,6 +117,8 @@ export class NewTaskComponent implements OnInit {
     this.newChatComment = '';
 
     this.userName = localStorage.getItem('userName').substr(0, 2).toUpperCase();
+    this.showChips = false;
+    this.showUL = true;
     // this.taskForm = this.fb.group({
     //   companyid: ['', Validators.required],
     //   serviceid: ['', Validators.required],
@@ -144,18 +151,22 @@ export class NewTaskComponent implements OnInit {
   }
 
   onFocus() {
-    this.resizeText.nativeElement.style.height = '150px';
+    this.resizeText.nativeElement.style.height = '130px';
     this.fifthSection.nativeElement.style.height = '100px';
     this.followersSection.nativeElement.style.marginTop = '100px';
-
+    this.commentButton.nativeElement.style.display = 'none';
   }
 
   onBlur() {
     this.resizeText.nativeElement.style.height = '50px';
     this.fifthSection.nativeElement.style.height = '200px';
     this.followersSection.nativeElement.style.marginTop = '0px';
+    this.commentButton.nativeElement.style.display = 'block';
   }
 
+  showAddTags() {
+    alert('hai');
+  }
   getList() {
     this.taskService.getList().subscribe((res: any) => {
       if (res) {

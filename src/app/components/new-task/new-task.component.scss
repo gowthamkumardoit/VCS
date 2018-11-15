@@ -225,15 +225,56 @@
           transition: height 0.3s;
         }
       }
+
+      // .buttonClass {
+      //   display: none;
+      //   position: absolute;
+      //   right: 40px;
+      //   margin-top: 100px;
+      // }
     }
 
     .followers-section {
       display: block;
       min-height: 1px;
-      background-color: #e3fcfc91;
+      background-color: #aaaaaa91;
       margin: 15px 0px 0px 0px;
       height: 60px;
       width: 100%;
+
+      .chips-normal-state {
+        padding: 10px;
+
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+
+          li {
+            float: left;
+          }
+
+          li a {
+            display: block;
+            text-align: center;
+            padding: 3px 10px;
+            text-decoration: none;
+            border: 1px solid gray;
+            border-radius: 50%;
+            margin-right: 5px;
+
+        }
+          li a.li-color{
+            padding: 7px 10px;
+          }
+        }
+
+      }
+
+      .chips-input{
+        padding: 0px 30px;
+      }
     }
   }
 }
