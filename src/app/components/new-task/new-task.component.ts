@@ -15,11 +15,10 @@ import * as moment from 'moment';
   styleUrls: ['./new-task.component.scss']
 })
 export class NewTaskComponent implements OnInit {
-
   @ViewChild('resizeText') resizeText: ElementRef;
   @ViewChild('fifthSection') fifthSection: ElementRef;
   @ViewChild('followersSection') followersSection: ElementRef;
-  @ViewChild('commentButton') commentButton: ElementRef;
+ // @ViewChild('commentButton') commentButton: ElementRef;
 
   userName: any;
   userid: number;
@@ -39,7 +38,6 @@ export class NewTaskComponent implements OnInit {
   serviceList: any = [];
   userList: any = [];
   followList: any = [];
-
 
   requiringArray: any = [];
   showRightPanel: boolean;
@@ -102,11 +100,11 @@ export class NewTaskComponent implements OnInit {
     private completerService: CompleterService,
     private _localeService: BsLocaleService,
     private fb: FormBuilder
-    ) {
-      this._localeService.use('engb');
+  ) {
+    this._localeService.use('engb');
     this.userid = Number(localStorage.getItem('userid'));
     this.getTaskNames();
-     }
+  }
 
   ngOnInit() {
     this.nav.navigationBarShow.next(true);
@@ -116,7 +114,10 @@ export class NewTaskComponent implements OnInit {
     this.followList = [];
     this.newChatComment = '';
 
-    this.userName = localStorage.getItem('userName').substr(0, 2).toUpperCase();
+    this.userName = localStorage
+      .getItem('userName')
+      .substr(0, 2)
+      .toUpperCase();
     this.showChips = false;
     this.showUL = true;
     // this.taskForm = this.fb.group({
@@ -142,11 +143,15 @@ export class NewTaskComponent implements OnInit {
       if (this.taskList && this.taskList.length > 0) {
         console.log(this.taskList);
 
-        this.taskList.forEach((item) => {
-          this.taskNameArray.push({name:  item.taskname});
+        this.taskList.forEach(item => {
+          this.taskNameArray.push({ name: item.taskname });
         });
       }
-      this.dataService = this.completerService.local(this.taskNameArray, 'name', 'name');
+      this.dataService = this.completerService.local(
+        this.taskNameArray,
+        'name',
+        'name'
+      );
     });
   }
 
@@ -154,14 +159,14 @@ export class NewTaskComponent implements OnInit {
     this.resizeText.nativeElement.style.height = '130px';
     this.fifthSection.nativeElement.style.height = '100px';
     this.followersSection.nativeElement.style.marginTop = '100px';
-    this.commentButton.nativeElement.style.display = 'none';
+    // this.commentButton.nativeElement.style.display = 'none';
   }
 
   onBlur() {
     this.resizeText.nativeElement.style.height = '50px';
     this.fifthSection.nativeElement.style.height = '200px';
     this.followersSection.nativeElement.style.marginTop = '0px';
-    this.commentButton.nativeElement.style.display = 'block';
+    // this.commentButton.nativeElement.style.display = 'block';
   }
 
   showAddTags() {
@@ -170,13 +175,24 @@ export class NewTaskComponent implements OnInit {
   getList() {
     this.taskService.getList().subscribe((res: any) => {
       if (res) {
-          this.companyList = res.company,
-          this.serviceList = res.service,
-          this.userList = res.userdet;
-          this.dataService1 = this.completerService.local(this.companyList, 'name', 'name');
-          this.dataService3 = this.completerService.local(this.userList, 'name', 'name');
-          this.dataService2 = this.completerService.local(this.serviceList, 'name', 'name');
-
+        (this.companyList = res.company),
+          (this.serviceList = res.service),
+          (this.userList = res.userdet);
+        this.dataService1 = this.completerService.local(
+          this.companyList,
+          'name',
+          'name'
+        );
+        this.dataService3 = this.completerService.local(
+          this.userList,
+          'name',
+          'name'
+        );
+        this.dataService2 = this.completerService.local(
+          this.serviceList,
+          'name',
+          'name'
+        );
       }
     });
   }
@@ -197,7 +213,7 @@ export class NewTaskComponent implements OnInit {
     this.showRightPanel = true;
     this.isEditTask = false;
     // this.selectedUserFollowup = '';
-    this. clearDefaults();
+    this.clearDefaults();
     this.requiringArray = [
       { value: '1', label: 'Monthly' },
       { value: '2', label: 'Quartly' },
@@ -208,7 +224,6 @@ export class NewTaskComponent implements OnInit {
     this.date2 = moment(new Date()).format('DD/MM/YYYY');
     this.date3 = moment(new Date()).format('DD/MM/YYYY');
     setTimeout(() => {
-
       this.messageInput = '';
       this.inputMessages = [];
       this.updatedSubTaskArray = [];
@@ -216,11 +231,10 @@ export class NewTaskComponent implements OnInit {
     }, 300);
   }
   save(value) {
-
-    if (this.newTaskName !==  '' && this.newDescription !== '') {
+    if (this.newTaskName !== '' && this.newDescription !== '') {
       this.chatInputArray = [];
-      this.inputMessages.forEach((val) => {
-        this.chatInputArray.push({name: val.message});
+      this.inputMessages.forEach(val => {
+        this.chatInputArray.push({ name: val.message });
       });
       let date1 = '';
       let date2 = '';
@@ -230,74 +244,101 @@ export class NewTaskComponent implements OnInit {
         if (this.date1 === moment(new Date()).format('DD/MM/YYYY')) {
           date1 = this.date1;
         } else {
-          date1 =  moment(this.date1).format('DD/MM/YYYY');
+          date1 = moment(this.date1).format('DD/MM/YYYY');
         }
         if (this.date2 === moment(new Date()).format('DD/MM/YYYY')) {
           date2 = this.date2;
         } else {
-          date2 =  moment(this.date2).format('DD/MM/YYYY');
+          date2 = moment(this.date2).format('DD/MM/YYYY');
         }
         if (this.date3 === moment(new Date()).format('DD/MM/YYYY')) {
           date3 = this.date3;
         } else {
-          date3 =  moment(this.date3).format('DD/MM/YYYY');
+          date3 = moment(this.date3).format('DD/MM/YYYY');
         }
 
         const obj = {
-            companyid : this.newCompanyId,
-            serviceid : this.newServiceId,
-            userid : this.newUserId,
-            requiring: Number(this.newRequiring),
-            requiringifany : (this.newRequiring !== '' || this.newRequiring !== null) ? 'Yes' : 'No',
-            followup : (this.followersId === undefined ? 0 : Number(this.followersId) ),
-            createby : Number(this.userid),
-            subtask : this.updatedSubTaskArray,
-            chatlist: this.chatInputArray,
-            taskid : 0,
-            data : 'save',
-            startdate: date1,
-            duedate: date2,
-            enddate: date3,
-            modifyby: Number(this.userid),
+          taskname: this.newTaskName,
+          companyid: this.newCompanyId,
+          serviceid: this.newServiceId,
+          userid: this.newUserId,
+          description: this.newDescription,
+          requiring: Number(this.newRequiring),
+          requiringifany:
+            this.newRequiring !== '' || this.newRequiring !== null
+              ? 'Yes'
+              : 'No',
+          followup:
+            this.followersId === undefined ? 0 : Number(this.followersId),
+          createby: Number(this.userid),
+          subtask: this.updatedSubTaskArray,
+          chatlist: this.chatInputArray,
+          taskid: 0,
+          data: 'save',
+          startdate: date1,
+          duedate: date2,
+          enddate: date3,
+          modifyby: Number(this.userid)
         };
         console.log(obj);
-        // this.taskService.createTasks(obj).subscribe((res: any) => {
-        //   if (res.isSaved) {
-        //     setTimeout(() => {
-        //       // this.saveFiles(res.taskid);
-        //     }, 300);
-        //     this.getList();
-        //     this.getTaskNames();
-        //     this.openModal();
-        //   }
-        // });
+        this.taskService.createTasks(obj).subscribe((res: any) => {
+          if (res.isSaved) {
+            setTimeout(() => {
+              // this.saveFiles(res.taskid);
+            }, 300);
+            this.getList();
+            this.getTaskNames();
+            this.openModal();
+          }
+        });
       } else {
         const obj = {
-            companyid : this.newCompanyId,
-            serviceid : this.newServiceId,
-            userid : this.newUserId,
-            requiring: Number(this.newRequiring),
-            requiringifany :  (this.newRequiring !== '' || this.newRequiring !== null) ? 'Yes' : 'No',
-            followup : (this.followersId === undefined ? 0 : Number(this.followersId) ),
-            subtask : this.updatedSubTaskArray,
-            chatlist: this.chatInputArray,
-            taskid : Number(this.updateTaskDetails.taskid),
-            data : 'update',
-            modifyby: Number(this.userid),
-            createby: Number(this.createdBy),
-            // tslint:disable-next-line:max-line-length
-            startdate: moment(this.date1).format('DD/MM/YYYY') !== this.date1 ? typeof(this.date1) === 'string' ? this.date1 : moment(this.date1).format('DD/MM/YYYY') : moment(this.date1).format('DD/MM/YYYY'),
-            // tslint:disable-next-line:max-line-length
-            duedate: moment(this.date2).format('DD/MM/YYYY') !== this.date2 ? typeof(this.date2) === 'string' ? this.date2 : moment(this.date2).format('DD/MM/YYYY') : moment(this.date2).format('DD/MM/YYYY'),
-            // tslint:disable-next-line:max-line-length
-            enddate: moment(this.date3).format('DD/MM/YYYY') !== this.date3 ? typeof(this.date3) === 'string' ? this.date3 : moment(this.date3).format('DD/MM/YYYY') : moment(this.date3).format('DD/MM/YYYY'),
+          taskname: this.newTaskName,
+          companyid: this.newCompanyId,
+          serviceid: this.newServiceId,
+          userid: this.newUserId,
+          description: this.newDescription,
+          requiring: Number(this.newRequiring),
+          requiringifany:
+            this.newRequiring !== '' || this.newRequiring !== null
+              ? 'Yes'
+              : 'No',
+          followup:
+            this.followersId === undefined ? 0 : Number(this.followersId),
+          subtask: this.updatedSubTaskArray,
+          chatlist: this.chatInputArray,
+          taskid: Number(this.updateTaskDetails.taskid),
+          data: 'update',
+          modifyby: Number(this.userid),
+          createby: Number(this.createdBy),
+          // tslint:disable-next-line:max-line-length
+          startdate:
+            moment(this.date1).format('DD/MM/YYYY') !== this.date1
+              ? typeof this.date1 === 'string'
+                ? this.date1
+                : moment(this.date1).format('DD/MM/YYYY')
+              : moment(this.date1).format('DD/MM/YYYY'),
+          // tslint:disable-next-line:max-line-length
+          duedate:
+            moment(this.date2).format('DD/MM/YYYY') !== this.date2
+              ? typeof this.date2 === 'string'
+                ? this.date2
+                : moment(this.date2).format('DD/MM/YYYY')
+              : moment(this.date2).format('DD/MM/YYYY'),
+          // tslint:disable-next-line:max-line-length
+          enddate:
+            moment(this.date3).format('DD/MM/YYYY') !== this.date3
+              ? typeof this.date3 === 'string'
+                ? this.date3
+                : moment(this.date3).format('DD/MM/YYYY')
+              : moment(this.date3).format('DD/MM/YYYY')
         };
         console.log(obj);
         this.taskService.createTasks(obj).subscribe((res: any) => {
           if (res.isSaved) {
             this.getList();
             this.getTaskNames();
-           // this.saveFiles(res.taskid);
+            // this.saveFiles(res.taskid);
             this.openModal();
             if (value === 'close') {
               this.showRightPanel = false;
@@ -325,18 +366,20 @@ export class NewTaskComponent implements OnInit {
 
     this.taskService.getFiles(obj).subscribe((res: any) => {
       if (res) {
-          console.log(res);
-          this.isEditTask = true;
-          this.date1 = res.td.startdate;
-          this.date2 = res.td.duedate;
-          this.date3 = res.td.enddate;
-          this.createdBy =  res.td.createby;
-          this.newCompanyName = item.compname;
-          this.newServiceName = item.servname;
-          this.newUserName = item.user;
-          this.newTaskName = item.taskname;
-          this.newDescription = res.td.description;
-          this.newRequiring = this.requiringArray[Number(res.td.requiring) - 1].value;
+        console.log(res);
+        this.isEditTask = true;
+        this.date1 = res.td.startdate;
+        this.date2 = res.td.duedate;
+        this.date3 = res.td.enddate;
+        this.createdBy = res.td.createby;
+        this.newCompanyName = item.compname;
+        this.newServiceName = item.servname;
+        this.newUserName = item.user;
+        this.newTaskName = item.taskname;
+        this.newDescription = res.td.description;
+        this.newRequiring = this.requiringArray[
+          Number(res.td.requiring) - 1
+        ].value;
       }
 
       this.dbFilesList = [];
@@ -346,55 +389,58 @@ export class NewTaskComponent implements OnInit {
       });
       this.subTaskArray = res.subtasklist;
       this.dbChatList = res.chatlist;
-        this.inputMessages = [];
-        this.updatedSubTaskArray = [];
-        this.dbUpdatedSubTaskArray = [];
+      this.inputMessages = [];
+      this.updatedSubTaskArray = [];
+      this.dbUpdatedSubTaskArray = [];
 
-        if (this.subTaskArray && this.subTaskArray.length > 0) {
-          this.subTaskArray.forEach((val) => {
-            this.updatedSubTaskArray.push({ name: val.name });
-          });
-        }
-        console.log(this.updatedSubTaskArray);
-        this.dbInputChatArray = [];
-        if (this.dbChatList && this.dbChatList.length > 0) {
-          this.dbChatList.forEach((val) => {
-            this.dbInputChatArray.push({ message: val.message, date: val.date });
-          });
-        }
-        // this.getFollowers(res.td.followup);
+      if (this.subTaskArray && this.subTaskArray.length > 0) {
+        this.subTaskArray.forEach(val => {
+          this.updatedSubTaskArray.push({ name: val.name });
+        });
+      }
+      console.log(this.updatedSubTaskArray);
+      this.dbInputChatArray = [];
+      if (this.dbChatList && this.dbChatList.length > 0) {
+        this.dbChatList.forEach(val => {
+          this.dbInputChatArray.push({ message: val.message, date: val.date });
+        });
+      }
+      // this.getFollowers(res.td.followup);
     });
-
   }
 
   addSubtask() {
-    this.updatedSubTaskArray.push({name: ''});
+    this.updatedSubTaskArray.push({ name: '' });
   }
 
-  comment() {
+  comment(event) {
+    if (event.which === 13 || event.keyCode === 13) {
       if (this.newChatComment !== '') {
-           this.inputMessages.push({message: this.newChatComment, date: new Date()});
+        this.inputMessages.push({
+          message: this.newChatComment,
+          date: new Date()
+        });
       }
       this.newChatComment = '';
+      return false;
+    }
   }
 
   getIds() {
-      this.companyList.forEach(item => {
-        if (item.name === this.newCompanyName) {
-          this.newCompanyId = Number(item.id);
-        }
-      });
-      this.serviceList.forEach(item => {
-        if (item.name === this.newServiceName) {
-          this.newServiceId = Number(item.id);
-        }
-      });
-      this.userList.forEach(item => {
-        if (item.name === this.newUserName) {
-          this.newUserId = Number(item.id);
-        }
-      });
-
-
+    this.companyList.forEach(item => {
+      if (item.name === this.newCompanyName) {
+        this.newCompanyId = Number(item.id);
+      }
+    });
+    this.serviceList.forEach(item => {
+      if (item.name === this.newServiceName) {
+        this.newServiceId = Number(item.id);
+      }
+    });
+    this.userList.forEach(item => {
+      if (item.name === this.newUserName) {
+        this.newUserId = Number(item.id);
+      }
+    });
   }
 }
